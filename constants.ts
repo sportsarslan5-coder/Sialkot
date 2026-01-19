@@ -16,7 +16,7 @@ export const TRANSLATIONS: Translations = {
   women: { en: 'Women', ur: 'خواتین' },
   kids: { en: 'Kids', ur: 'بچے' },
   autoPricing: { en: 'AI Scanner', ur: 'AI سکینر' },
-  buyNow: { en: 'Shop Best Sellers', ur: 'بہترین فروخت کنندگان' },
+  buyNow: { en: 'Shop Best Sellers', ur: ' بہترین فروخت کنندگان' },
   heroTitle: { en: 'Sialkot\'s Finest Kicks', ur: 'سیالکوٹ کے بہترین جوتے' },
   heroSubtitle: { en: 'Universal Product Scanner. Identify, price, and order anything.', ur: 'یونیورسل پروڈکٹ اسکینر۔ کسی بھی چیز کی شناخت، قیمت اور آرڈر کریں۔' },
   dealOfTheDay: { en: 'Top Best Sellers', ur: 'ٹاپ بہترین فروخت کنندگان' },
@@ -281,6 +281,116 @@ export const PRODUCTS: Product[] = [
     sizes: ["US 8", "US 9", "US 10", "US 11", "US 12"],
     rating: 5.0,
     reviews: 320
+  },
+  {
+    id: 121,
+    name: "Hyper-Speed Elite - Electric Crimson",
+    category: "Men",
+    priceUSD: 135.00,
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
+    description: "High-performance training shoe in vibrant crimson, featuring split-sole technology.",
+    sizes: ["US 8", "US 9", "US 10", "US 11"],
+    rating: 4.9,
+    reviews: 154
+  },
+  {
+    id: 122,
+    name: "Hyper-Speed Elite - Cobalt Surge",
+    category: "Men",
+    priceUSD: 135.00,
+    image: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=800&q=80",
+    description: "Unmatched stability and response in a deep cobalt blue colorway.",
+    sizes: ["US 8", "US 9", "US 10", "US 11"],
+    rating: 4.8,
+    reviews: 210
+  },
+  {
+    id: 123,
+    name: "Hyper-Speed Elite - Solar Orange",
+    category: "Men",
+    priceUSD: 135.00,
+    image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80",
+    description: "Radiant solar orange finish with reinforced mesh for extreme workouts.",
+    sizes: ["US 8", "US 9", "US 10", "US 11"],
+    rating: 4.7,
+    reviews: 98
+  },
+  {
+    id: 124,
+    name: "Hyper-Speed Elite - Royal Purple",
+    category: "Men",
+    priceUSD: 135.00,
+    image: "https://images.unsplash.com/photo-1605348532760-6753d2c43329?w=800&q=80",
+    description: "Premium athletic performance meets a majestic purple aesthetic.",
+    sizes: ["US 8", "US 9", "US 10", "US 11"],
+    rating: 4.9,
+    reviews: 312
+  },
+  {
+    id: 125,
+    name: "Hyper-Speed Elite - Cyber Pink",
+    category: "Men",
+    priceUSD: 135.00,
+    image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&q=80",
+    description: "Bold cyber pink silhouette designed for those who demand attention and speed.",
+    sizes: ["US 8", "US 9", "US 10", "US 11"],
+    rating: 5.0,
+    reviews: 440
+  },
+  {
+    id: 126,
+    name: "Hyper-Speed Elite - Tropical Teal",
+    category: "Men",
+    priceUSD: 135.00,
+    image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&q=80",
+    description: "Refreshing tropical teal tones with our signature breathable foam sole.",
+    sizes: ["US 8", "US 9", "US 10", "US 11"],
+    rating: 4.6,
+    reviews: 187
+  },
+  {
+    id: 127,
+    name: "Hyper-Speed Elite - Stealth Onyx",
+    category: "Men",
+    priceUSD: 140.00,
+    image: "https://images.unsplash.com/photo-1512374382149-233c42b6a83b?w=800&q=80",
+    description: "Matte onyx black finish for a stealthy look in any training environment.",
+    sizes: ["US 8", "US 9", "US 10", "US 11", "US 12"],
+    rating: 4.9,
+    reviews: 560
+  },
+  {
+    id: 128,
+    name: "Hyper-Speed Elite - Pure Platinum",
+    category: "Men",
+    priceUSD: 140.00,
+    image: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&q=80",
+    description: "Crisp platinum white with silver accents for a clean, professional look.",
+    sizes: ["US 8", "US 9", "US 10", "US 11"],
+    rating: 4.8,
+    reviews: 225
+  },
+  {
+    id: 129,
+    name: "Hyper-Speed Elite - Volt Lime",
+    category: "Men",
+    priceUSD: 135.00,
+    image: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=800&q=80",
+    description: "Classic volt lime colorway as seen in elite international competitions.",
+    sizes: ["US 8", "US 9", "US 10", "US 11"],
+    rating: 4.7,
+    reviews: 130
+  },
+  {
+    id: 130,
+    name: "Hyper-Speed Elite - Midnight Navy",
+    category: "Men",
+    priceUSD: 135.00,
+    image: "https://images.unsplash.com/photo-1511556820780-d912e42b4980?w=800&q=80",
+    description: "Deep midnight navy for a sophisticated and versatile athletic performance shoe.",
+    sizes: ["US 8", "US 9", "US 10", "US 11"],
+    rating: 4.8,
+    reviews: 195
   }
 ];
 
