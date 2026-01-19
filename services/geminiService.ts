@@ -4,12 +4,23 @@ import { PRODUCTS, MASTER_CATALOG_DATA } from '../constants';
 import { PricingAnalysis } from '../types';
 
 /**
+ * Helper to safely initialize the GoogleGenAI instance.
+ * Ensures that process.env.API_KEY is defined before use.
+ */
+const getAIInstance = () => {
+  const apiKey = process.env.API_KEY || "";
+  if (!apiKey) {
+    console.warn("API_KEY is missing from environment. AI features will be limited.");
+  }
+  return new GoogleGenAI({ apiKey });
+};
+
+/**
  * Chat with the AI stylist using Gemini 3 Flash.
- * Creates a fresh instance of GoogleGenAI before each call to ensure the latest API key is used.
  */
 export const chatWithStylist = async (userMessage: string, history: {role: string, parts: {text: string}[]}[]): Promise<string> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   try {
+    const ai = getAIInstance();
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: [...history, { role: 'user', parts: [{ text: userMessage }] }],
@@ -20,7 +31,7 @@ export const chatWithStylist = async (userMessage: string, history: {role: strin
     return response.text || "Thinking...";
   } catch (error) { 
     console.error("Chat Error:", error);
-    return "Error connecting to AI"; 
+    return "Error connecting to AI. Please try again later."; 
   }
 };
 
@@ -28,26 +39,26 @@ export const chatWithStylist = async (userMessage: string, history: {role: strin
  * Identify a product from an image and estimate its price using Gemini 3 Flash.
  */
 export const analyzeImageForPricing = async (base64Image: string): Promise<PricingAnalysis | null> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-  const base64Data = base64Image.replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '');
-
-  const prompt = `
-    You are an expert AI product identifier for Sialkot Shop. 
-    Analyze this image and identify the product. 
-
-    MASTER CATALOG REFERENCE: 
-    You MUST check if the item in the image matches any item from our official 500-item catalog:
-    ${MASTER_CATALOG_DATA}
-
-    INSTRUCTIONS:
-    1. If the item matches a catalog item, use the EXACT CATALOG NAME.
-    2. CATEGORY: Classify it correctly (Clothing, Footwear, Electronics, Accessories, Outdoor, etc.).
-    3. PRICE: If it's in the catalog, use the catalog price (e.g., "$45"). 
-    4. DESCRIPTION: Provide a high-quality 2-sentence description.
-    5. CONFIDENCE: Provide a percentage from 0-100.
-  `;
-
   try {
+    const ai = getAIInstance();
+    const base64Data = base64Image.replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '');
+
+    const prompt = `
+      You are an expert AI product identifier for Sialkot Shop. 
+      Analyze this image and identify the product. 
+
+      MASTER CATALOG REFERENCE: 
+      You MUST check if the item in the image matches any item from our official 500-item catalog:
+      ${MASTER_CATALOG_DATA}
+
+      INSTRUCTIONS:
+      1. If the item matches a catalog item, use the EXACT CATALOG NAME.
+      2. CATEGORY: Classify it correctly (Clothing, Footwear, Electronics, Accessories, Outdoor, etc.).
+      3. PRICE: If it's in the catalog, use the catalog price (e.g., "$45"). 
+      4. DESCRIPTION: Provide a high-quality 2-sentence description.
+      5. CONFIDENCE: Provide a percentage from 0-100.
+    `;
+
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: [

@@ -1,3 +1,4 @@
+
 export interface Product {
   id: number;
   name: string;
@@ -39,13 +40,4 @@ export interface PricingAnalysis {
   description: string;
   estimatedPrice: string; // e.g. "$40 - $60"
   confidence: number; // 0 to 100
-}
-
-// Fix for missing JSX.IntrinsicElements definition in the environment
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      [elemName: string]: any;
-    }
-  }
 }

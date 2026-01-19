@@ -8,9 +8,22 @@
     <meta name="theme-color" content="#FFD700">
     <title>Sialkot Shop | The Ultimate Collection</title>
     <script>
-      // Shim to prevent crashes from libraries expecting Node environment
+      /**
+       * Robust shim for Node.js global variables.
+       * This prevents crashes in libraries like @google/genai that expect a Node environment.
+       */
       window.global = window;
-      window.process = { env: { API_KEY: "" } };
+      if (!window.process) {
+        window.process = { env: { API_KEY: "" } };
+      } else if (!window.process.env) {
+        window.process.env = { API_KEY: "" };
+      }
+
+      // Simple error catcher to help debug white screen issues
+      window.onerror = function(msg, url, line, col, error) {
+        console.error("Global error caught:", msg, "at", url, line + ":" + col);
+        return false;
+      };
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
@@ -35,6 +48,7 @@
               'pulse-slow': 'pulse 3s infinite',
               'float': 'float 6s ease-in-out infinite',
               'marquee': 'marquee 30s linear infinite',
+              'scale-in': 'scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
             },
             keyframes: {
               fadeInUp: {
@@ -56,6 +70,10 @@
               marquee: {
                 '0%': { transform: 'translateX(0%)' },
                 '100%': { transform: 'translateX(-100%)' },
+              },
+              scaleIn: {
+                '0%': { opacity: '0', transform: 'scale(0.9)' },
+                '100%': { opacity: '1', transform: 'scale(1)' },
               }
             }
           },
@@ -70,20 +88,22 @@
       ::-webkit-scrollbar-thumb:hover { background: #888; }
       ::selection { background: #FFD700; color: #000; }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
-  }
-}
-</script>
-</head>
+    <script type="importmap">
+    {
+      "imports": {
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6",
+        "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
+      }
+    }
+    </script>
+  </head>
   <body class="bg-white text-primary antialiased">
     <div id="root"></div>
+    <!-- Entry point script tag to ensure React mounts in production -->
+    <script type="module" src="index.tsx"></script>
   </body>
 </html>
