@@ -379,7 +379,7 @@ export const PRODUCTS: Product[] = [
     description: "Classic volt lime colorway as seen in elite international competitions.",
     sizes: ["US 8", "US 9", "US 10", "US 11"],
     rating: 4.7,
-    reviews: 130
+    reviews: 130000
   },
   {
     id: 130,
