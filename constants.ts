@@ -71,7 +71,7 @@ export const PRODUCTS: Product[] = [
     description: "Lightweight, breathable, and designed for explosive speed on the track.",
     sizes: ["US 7", "US 8", "US 9", "US 10"],
     rating: 4.8,
-    reviews: 850
+    reviews: 85000
   },
   {
     id: 102,
@@ -104,7 +104,7 @@ export const PRODUCTS: Product[] = [
     description: "Waterproof and insulated, built to conquer the most challenging winter terrains.",
     sizes: ["US 8", "US 9", "US 10", "US 11"],
     rating: 5.0,
-    reviews: 120
+    reviews: 120000
   },
   {
     id: 105,
