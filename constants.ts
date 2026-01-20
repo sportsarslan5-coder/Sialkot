@@ -49,7 +49,7 @@ export const PRODUCTS: Product[] = [
     description: "The #1 street style staple. Crisp white leather upper with a chunky sole.",
     sizes: ["US 8", "US 9", "US 10", "US 11", "US 12"],
     rating: 5.0,
-    reviews: 1250
+    reviews: 125009909
   },
   {
     id: 36,
@@ -390,7 +390,7 @@ export const PRODUCTS: Product[] = [
     description: "Deep midnight navy for a sophisticated and versatile athletic performance shoe.",
     sizes: ["US 8", "US 9", "US 10", "US 11"],
     rating: 4.8,
-    reviews: 195
+    reviews: 100095
   }
 ];
 
