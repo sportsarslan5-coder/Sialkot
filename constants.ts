@@ -67,7 +67,7 @@ export const PRODUCTS: Product[] = [
     name: "Sialkot Street Bundle",
     category: "Men",
     priceUSD: 30.00,
-    image: "IMG-20251214-WA0004.jpg",
+    image: "https://images.unsplash.com/photo-20251214-WA0004.jpg",
     description: "Exclusive streetwear set featuring the season's most wanted silhouette. Premium quality craftsmanship at an unbeatable price.",
     sizes: ["S", "M", "L", "XL"],
     rating: 4.9,
