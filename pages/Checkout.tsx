@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useAppContext } from '../context/AppContext';
+import { useAppContext } from '../components/AppContext';
 import { CreditCard, CheckCircle, MessageCircle, MapPin, Home, User } from 'lucide-react';
 import { WHATSAPP_NUMBER } from '../constants';
 

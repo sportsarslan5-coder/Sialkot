@@ -2,7 +2,7 @@
 import React from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
 import { ArrowRight, ShieldCheck, Truck, TrendingUp, Award, Sparkles, Gift } from 'lucide-react';
-import { useAppContext } from '../context/AppContext';
+import { useAppContext } from '../components/AppContext';
 import { PRODUCTS } from '../constants';
 import ProductCard from '../components/ProductCard';
 
@@ -11,17 +11,14 @@ const { Link } = ReactRouterDOM as any;
 const Home: React.FC = () => {
   const { t } = useAppContext();
   
-  // Feature the Mr. Beast shoe (ID 36) first, then other top products
   const mrBeastShoe = PRODUCTS.find(p => p.id === 36);
   const otherFeatured = PRODUCTS.filter(p => p.id !== 36).slice(0, 3);
   const featuredProducts = mrBeastShoe ? [mrBeastShoe, ...otherFeatured] : PRODUCTS.slice(0, 4);
 
   return (
     <div className="overflow-x-hidden">
-      {/* Hero Section */}
       <div className="relative h-[90vh] w-full bg-black overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent z-10"></div>
-        {/* Dynamic Background Image */}
         <img 
           src={mrBeastShoe ? mrBeastShoe.image : "https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=2070&auto=format&fit=crop"} 
           alt="Hero Sneaker" 
@@ -32,7 +29,6 @@ const Home: React.FC = () => {
         <div className="absolute inset-0 z-20 flex items-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto w-full">
             <div className="max-w-4xl space-y-8">
-              {/* Promotional Badges */}
               <div className="flex flex-wrap items-center gap-3 animate-fade-in-up">
                   <div className="inline-flex items-center gap-2 bg-red-600 text-white px-5 py-2 rounded-full text-sm font-bold tracking-widest uppercase shadow-lg shadow-red-900/50 animate-pulse border border-red-500">
                     <Gift size={18} /> Buy 5 Shoes Get 1 Free
@@ -71,20 +67,17 @@ const Home: React.FC = () => {
           </div>
         </div>
         
-        {/* Scroll Indicator */}
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 text-white/50 animate-bounce">
            <div className="w-[1px] h-12 bg-gradient-to-b from-accent to-transparent mx-auto"></div>
         </div>
       </div>
 
-      {/* Marquee Brands (Decorative) */}
       <div className="bg-accent py-4 overflow-hidden whitespace-nowrap relative shadow-lg z-20">
         <div className="inline-block animate-marquee text-black font-bold text-lg tracking-widest uppercase">
            • ANYONE WHO BUYS FIVE SHOES WILL GET ONE SHOE FREE • THIS IS THE BEST SHOES SALE FOR USA • SIALKOT SHOP EXCLUSIVE • GLOBAL SHIPPING • ANYONE WHO BUYS FIVE SHOES WILL GET ONE SHOE FREE • THIS IS THE BEST SHOES SALE FOR USA
         </div>
       </div>
 
-      {/* Categories Section */}
       <div className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 space-y-4 animate-fade-in-up">
@@ -122,9 +115,7 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* Featured Products */}
       <div className="bg-secondary py-24 relative overflow-hidden">
-        {/* Decorative Background Blobs */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
@@ -152,7 +143,6 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* Trust Features - Modernized */}
       <div className="py-24 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">

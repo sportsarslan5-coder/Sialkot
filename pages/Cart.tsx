@@ -1,7 +1,8 @@
+
 import React from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
 import { Trash2, Minus, Plus } from 'lucide-react';
-import { useAppContext } from '../context/AppContext';
+import { useAppContext } from '../components/AppContext';
 
 const { Link } = ReactRouterDOM as any;
 

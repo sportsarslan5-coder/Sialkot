@@ -3,7 +3,7 @@ import React from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
 import { Star, ShoppingCart, Eye, Sparkles } from 'lucide-react';
 import { Product } from '../types';
-import { useAppContext } from '../context/AppContext';
+import { useAppContext } from './AppContext';
 
 const { Link } = ReactRouterDOM as any;
 
@@ -17,7 +17,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <div className="group relative flex flex-col h-full">
-      {/* Image Container */}
       <div className={`relative aspect-square overflow-hidden rounded-[1.5rem] bg-gray-100 mb-4 shadow-sm transition-all duration-500 group-hover:shadow-2xl ${isSpecial ? 'ring-2 ring-accent ring-offset-2' : ''}`}>
         <img 
           src={product.image} 
@@ -26,7 +25,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
         />
         
-        {/* Overlay Actions - The "Two Things" */}
         <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-[2px]">
           <Link 
             to={`/product/${product.id}`}
@@ -48,7 +46,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </button>
         </div>
 
-        {/* Badges */}
         {product.rating >= 4.9 && !isSpecial && (
             <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-black text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wide shadow-sm flex items-center gap-1">
                 <Star size={10} className="fill-accent text-accent" /> Best Seller
@@ -61,7 +58,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         )}
       </div>
 
-      {/* Info */}
       <div className="flex flex-col flex-grow px-2">
         <div className="flex justify-between items-start mb-1.5">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 px-2 py-0.5 rounded-full">{product.category}</span>

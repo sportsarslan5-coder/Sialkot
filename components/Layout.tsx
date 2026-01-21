@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
 import { ShoppingBag, Menu, X, Search, MessageCircle, Instagram, Facebook, Twitter, ArrowUp, Sparkles } from 'lucide-react';
-import { useAppContext } from '../context/AppContext';
+import { useAppContext } from './AppContext';
 import { WHATSAPP_NUMBER } from '../constants';
 
 const { Link, useLocation } = ReactRouterDOM as any;
@@ -68,7 +68,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
       </div>
 
-      {/* Main Header - Glassmorphism */}
       <header 
         className={`sticky top-0 z-40 transition-all duration-300 ${
           scrolled 
@@ -78,14 +77,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
-            {/* Logo */}
             <div className="flex-shrink-0 flex items-center">
               <Link to="/" className="text-2xl md:text-3xl font-black tracking-tighter group">
                 SIALKOT<span className="text-accent group-hover:text-black transition-colors duration-300"> </span>SHOP
               </Link>
             </div>
 
-            {/* Desktop Nav */}
             <nav className="hidden md:flex space-x-6 lg:space-x-8 items-center">
               {navLinks.map((link) => (
                 <Link
@@ -102,7 +99,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               ))}
             </nav>
 
-            {/* Icons */}
             <div className="flex items-center gap-3 md:gap-5">
               <button className="p-2 hover:bg-gray-100 rounded-full transition-colors hidden sm:block text-gray-600 hover:text-black">
                 <Search size={20} />
@@ -125,7 +121,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="md:hidden bg-white/95 backdrop-blur-xl border-t border-gray-100 absolute w-full left-0 z-30 animate-slide-down shadow-xl h-screen">
             <div className="px-4 pt-4 pb-8 space-y-2">
@@ -149,12 +144,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         )}
       </header>
 
-      {/* Main Content */}
       <main className="flex-grow bg-white relative">
         {children}
       </main>
 
-      {/* Footer */}
       <footer className="bg-[#050505] text-white pt-20 pb-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">

@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { BLOG_POSTS } from '../constants';
-import { useAppContext } from '../context/AppContext';
+import { useAppContext } from '../components/AppContext';
 
 const Blog: React.FC = () => {
   const { t } = useAppContext();

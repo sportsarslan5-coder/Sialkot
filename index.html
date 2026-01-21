@@ -8,17 +8,12 @@
     <meta name="theme-color" content="#FFD700">
     <title>Sialkot Shop | The Ultimate Collection</title>
     <script>
-      /**
-       * Bulletproof shim for Node.js global variables in the browser.
-       * Essential for packages that assume a Node environment.
-       */
       window.global = window;
       window.process = window.process || {};
       window.process.env = window.process.env || { NODE_ENV: 'production', API_KEY: "" };
       window.process.versions = window.process.versions || {};
       window.process.nextTick = window.process.nextTick || ((fn) => setTimeout(fn, 0));
 
-      // Catch early loading errors to prevent a total silent failure
       window.onerror = function(msg, url, line, col, error) {
         console.error("Critical Startup Error:", msg, "at", url, "line:", line);
         return false;
@@ -91,23 +86,18 @@
       ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
       ::-webkit-scrollbar-thumb:hover { background: #888; }
       ::selection { background: #FFD700; color: #000; }
-      
-      /* Prevents FOUC (Flash of Unstyled Content) or white screen before React mounts */
-      #root:empty {
-        background: white;
-        height: 100vh;
-      }
+      #root:empty { background: white; height: 100vh; }
     </style>
     <script type="importmap">
 {
   "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "react": "https://aistudiocdn.com/react@^19.2.0",
     "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0",
     "react-dom/client": "https://aistudiocdn.com/react-dom@^19.2.0/client",
     "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6",
     "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
     "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
   }
 }

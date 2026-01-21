@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
 import { Star, ShoppingCart, ArrowLeft, CheckCircle, MessageCircle, Shield, RefreshCcw, ShoppingBag } from 'lucide-react';
-import { useAppContext } from '../context/AppContext';
+import { useAppContext } from '../components/AppContext';
 import { PRODUCTS, WHATSAPP_NUMBER } from '../constants';
 import ProductCard from '../components/ProductCard';
 

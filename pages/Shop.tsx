@@ -1,6 +1,7 @@
+
 import React, { useState, useMemo } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
-import { useAppContext } from '../context/AppContext';
+import { useAppContext } from '../components/AppContext';
 import { PRODUCTS } from '../constants';
 import ProductCard from '../components/ProductCard';
 
