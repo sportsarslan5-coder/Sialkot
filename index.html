@@ -10,7 +10,10 @@
     <script>
       window.global = window;
       window.process = window.process || {};
-      window.process.env = window.process.env || { NODE_ENV: 'production', API_KEY: "" };
+      // Initialize env only if not already present to prevent overwriting injected keys
+      window.process.env = window.process.env || {};
+      window.process.env.NODE_ENV = window.process.env.NODE_ENV || 'production';
+      
       window.process.versions = window.process.versions || {};
       window.process.nextTick = window.process.nextTick || ((fn) => setTimeout(fn, 0));
 
@@ -44,6 +47,7 @@
               'marquee': 'marquee 30s linear infinite',
               'scale-in': 'scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
               'scale-slow': 'scaleSlow 20s ease-in-out infinite alternate',
+              'scan-line': 'scanLine 2s ease-in-out infinite',
             },
             keyframes: {
               fadeInUp: {
@@ -73,6 +77,11 @@
               scaleSlow: {
                 '0%': { transform: 'scale(1)' },
                 '100%': { transform: 'scale(1.1)' },
+              },
+              scanLine: {
+                '0%': { top: '0%' },
+                '50%': { top: '100%' },
+                '100%': { top: '0%' },
               }
             }
           },
@@ -87,6 +96,7 @@
       ::-webkit-scrollbar-thumb:hover { background: #888; }
       ::selection { background: #FFD700; color: #000; }
       #root:empty { background: white; height: 100vh; }
+      .holographic-glow { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
     </style>
     <script type="importmap">
 {

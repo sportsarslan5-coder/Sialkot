@@ -1,3 +1,4 @@
+
 import { Product, BlogPost, Translations } from './types';
 
 export const EXCHANGE_RATE_PKR = 278.5; 
@@ -17,20 +18,20 @@ export const TRANSLATIONS: Translations = {
   autoPricing: { en: 'AI Scanner', ur: 'AI سکینر' },
   buyNow: { en: 'Shop Best Sellers', ur: ' بہترین فروخت کنندگان' },
   heroTitle: { en: 'Sialkot\'s Finest Kicks', ur: 'سیالکوٹ کے بہترین جوتے' },
-  heroSubtitle: { en: 'Universal Product Scanner. Identify, price, and order anything.', ur: 'یونیورسل پروڈکٹ اسکینر۔ کسی بھی چیز کی شناخت، قیمت اور آرڈر کریں۔' },
-  dealOfTheDay: { en: 'Top Best Sellers', ur: 'ٹاپ بہترین فروخت کنندگان' },
+  heroSubtitle: { en: 'The active system is online. Identify, price, and dominate with Sialkot Shop.', ur: 'ایکٹو سسٹم آن لائن ہے۔ سیالکوٹ شاپ کے ساتھ شناخت، قیمت اور غلبہ حاصل کریں۔' },
+  dealOfTheDay: { en: 'Active Drops', ur: 'ایکٹو ڈراپس' },
   addToCart: { en: 'Add to Cart', ur: 'ٹوکری میں شامل کریں' },
-  reviews: { en: 'Customer Reviews', ur: 'کسٹمر کے جائزے' },
+  reviews: { en: 'System Reviews', ur: 'نظام کے جائزے' },
   emptyCart: { en: 'Your cart is empty', ur: 'آپ کی ٹوکری خالی ہے' },
   total: { en: 'Total', ur: 'کل' },
-  placeOrder: { en: 'Place Order on WhatsApp', ur: 'واٹس ایپ پر آرڈر کریں' },
-  contactUs: { en: 'Contact Us', ur: 'ہم سے رابطہ کریں' },
+  placeOrder: { en: 'Verify on WhatsApp', ur: 'واٹس ایپ پر تصدیق کریں' },
+  contactUs: { en: 'Get Active', ur: 'رابطہ کریں' },
   sendMessage: { en: 'Send Message', ur: 'پیغام بھیجیں' },
-  aiStylist: { en: 'Shopping Expert', ur: 'شاپنگ ماہر' },
-  stylistIntro: { en: 'Hi! I can help you identify any product and place an order.', ur: 'ہائے! میں کسی بھی پروڈکٹ کی شناخت کرنے اور آرڈر دینے میں آپ کی مدد کر سکتا ہوں۔' },
-  typing: { en: 'AI is thinking...', ur: 'AI سوچ رہا ہے...' },
-  footerText: { en: '© 2024 Sialkot Shop. All rights reserved.', ur: '© 2024 سیالکوٹ شاپ۔ جملہ حقوق محفوظ ہیں۔' },
-  subscribe: { en: 'Subscribe', ur: 'سبسکرائب' }
+  aiStylist: { en: 'Active Expert', ur: 'ایکٹو ماہر' },
+  stylistIntro: { en: 'Active Intelligence ready. How can I improve your style today?', ur: 'ایکٹو انٹیلی جنس تیار ہے۔ آج میں آپ کے انداز کو کیسے بہتر بنا سکتا ہوں؟' },
+  typing: { en: 'Processing Data...', ur: 'ڈیٹا پروسیسنگ...' },
+  footerText: { en: '© 2024 Sialkot Shop. System Core: Active.', ur: '© 2024 سیالکوٹ شاپ۔ سسٹم کور: ایکٹو۔' },
+  subscribe: { en: 'Join the Core', ur: 'کور میں شامل ہوں' }
 };
 
 // Full 500 Item Master Catalog for AI Recognition
@@ -451,9 +452,9 @@ export const PRODUCTS: Product[] = [
 export const BLOG_POSTS: BlogPost[] = [
   {
     id: 1,
-    title: "AI Recognition: The Future of Shopping",
-    summary: "How our new AI Scanner identifies 500+ items instantly for our customers.",
-    date: "Dec 01, 2024",
+    title: "The Active System: AI in Luxury Fashion",
+    summary: "How our neural identification engine is redefining the shopping experience in Pakistan.",
+    date: "Dec 05, 2024",
     image: "https://images.unsplash.com/photo-1512374382149-233c42b6a83b?w=800&q=80"
   }
 ];
