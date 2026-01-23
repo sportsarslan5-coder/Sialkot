@@ -1,6 +1,6 @@
 
 import React, { useState, useRef } from 'react';
-import { Camera, Loader2, CheckCircle, AlertTriangle, MessageCircle, Info, Settings, ScanLine, ShoppingBag, Activity, Zap, ShieldCheck } from 'lucide-react';
+import { Camera, Loader2, CheckCircle, AlertTriangle, MessageCircle, Info, Settings, ScanLine, ShoppingBag, Activity, Zap, ShieldCheck, RefreshCw } from 'lucide-react';
 import { analyzeImageForPricing } from '../services/geminiService';
 import { PricingAnalysis } from '../types';
 import { sendWhatsAppOrder } from '../services/whatsappService';
@@ -9,7 +9,7 @@ const AutoPricing: React.FC = () => {
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<{message: string, type: 'network' | 'mismatch'} | null>(null);
   const [orderComplete, setOrderComplete] = useState(false);
   const [result, setResult] = useState<PricingAnalysis | null>(null);
   const [customerName, setCustomerName] = useState('');
@@ -44,10 +44,18 @@ const AutoPricing: React.FC = () => {
       if (data) {
         setResult(data);
       } else {
-        setError("NEURAL_MISMATCH: The system could not find a clear match. Please try a different angle.");
+        setError({
+          message: "NEURAL_MISMATCH: The core could not find a clear match in the 500-item catalog.",
+          type: 'mismatch'
+        });
       }
-    } catch (e) {
-      setError("CONNECTION_FAULT: The Active System is temporarily out of range.");
+    } catch (e: any) {
+      setError({
+        message: e.message === "NETWORK_RPC_FAILURE" 
+          ? "SYNC_FAILURE: The Active System is experiencing an RPC/Network interrupt. Please try again."
+          : "CONNECTION_FAULT: The Neural Core is temporarily out of range.",
+        type: 'network'
+      });
     } finally {
       setLoading(false);
     }
@@ -184,17 +192,35 @@ const AutoPricing: React.FC = () => {
 
             {error && !loading && (
               <div className="flex-1 flex flex-col items-center justify-center text-center p-8 animate-scale-in">
-                 <div className="w-24 h-24 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-6 ring-8 ring-red-50/50">
+                 <div className={`w-24 h-24 ${error.type === 'network' ? 'bg-orange-50 text-orange-500' : 'bg-red-50 text-red-500'} rounded-full flex items-center justify-center mb-6 ring-8 ${error.type === 'network' ? 'ring-orange-50/50' : 'ring-red-50/50'}`}>
                     <AlertTriangle size={40} />
                  </div>
-                 <h3 className="text-3xl font-black text-primary mb-4 tracking-tighter uppercase">Protocol Fault</h3>
-                 <p className="text-gray-500 mb-8 max-w-sm font-medium">{error}</p>
-                 <button 
-                  onClick={() => fileInputRef.current?.click()}
-                  className="bg-black text-white px-10 py-4 rounded-full font-black text-sm hover:bg-accent hover:text-black transition-all shadow-xl"
-                 >
-                   RE-ENGAGE SCANNER
-                 </button>
+                 <h3 className="text-3xl font-black text-primary mb-4 tracking-tighter uppercase">
+                   {error.type === 'network' ? 'Connection Fault' : 'Protocol Fault'}
+                 </h3>
+                 <p className="text-gray-500 mb-8 max-w-sm font-medium">{error.message}</p>
+                 <div className="flex flex-col sm:flex-row gap-4">
+                    <button 
+                      onClick={() => {
+                        if (image) processImage(image);
+                        else fileInputRef.current?.click();
+                      }}
+                      className="bg-black text-white px-10 py-4 rounded-full font-black text-sm hover:bg-accent hover:text-black transition-all shadow-xl flex items-center gap-2 justify-center"
+                    >
+                      <RefreshCw size={16} /> RE-ENGAGE CORE
+                    </button>
+                    <button 
+                      onClick={() => {
+                        setImage(null);
+                        setResult(null);
+                        setError(null);
+                        fileInputRef.current?.click();
+                      }}
+                      className="bg-gray-100 text-gray-600 px-10 py-4 rounded-full font-black text-sm hover:bg-gray-200 transition-all"
+                    >
+                      NEW TARGET
+                    </button>
+                 </div>
               </div>
             )}
 

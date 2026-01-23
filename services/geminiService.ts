@@ -5,7 +5,7 @@ import { PricingAnalysis } from '../types';
 
 /**
  * CORE COMMAND: "The Sialkot Neural Core is now synchronized."
- * This service manages the Active Intelligence layer of Sialkot Shop.
+ * Upgraded to gemini-3-pro-preview to handle the high-density catalog processing.
  */
 
 const getAIInstance = () => {
@@ -20,7 +20,7 @@ export const chatWithStylist = async (userMessage: string, history: {role: strin
   try {
     const ai = getAIInstance();
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-3-pro-preview',
       contents: [...history, { role: 'user', parts: [{ text: userMessage }] }],
       config: { 
         systemInstruction: `
@@ -49,27 +49,37 @@ export const chatWithStylist = async (userMessage: string, history: {role: strin
 export const analyzeImageForPricing = async (base64Image: string): Promise<PricingAnalysis | null> => {
   try {
     const ai = getAIInstance();
-    const mimeType = base64Image.match(/^data:(image\/[a-zA-Z]+);base64,/)?.[1] || 'image/jpeg';
-    const base64Data = base64Image.replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '');
+    
+    // Ensure clean base64 data
+    const parts = base64Image.split(',');
+    const mimeType = parts[0].match(/:(.*?);/)?.[1] || 'image/jpeg';
+    const base64Data = parts[1];
 
     const prompt = `
       ACTIVE RECOGNITION COMMAND: "Identify. Verify. Excel."
-      Analyze this frame against the Sialkot Master Catalog. 
-      The system must provide a 100% catalog match if possible.
-
-      CATALOG:
+      You are a world-class fashion identification system for Sialkot Shop.
+      Analyze the provided image and match it against the Sialkot Master Catalog.
+      
+      CATALOG REFERENCE:
       ${MASTER_CATALOG_DATA}
 
-      JSON OUTPUT REQUIREMENTS:
-      - title: String (Match catalog exactly)
-      - category: String (Footwear/Apparel/Bundle)
-      - description: String (High-energy sales copy)
-      - estimatedPrice: String (e.g., "$110")
-      - confidence: Integer (Probability)
+      INSTRUCTIONS:
+      - If the image contains a shoe, apparel, or kit, find the closest match in the catalog.
+      - If it is a clear Nike/Adidas or major brand, use the catalog's naming conventions for similar items if the exact model isn't listed.
+      - Return the data in the specified JSON format.
+
+      JSON STRUCTURE:
+      {
+        "title": "Exact Catalog Name",
+        "category": "One of [Footwear, Apparel, Bundle, Accessories]",
+        "description": "Engaging, high-energy sales copy (2 sentences)",
+        "estimatedPrice": "$XX.XX",
+        "confidence": 0-100
+      }
     `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-3-pro-preview',
       contents: [
         {
           role: 'user',
@@ -80,7 +90,7 @@ export const analyzeImageForPricing = async (base64Image: string): Promise<Prici
         }
       ],
       config: { 
-        thinkingConfig: { thinkingBudget: 2048 },
+        thinkingConfig: { thinkingBudget: 4096 }, // Increased budget for complex 500-item matching
         responseMimeType: 'application/json',
         responseSchema: {
           type: Type.OBJECT,
@@ -97,11 +107,15 @@ export const analyzeImageForPricing = async (base64Image: string): Promise<Prici
     });
 
     const text = response.text;
-    if (!text) throw new Error("EMPTY_NEURAL_RESPONSE");
+    if (!text) return null;
     
     return JSON.parse(text.trim()) as PricingAnalysis;
-  } catch (error) {
+  } catch (error: any) {
+    // Check for specific RPC/Network failures
     console.error("Neural Scan Fault:", error);
+    if (error?.message?.includes('xhr error') || error?.message?.includes('Rpc failed')) {
+      throw new Error("NETWORK_RPC_FAILURE");
+    }
     return null;
   }
 };
