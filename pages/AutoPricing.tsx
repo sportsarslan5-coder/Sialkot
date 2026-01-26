@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useMemo } from 'react';
-import { Camera, Loader2, CheckCircle, AlertTriangle, MessageCircle, ShoppingBag, Activity, Zap, ShieldCheck, Search, RefreshCw, ChevronRight, ScanLine } from 'lucide-react';
+import { Camera, Loader2, CheckCircle, AlertTriangle, MessageCircle, ShoppingBag, Activity, Zap, ShieldCheck, Search, RefreshCw, ChevronRight, ScanLine, User } from 'lucide-react';
 import { analyzeImageForPricing } from '../services/geminiService';
 import { PricingAnalysis } from '../types';
 import { MASTER_CATALOG_DATA } from '../constants';
@@ -45,12 +45,13 @@ const AutoPricing: React.FC = () => {
     setResult({
       title: item.name,
       category: "Catalog Item",
-      description: `Premium quality ${item.name} from the Sialkot Master Catalog. Engineered for performance.`,
+      description: `Premium quality ${item.name} from the Sialkot Master Catalog. Engineered for high performance and style.`,
       estimatedPrice: `$${item.price}`,
       confidence: 100
     });
     setSearchQuery('');
     setError(null);
+    setOrderComplete(false);
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,14 +78,14 @@ const AutoPricing: React.FC = () => {
         setResult(data);
       } else {
         setError({
-          message: "NEURAL_MISMATCH: No exact match found in current frame.",
+          message: "NEURAL_MISMATCH: No exact match found in current frame. Try a different angle or manual search.",
           type: 'mismatch'
         });
       }
     } catch (e: any) {
       setError({
         message: e.message === "RPC_FAILURE" 
-          ? "SYNC_INTERRUPT: Neural network temporarily busy. Please use manual override."
+          ? "SYNC_INTERRUPT: Network temporarily busy. Please use the manual search below."
           : "CORE_FAILURE: Recalibrating sensors.",
         type: 'network'
       });
@@ -95,10 +96,21 @@ const AutoPricing: React.FC = () => {
 
   const handleOrder = () => {
     if (!result || !customerName.trim()) {
-      alert("Active Protocol: Customer Name Required.");
+      alert("Active Protocol: Customer Name is required to log the order.");
       return;
     }
-    const msg = `*OFFICIAL AI ORDER REQUEST*%0a---------------------------%0a👤 *Customer:* ${customerName}%0a📦 *Product:* ${result.title}%0a💰 *Price:* ${result.estimatedPrice}%0a📝 *Status:* Active System Verified.`;
+    
+    // Construct professional WhatsApp message
+    const msg = `*SIALKOT SHOP - OFFICIAL ORDER LOG*%0A` +
+                `----------------------------%0A` +
+                `👤 *Customer Name:* ${customerName}%0A` +
+                `📦 *Purchased Item:* ${result.title}%0A` +
+                `💰 *Price:* ${result.estimatedPrice}%0A` +
+                `📂 *Category:* ${result.category}%0A` +
+                `----------------------------%0A` +
+                `📝 *Note:* This order was verified via the Sialkot Neural-Scan system.%0A` +
+                `✅ *Status:* Authorized & Synced.`;
+
     window.open(`https://wa.me/923079490721?text=${msg}`, '_blank');
     setOrderComplete(true);
   };
@@ -113,12 +125,12 @@ const AutoPricing: React.FC = () => {
           </div>
           <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-primary italic uppercase">Sialkot <span className="text-accent underline decoration-4 underline-offset-8">Neural-Scan</span></h1>
           <p className="text-gray-500 max-w-xl mt-6 text-lg italic font-medium leading-relaxed">
-            "Precision. Heritage. Power." Upload a frame or manually engage the catalog for instant identification.
+            "Identify. Price. Dominate." Use our AI scanner to detect products or search the catalog manually.
           </p>
         </div>
         <div className="p-4 bg-black text-accent rounded-2xl border border-accent/20 shadow-xl flex items-center gap-3">
            <Zap size={20} fill="currentColor" />
-           <span className="font-black text-xs uppercase tracking-widest">Active Priority</span>
+           <span className="font-black text-xs uppercase tracking-widest">Neural Priority</span>
         </div>
       </div>
 
@@ -147,7 +159,7 @@ const AutoPricing: React.FC = () => {
                   <Camera size={48} className="text-gray-400" />
                 </div>
                 <h3 className="font-black text-2xl mb-1 uppercase tracking-tighter">Initiate Scan</h3>
-                <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-bold">Select Visual Target</p>
+                <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-bold">Upload Product Image</p>
               </div>
             )}
             <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" accept="image/*" />
@@ -157,14 +169,14 @@ const AutoPricing: React.FC = () => {
           <div className="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100">
              <div className="flex items-center gap-2 mb-4">
                 <Search size={18} className="text-accent" />
-                <h4 className="font-black text-xs uppercase tracking-widest text-gray-500">Manual Neural Override</h4>
+                <h4 className="font-black text-xs uppercase tracking-widest text-gray-500">Manual Search Override</h4>
              </div>
              <div className="relative">
                 <input 
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search 500 catalog items..."
+                  placeholder="Type to find any of 500 items..."
                   className="w-full bg-gray-50 border-2 border-gray-100 focus:border-accent p-5 rounded-2xl outline-none font-bold text-sm transition-all"
                 />
                 {filteredCatalog.length > 0 && (
@@ -193,10 +205,9 @@ const AutoPricing: React.FC = () => {
           <div className="bg-white rounded-[3.5rem] p-12 shadow-2xl border border-gray-100 min-h-[500px] flex flex-col relative overflow-hidden">
             {!result && !loading && !error && (
               <div className="flex-1 flex flex-col items-center justify-center text-center py-20">
-                 {/* Fixed: ScanLine imported from lucide-react */}
                  <ScanLine size={100} className="mb-8 text-gray-100 animate-pulse" />
-                 <h3 className="text-2xl font-black text-gray-300 tracking-tighter italic uppercase">System: Awaiting Synchronization</h3>
-                 <p className="text-[10px] text-gray-400 font-mono mt-2 uppercase tracking-[0.4em]">Engage Scanner or Manual Search</p>
+                 <h3 className="text-2xl font-black text-gray-300 tracking-tighter italic uppercase">Scanner: Awaiting Input</h3>
+                 <p className="text-[10px] text-gray-400 font-mono mt-2 uppercase tracking-[0.4em]">Target an image or search catalog</p>
               </div>
             )}
 
@@ -224,7 +235,7 @@ const AutoPricing: React.FC = () => {
                   onClick={() => fileInputRef.current?.click()}
                   className="bg-black text-white px-12 py-5 rounded-full font-black text-xs uppercase tracking-[0.2em] hover:bg-accent hover:text-black transition-all shadow-xl flex items-center gap-3"
                  >
-                   <RefreshCw size={16} /> Re-Engage Core
+                   <RefreshCw size={16} /> Re-Engage Scanner
                  </button>
               </div>
             )}
@@ -233,43 +244,54 @@ const AutoPricing: React.FC = () => {
               <div className="animate-fade-in-up space-y-10">
                 <div className="relative">
                   <div className="flex items-center gap-3 mb-6">
-                     <span className="bg-black text-accent px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">Target: Identified</span>
-                     <span className="text-[10px] text-green-600 font-black flex items-center gap-1.5 uppercase tracking-widest"><CheckCircle size={14}/> 100% Core Confidence</span>
+                     <span className="bg-black text-accent px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">{result.category}</span>
+                     <span className="text-[10px] text-green-600 font-black flex items-center gap-1.5 uppercase tracking-widest"><CheckCircle size={14}/> Core Sync Success</span>
                   </div>
-                  <h2 className="text-5xl md:text-6xl font-black text-primary leading-none tracking-tighter mb-6 italic uppercase">{result.title}</h2>
+                  
+                  {/* Highlighted Product Name */}
+                  <h2 className="text-5xl md:text-6xl font-black text-primary leading-none tracking-tighter mb-6 italic uppercase underline decoration-accent/40 decoration-8 underline-offset-4">
+                    {result.title}
+                  </h2>
+                  
                   <p className="text-gray-600 text-xl italic font-light leading-relaxed border-l-4 border-accent pl-6">
                     {result.description}
                   </p>
                 </div>
 
+                {/* Price Display */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                   <div className="bg-black text-white p-8 rounded-[2.5rem] shadow-2xl border border-accent/20 flex flex-col justify-center">
-                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-3 block">Catalog Value</span>
-                      <span className="text-5xl font-black tracking-tighter">{result.estimatedPrice}</span>
+                   <div className="bg-black text-white p-8 rounded-[2.5rem] shadow-2xl border border-accent/20 flex flex-col justify-center transform hover:scale-105 transition-transform">
+                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-3 block">Product Value</span>
+                      <span className="text-6xl font-black tracking-tighter text-accent">{result.estimatedPrice}</span>
                    </div>
                    <div className="bg-gray-50 p-8 rounded-[2.5rem] border border-gray-100 flex flex-col justify-center">
-                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-3 block">Precision Sync</span>
+                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-3 block">Neural Confidence</span>
                       <span className="text-5xl font-black text-primary tracking-tighter">{result.confidence}%</span>
                    </div>
                 </div>
 
+                {/* Name Input for Ordering */}
                 <div className="space-y-4 pt-6">
-                   <label className="text-[10px] font-black uppercase text-gray-400 tracking-[0.3em] pl-2 block">Subject Identification</label>
+                   <div className="flex items-center gap-2 mb-2">
+                      <User size={16} className="text-accent" />
+                      <label className="text-[10px] font-black uppercase text-gray-400 tracking-[0.3em] block">Confirm Customer Identity</label>
+                   </div>
                    <input 
                       type="text"
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
-                      placeholder="Enter Customer Name"
-                      className="w-full bg-gray-50 border-2 border-gray-100 focus:border-accent p-6 rounded-[2rem] outline-none font-black text-xl transition-all shadow-inner"
+                      placeholder="Enter Name for WhatsApp Log"
+                      className="w-full bg-gray-50 border-2 border-gray-100 focus:border-accent p-6 rounded-[2rem] outline-none font-black text-xl transition-all shadow-inner placeholder:text-gray-300"
                    />
                 </div>
 
+                {/* Main Order Now Button */}
                 <button 
                   onClick={handleOrder}
-                  className="w-full py-8 rounded-[2rem] bg-black text-white font-black text-2xl hover:bg-accent hover:text-black transition-all shadow-2xl flex items-center justify-center gap-5 group uppercase italic tracking-tighter transform hover:scale-[1.02]"
+                  className="w-full py-10 rounded-[2.5rem] bg-black text-white font-black text-3xl hover:bg-accent hover:text-black transition-all shadow-2xl flex items-center justify-center gap-5 group uppercase italic tracking-tighter transform hover:scale-[1.02] active:scale-[0.98]"
                 >
-                  <span>Engage Order Sync</span>
-                  <MessageCircle size={32} className="group-hover:rotate-12 transition-transform" />
+                  <span>Order Now</span>
+                  <MessageCircle size={40} className="group-hover:rotate-12 transition-transform" />
                 </button>
               </div>
             )}
@@ -281,7 +303,7 @@ const AutoPricing: React.FC = () => {
                   </div>
                   <h2 className="text-5xl font-black text-primary mb-4 tracking-tighter uppercase italic">Order Synced</h2>
                   <p className="text-gray-400 max-w-xs mx-auto mb-12 text-lg italic font-medium">
-                     Neural log updated for <strong>{customerName}</strong>. Redirecting to WhatsApp verify.
+                     Neural log updated for <strong>{customerName}</strong>. Item: {result?.title}.
                   </p>
                   <button 
                     onClick={() => {
