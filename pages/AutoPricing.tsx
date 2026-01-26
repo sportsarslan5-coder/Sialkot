@@ -1,25 +1,57 @@
 
-import React, { useState, useRef } from 'react';
-import { Camera, Loader2, CheckCircle, AlertTriangle, MessageCircle, Info, Settings, ScanLine, ShoppingBag, Activity, Zap, ShieldCheck, RefreshCw } from 'lucide-react';
+import React, { useState, useRef, useMemo } from 'react';
+import { Camera, Loader2, CheckCircle, AlertTriangle, MessageCircle, ShoppingBag, Activity, Zap, ShieldCheck, Search, RefreshCw, ChevronRight, ScanLine } from 'lucide-react';
 import { analyzeImageForPricing } from '../services/geminiService';
 import { PricingAnalysis } from '../types';
-import { sendWhatsAppOrder } from '../services/whatsappService';
+import { MASTER_CATALOG_DATA } from '../constants';
+import { useAppContext } from '../components/AppContext';
+
+interface CatalogItem {
+  id: number;
+  name: string;
+  price: number;
+}
 
 const AutoPricing: React.FC = () => {
+  const { convertPrice } = useAppContext();
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [sending, setSending] = useState(false);
   const [error, setError] = useState<{message: string, type: 'network' | 'mismatch'} | null>(null);
-  const [orderComplete, setOrderComplete] = useState(false);
   const [result, setResult] = useState<PricingAnalysis | null>(null);
   const [customerName, setCustomerName] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [orderComplete, setOrderComplete] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [config] = useState({
-    accessToken: localStorage.getItem('wa_token') || '',
-    phoneNumberId: localStorage.getItem('wa_phone_id') || '',
-    targetPhoneNumber: localStorage.getItem('wa_target') || '923079490721'
-  });
+  // Parse Catalog for Manual Search
+  const catalogItems = useMemo(() => {
+    return MASTER_CATALOG_DATA.split(',').map(item => {
+      const match = item.trim().match(/(\d+)\.\s*(.*?)\s*–\s*\$(\d+)/);
+      if (match) {
+        return { id: parseInt(match[1]), name: match[2], price: parseInt(match[3]) };
+      }
+      return null;
+    }).filter((i): i is CatalogItem => i !== null);
+  }, []);
+
+  const filteredCatalog = useMemo(() => {
+    if (!searchQuery) return [];
+    return catalogItems.filter(item => 
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    ).slice(0, 5);
+  }, [searchQuery, catalogItems]);
+
+  const handleManualSelect = (item: CatalogItem) => {
+    setResult({
+      title: item.name,
+      category: "Catalog Item",
+      description: `Premium quality ${item.name} from the Sialkot Master Catalog. Engineered for performance.`,
+      estimatedPrice: `$${item.price}`,
+      confidence: 100
+    });
+    setSearchQuery('');
+    setError(null);
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -45,15 +77,15 @@ const AutoPricing: React.FC = () => {
         setResult(data);
       } else {
         setError({
-          message: "NEURAL_MISMATCH: The core could not find a clear match in the 500-item catalog.",
+          message: "NEURAL_MISMATCH: No exact match found in current frame.",
           type: 'mismatch'
         });
       }
     } catch (e: any) {
       setError({
-        message: e.message === "NETWORK_RPC_FAILURE" 
-          ? "SYNC_FAILURE: The Active System is experiencing an RPC/Network interrupt. Please try again."
-          : "CONNECTION_FAULT: The Neural Core is temporarily out of range.",
+        message: e.message === "RPC_FAILURE" 
+          ? "SYNC_INTERRUPT: Neural network temporarily busy. Please use manual override."
+          : "CORE_FAILURE: Recalibrating sensors.",
         type: 'network'
       });
     } finally {
@@ -61,255 +93,206 @@ const AutoPricing: React.FC = () => {
     }
   };
 
-  const handleOrderNow = async () => {
-    if (!result || !image) return;
-    if (!customerName.trim()) {
-      alert("Active Protocol: Subject Name Required.");
+  const handleOrder = () => {
+    if (!result || !customerName.trim()) {
+      alert("Active Protocol: Customer Name Required.");
       return;
     }
-
-    setSending(true);
-    const caption = `*OFFICIAL AI ORDER REQUEST*
----------------------------
-👤 *Customer:* ${customerName}
-📦 *Product:* ${result.title}
-💰 *Price:* ${result.estimatedPrice}
-📝 *Description:* ${result.description}
----------------------------
-✅ *Status:* Active System Verified. "Excel Through Action."`;
-
-    const hasApi = config.accessToken && config.phoneNumberId;
-
-    if (!hasApi) {
-      window.open(`https://wa.me/${config.targetPhoneNumber}?text=${encodeURIComponent(caption)}`, '_blank');
-      setOrderComplete(true);
-      setSending(false);
-    } else {
-      try {
-        await sendWhatsAppOrder(image, caption, config);
-        setOrderComplete(true);
-      } catch (e: any) {
-        window.open(`https://wa.me/${config.targetPhoneNumber}?text=${encodeURIComponent(caption)}`, '_blank');
-        setOrderComplete(true);
-      } finally {
-        setSending(false);
-      }
-    }
+    const msg = `*OFFICIAL AI ORDER REQUEST*%0a---------------------------%0a👤 *Customer:* ${customerName}%0a📦 *Product:* ${result.title}%0a💰 *Price:* ${result.estimatedPrice}%0a📝 *Status:* Active System Verified.`;
+    window.open(`https://wa.me/923079490721?text=${msg}`, '_blank');
+    setOrderComplete(true);
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16 relative min-h-screen">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
-        <div className="animate-fade-in-up">
+    <div className="max-w-7xl mx-auto px-4 py-16 min-h-screen">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 animate-fade-in">
+        <div>
           <div className="flex items-center gap-3 text-accent mb-2">
              <Activity size={20} className="animate-pulse" />
-             <span className="font-black uppercase tracking-[0.3em] text-xs">System Status: Fully Operational</span>
+             <span className="font-black uppercase tracking-[0.3em] text-xs">Core Sync: Active</span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-primary italic uppercase">Sialkot <span className="text-accent underline decoration-4 underline-offset-8">Active-Scan</span></h1>
-          <p className="text-gray-500 max-w-xl mt-6 text-lg leading-relaxed font-medium italic">
-            "The Sialkot Neural Core is now synchronized." Upload your frame to engage global recognition.
+          <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-primary italic uppercase">Sialkot <span className="text-accent underline decoration-4 underline-offset-8">Neural-Scan</span></h1>
+          <p className="text-gray-500 max-w-xl mt-6 text-lg italic font-medium leading-relaxed">
+            "Precision. Heritage. Power." Upload a frame or manually engage the catalog for instant identification.
           </p>
         </div>
-        <div className="flex gap-4">
-           <div className="p-4 bg-black text-accent rounded-2xl flex items-center gap-2 shadow-xl border border-accent/20">
-              <Zap size={20} fill="currentColor" />
-              <span className="font-black text-xs uppercase tracking-widest">Neural Priority</span>
-           </div>
+        <div className="p-4 bg-black text-accent rounded-2xl border border-accent/20 shadow-xl flex items-center gap-3">
+           <Zap size={20} fill="currentColor" />
+           <span className="font-black text-xs uppercase tracking-widest">Active Priority</span>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        {/* Left: Input & Scanner */}
         <div className="lg:col-span-5 space-y-8">
           <div 
-            className={`border-4 border-dashed rounded-[3rem] aspect-square flex flex-col items-center justify-center cursor-pointer transition-all relative overflow-hidden group shadow-2xl bg-white ${
-              image ? 'border-accent ring-4 ring-accent/20' : 'border-gray-200 hover:border-accent'
+            className={`border-4 border-dashed rounded-[3rem] aspect-square flex flex-col items-center justify-center cursor-pointer transition-all relative overflow-hidden bg-white shadow-2xl ${
+              image ? 'border-accent ring-8 ring-accent/5' : 'border-gray-200 hover:border-accent hover:bg-gray-50'
             }`}
             onClick={() => fileInputRef.current?.click()}
           >
             {image ? (
               <div className="relative w-full h-full p-4">
-                <img src={image} alt="Target" className="w-full h-full object-contain rounded-2xl group-hover:scale-105 transition-transform duration-500" />
+                <img src={image} alt="Target" className="w-full h-full object-contain rounded-2xl" />
                 {loading && (
-                    <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none rounded-2xl">
-                        <div className="absolute top-0 left-0 w-full h-1 bg-accent/80 shadow-[0_0_15px_#FFD700] animate-scan-line"></div>
-                        <div className="absolute inset-0 bg-accent/10"></div>
+                    <div className="absolute inset-0 pointer-events-none rounded-2xl overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-accent shadow-[0_0_15px_#FFD700] animate-scan-line"></div>
+                        <div className="absolute inset-0 bg-accent/5"></div>
                     </div>
                 )}
               </div>
             ) : (
-              <div className="text-center p-12 transition-transform group-hover:scale-110">
-                <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm border border-gray-100">
+              <div className="text-center p-12 transition-transform hover:scale-105">
+                <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-gray-100 shadow-inner">
                   <Camera size={48} className="text-gray-400" />
                 </div>
-                <h3 className="font-black text-2xl mb-2">ENGAGE CORE</h3>
-                <p className="text-sm text-gray-400 uppercase tracking-widest">Select Target Image</p>
+                <h3 className="font-black text-2xl mb-1 uppercase tracking-tighter">Initiate Scan</h3>
+                <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-bold">Select Visual Target</p>
               </div>
             )}
             <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" accept="image/*" />
           </div>
-          
-          <div className="bg-black text-white p-8 rounded-[2.5rem] relative overflow-hidden group shadow-2xl border border-accent/10">
-             <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700"></div>
-             <div className="flex items-start gap-4 relative z-10">
-                <ShieldCheck className="text-accent flex-shrink-0 mt-1" />
-                <div>
-                   <h4 className="font-bold text-accent mb-1 uppercase tracking-wider text-xs">Active Protocol Alpha</h4>
-                   <p className="text-sm text-gray-400 leading-relaxed italic">
-                     "Identify. Verify. Excel." Identification is the first step toward dominance.
-                   </p>
-                </div>
+
+          {/* Manual Search Fallback */}
+          <div className="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100">
+             <div className="flex items-center gap-2 mb-4">
+                <Search size={18} className="text-accent" />
+                <h4 className="font-black text-xs uppercase tracking-widest text-gray-500">Manual Neural Override</h4>
+             </div>
+             <div className="relative">
+                <input 
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search 500 catalog items..."
+                  className="w-full bg-gray-50 border-2 border-gray-100 focus:border-accent p-5 rounded-2xl outline-none font-bold text-sm transition-all"
+                />
+                {filteredCatalog.length > 0 && (
+                  <div className="absolute top-full left-0 w-full mt-2 bg-white border border-gray-100 rounded-2xl shadow-2xl z-30 overflow-hidden divide-y divide-gray-50">
+                     {filteredCatalog.map(item => (
+                       <button 
+                         key={item.id}
+                         onClick={() => handleManualSelect(item)}
+                         className="w-full p-5 text-left hover:bg-gray-50 flex justify-between items-center group transition-colors"
+                       >
+                         <div>
+                            <span className="block font-black text-sm group-hover:text-accent">{item.name}</span>
+                            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">${item.price}</span>
+                         </div>
+                         <ChevronRight size={16} className="text-gray-300 group-hover:text-accent group-hover:translate-x-1 transition-all" />
+                       </button>
+                     ))}
+                  </div>
+                )}
              </div>
           </div>
         </div>
 
+        {/* Right: Results & Identity */}
         <div className="lg:col-span-7">
-          <div className="bg-white rounded-[3.5rem] p-12 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] border border-gray-100 min-h-[600px] flex flex-col relative overflow-hidden">
-            {!image && !loading && !error && (
-              <div className="flex-1 flex flex-col items-center justify-center text-center">
-                 <ScanLine size={120} className="mb-8 text-gray-100 animate-pulse" />
-                 <h3 className="text-3xl font-black text-gray-300 italic tracking-tighter">NEURAL CORE: STANDBY</h3>
-                 <p className="text-gray-400 mt-2 font-mono uppercase text-xs tracking-[0.3em]">Awaiting Visual Input</p>
+          <div className="bg-white rounded-[3.5rem] p-12 shadow-2xl border border-gray-100 min-h-[500px] flex flex-col relative overflow-hidden">
+            {!result && !loading && !error && (
+              <div className="flex-1 flex flex-col items-center justify-center text-center py-20">
+                 {/* Fixed: ScanLine imported from lucide-react */}
+                 <ScanLine size={100} className="mb-8 text-gray-100 animate-pulse" />
+                 <h3 className="text-2xl font-black text-gray-300 tracking-tighter italic uppercase">System: Awaiting Synchronization</h3>
+                 <p className="text-[10px] text-gray-400 font-mono mt-2 uppercase tracking-[0.4em]">Engage Scanner or Manual Search</p>
               </div>
             )}
 
             {loading && (
-              <div className="flex-1 flex flex-col items-center justify-center space-y-10 animate-fade-in">
+              <div className="flex-1 flex flex-col items-center justify-center space-y-8 py-20">
                 <div className="relative">
-                    <div className="absolute inset-0 bg-accent/20 blur-3xl rounded-full"></div>
-                    <Loader2 size={120} className="animate-spin text-accent relative z-10" />
+                  <div className="absolute inset-0 bg-accent/20 blur-3xl animate-pulse"></div>
+                  <Loader2 size={100} className="animate-spin text-accent relative z-10" />
                 </div>
-                <div className="space-y-4 text-center">
-                    <h3 className="font-black text-5xl tracking-tighter uppercase italic text-primary">Engaging Core</h3>
-                    <div className="flex items-center justify-center gap-2">
-                       <span className="w-2 h-2 bg-accent rounded-full animate-bounce"></span>
-                       <span className="w-2 h-2 bg-accent rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                       <span className="w-2 h-2 bg-accent rounded-full animate-bounce [animation-delay:0.4s]"></span>
-                    </div>
-                    <p className="text-gray-400 font-mono text-sm tracking-widest uppercase">Matching Master Catalog...</p>
+                <div className="text-center">
+                   <h3 className="font-black text-4xl tracking-tighter uppercase italic">Engaging Core</h3>
+                   <p className="text-gray-400 text-xs font-bold uppercase tracking-[0.3em] mt-2">Iterating Master Catalog...</p>
                 </div>
               </div>
             )}
 
-            {error && !loading && (
+            {error && !loading && !result && (
               <div className="flex-1 flex flex-col items-center justify-center text-center p-8 animate-scale-in">
-                 <div className={`w-24 h-24 ${error.type === 'network' ? 'bg-orange-50 text-orange-500' : 'bg-red-50 text-red-500'} rounded-full flex items-center justify-center mb-6 ring-8 ${error.type === 'network' ? 'ring-orange-50/50' : 'ring-red-50/50'}`}>
-                    <AlertTriangle size={40} />
+                 <div className={`w-20 h-20 ${error.type === 'network' ? 'bg-orange-50 text-orange-500' : 'bg-red-50 text-red-500'} rounded-full flex items-center justify-center mb-6 ring-8 ring-offset-2 ${error.type === 'network' ? 'ring-orange-50' : 'ring-red-50'}`}>
+                    <AlertTriangle size={36} />
                  </div>
-                 <h3 className="text-3xl font-black text-primary mb-4 tracking-tighter uppercase">
-                   {error.type === 'network' ? 'Connection Fault' : 'Protocol Fault'}
-                 </h3>
-                 <p className="text-gray-500 mb-8 max-w-sm font-medium">{error.message}</p>
-                 <div className="flex flex-col sm:flex-row gap-4">
-                    <button 
-                      onClick={() => {
-                        if (image) processImage(image);
-                        else fileInputRef.current?.click();
-                      }}
-                      className="bg-black text-white px-10 py-4 rounded-full font-black text-sm hover:bg-accent hover:text-black transition-all shadow-xl flex items-center gap-2 justify-center"
-                    >
-                      <RefreshCw size={16} /> RE-ENGAGE CORE
-                    </button>
-                    <button 
-                      onClick={() => {
-                        setImage(null);
-                        setResult(null);
-                        setError(null);
-                        fileInputRef.current?.click();
-                      }}
-                      className="bg-gray-100 text-gray-600 px-10 py-4 rounded-full font-black text-sm hover:bg-gray-200 transition-all"
-                    >
-                      NEW TARGET
-                    </button>
-                 </div>
+                 <h3 className="text-2xl font-black text-primary mb-3 uppercase tracking-tighter italic">Protocol Fault</h3>
+                 <p className="text-gray-500 mb-10 max-w-xs font-medium text-sm leading-relaxed">{error.message}</p>
+                 <button 
+                  onClick={() => fileInputRef.current?.click()}
+                  className="bg-black text-white px-12 py-5 rounded-full font-black text-xs uppercase tracking-[0.2em] hover:bg-accent hover:text-black transition-all shadow-xl flex items-center gap-3"
+                 >
+                   <RefreshCw size={16} /> Re-Engage Core
+                 </button>
               </div>
             )}
 
             {result && !loading && !orderComplete && (
               <div className="animate-fade-in-up space-y-10">
                 <div className="relative">
-                  <div className="flex items-center gap-2 mb-6">
-                     <span className="bg-black text-accent px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">{result.category}</span>
-                     <span className="text-[11px] text-green-600 font-black flex items-center gap-1.5 uppercase tracking-widest"><CheckCircle size={14}/> Precision Match Verified</span>
+                  <div className="flex items-center gap-3 mb-6">
+                     <span className="bg-black text-accent px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">Target: Identified</span>
+                     <span className="text-[10px] text-green-600 font-black flex items-center gap-1.5 uppercase tracking-widest"><CheckCircle size={14}/> 100% Core Confidence</span>
                   </div>
-                  <h2 className="text-6xl md:text-7xl font-black text-primary leading-none tracking-tighter mb-8 italic uppercase">{result.title}</h2>
-                  <div className="relative">
-                    <div className="absolute -left-6 top-0 bottom-0 w-1.5 bg-accent rounded-full"></div>
-                    <p className="text-gray-600 text-2xl italic leading-relaxed font-light pl-6">
-                      {result.description}
-                    </p>
-                  </div>
+                  <h2 className="text-5xl md:text-6xl font-black text-primary leading-none tracking-tighter mb-6 italic uppercase">{result.title}</h2>
+                  <p className="text-gray-600 text-xl italic font-light leading-relaxed border-l-4 border-accent pl-6">
+                    {result.description}
+                  </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                   <div className="bg-black text-white p-10 rounded-[3rem] shadow-2xl relative group overflow-hidden border border-accent/20">
-                      <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-150 transition-transform duration-700">
-                          <ShoppingBag size={120} />
-                      </div>
-                      <span className="text-[11px] font-black uppercase tracking-[0.3em] text-accent mb-4 block">Core Value Estimate</span>
-                      <span className="text-6xl font-black tracking-tighter">${result.estimatedPrice.replace('$', '')}</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                   <div className="bg-black text-white p-8 rounded-[2.5rem] shadow-2xl border border-accent/20 flex flex-col justify-center">
+                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-3 block">Catalog Value</span>
+                      <span className="text-5xl font-black tracking-tighter">{result.estimatedPrice}</span>
                    </div>
-                   <div className="bg-secondary p-10 rounded-[3rem] border border-gray-100 flex flex-col justify-center relative group">
-                      <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/5 transition-colors"></div>
-                      <span className="text-[11px] font-black uppercase tracking-[0.3em] text-gray-400 mb-4 block">Neural Confidence</span>
-                      <span className="text-6xl font-black text-primary tracking-tighter">{result.confidence}%</span>
+                   <div className="bg-gray-50 p-8 rounded-[2.5rem] border border-gray-100 flex flex-col justify-center">
+                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-3 block">Precision Sync</span>
+                      <span className="text-5xl font-black text-primary tracking-tighter">{result.confidence}%</span>
                    </div>
                 </div>
 
-                <div className="space-y-4 pt-4">
-                   <div className="flex items-center justify-between px-2">
-                     <label className="text-[10px] font-black uppercase text-gray-500 tracking-[0.25em]">
-                        Subject Identification
-                     </label>
-                     <span className="text-[10px] font-bold text-accent">Required Field</span>
-                   </div>
+                <div className="space-y-4 pt-6">
+                   <label className="text-[10px] font-black uppercase text-gray-400 tracking-[0.3em] pl-2 block">Subject Identification</label>
                    <input 
                       type="text"
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
-                      placeholder="Enter Name for Log"
-                      className="w-full bg-gray-50 border-2 border-gray-100 focus:border-accent p-8 rounded-[2rem] outline-none font-black text-2xl transition-all shadow-inner placeholder:text-gray-300"
+                      placeholder="Enter Customer Name"
+                      className="w-full bg-gray-50 border-2 border-gray-100 focus:border-accent p-6 rounded-[2rem] outline-none font-black text-xl transition-all shadow-inner"
                    />
                 </div>
 
                 <button 
-                  onClick={handleOrderNow}
-                  disabled={sending}
-                  className={`w-full py-10 rounded-[2.5rem] font-black text-3xl transition-all shadow-2xl flex items-center justify-center gap-6 group transform hover:scale-[1.02] active:scale-[0.98] tracking-tighter uppercase italic ${
-                    sending ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-black text-white hover:bg-accent hover:text-black'
-                  }`}
+                  onClick={handleOrder}
+                  className="w-full py-8 rounded-[2rem] bg-black text-white font-black text-2xl hover:bg-accent hover:text-black transition-all shadow-2xl flex items-center justify-center gap-5 group uppercase italic tracking-tighter transform hover:scale-[1.02]"
                 >
-                  {sending ? (
-                    <Loader2 size={40} className="animate-spin" />
-                  ) : (
-                    <>
-                      <span>Engage Order Protocol</span>
-                      <MessageCircle size={40} className="group-hover:rotate-12 transition-transform" />
-                    </>
-                  )}
+                  <span>Engage Order Sync</span>
+                  <MessageCircle size={32} className="group-hover:rotate-12 transition-transform" />
                 </button>
               </div>
             )}
 
             {orderComplete && (
-               <div className="flex-1 flex flex-col items-center justify-center text-center animate-scale-in">
-                  <div className="w-48 h-48 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-10 shadow-[0_30px_60px_rgba(34,197,94,0.2)] ring-[16px] ring-green-50/50">
-                     <CheckCircle size={100} />
+               <div className="flex-1 flex flex-col items-center justify-center text-center animate-scale-in py-12">
+                  <div className="w-40 h-40 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-10 shadow-[0_20px_50px_rgba(34,197,94,0.2)] ring-8 ring-green-50/50">
+                     <CheckCircle size={80} />
                   </div>
-                  <h2 className="text-7xl font-black text-primary mb-6 tracking-tighter uppercase italic">Protocol Complete</h2>
-                  <p className="text-gray-400 max-w-sm mx-auto mb-16 text-2xl leading-tight italic font-medium">
-                     The system has logged the request for <strong>{customerName}</strong> and initiated WhatsApp sync.
+                  <h2 className="text-5xl font-black text-primary mb-4 tracking-tighter uppercase italic">Order Synced</h2>
+                  <p className="text-gray-400 max-w-xs mx-auto mb-12 text-lg italic font-medium">
+                     Neural log updated for <strong>{customerName}</strong>. Redirecting to WhatsApp verify.
                   </p>
                   <button 
                     onClick={() => {
                        setOrderComplete(false);
-                       setImage(null);
                        setResult(null);
+                       setImage(null);
                        setCustomerName('');
-                       setError(null);
                     }}
-                    className="bg-black text-white px-20 py-8 rounded-full font-black text-2xl hover:bg-accent hover:text-black shadow-2xl transform hover:-translate-y-2 transition-all uppercase italic tracking-tighter"
+                    className="bg-black text-white px-16 py-6 rounded-full font-black text-xl hover:bg-accent hover:text-black shadow-xl transition-all uppercase italic tracking-tighter"
                   >
-                    Reset Active Protocol
+                    Initiate New Scan
                   </button>
                </div>
             )}
