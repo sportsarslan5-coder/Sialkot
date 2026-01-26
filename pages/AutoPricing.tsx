@@ -1,10 +1,11 @@
 
 import React, { useState, useRef, useMemo } from 'react';
-import { Camera, Loader2, CheckCircle, AlertTriangle, MessageCircle, ShoppingBag, Activity, Zap, ShieldCheck, Search, RefreshCw, ChevronRight, ScanLine, User } from 'lucide-react';
+import { Camera, Loader2, CheckCircle, AlertTriangle, MessageCircle, ShoppingBag, Activity, Zap, ShieldCheck, Search, RefreshCw, ChevronRight, ScanLine, User, Phone, Mail, MapPin } from 'lucide-react';
 import { analyzeImageForPricing } from '../services/geminiService';
 import { PricingAnalysis } from '../types';
-import { MASTER_CATALOG_DATA } from '../constants';
+import { MASTER_CATALOG_DATA, WHATSAPP_NUMBER } from '../constants';
 import { useAppContext } from '../components/AppContext';
+import { sendWhatsAppOrder } from '../services/whatsappService';
 
 interface CatalogItem {
   id: number;
@@ -16,12 +17,21 @@ const AutoPricing: React.FC = () => {
   const { convertPrice } = useAppContext();
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
   const [error, setError] = useState<{message: string, type: 'network' | 'mismatch'} | null>(null);
   const [result, setResult] = useState<PricingAnalysis | null>(null);
-  const [customerName, setCustomerName] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
   const [orderComplete, setOrderComplete] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Customer Data State
+  const [customerData, setCustomerData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    location: ''
+  });
+
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Parse Catalog for Manual Search
   const catalogItems = useMemo(() => {
@@ -45,7 +55,7 @@ const AutoPricing: React.FC = () => {
     setResult({
       title: item.name,
       category: "Catalog Item",
-      description: `Premium quality ${item.name} from the Sialkot Master Catalog. Engineered for high performance and style.`,
+      description: `Premium quality ${item.name} from the Sialkot Master Catalog. Engineered for performance.`,
       estimatedPrice: `$${item.price}`,
       confidence: 100
     });
@@ -78,14 +88,14 @@ const AutoPricing: React.FC = () => {
         setResult(data);
       } else {
         setError({
-          message: "NEURAL_MISMATCH: No exact match found in current frame. Try a different angle or manual search.",
+          message: "NEURAL_MISMATCH: No exact match found. Try a clearer angle or manual search.",
           type: 'mismatch'
         });
       }
     } catch (e: any) {
       setError({
         message: e.message === "RPC_FAILURE" 
-          ? "SYNC_INTERRUPT: Network temporarily busy. Please use the manual search below."
+          ? "SYNC_INTERRUPT: Network temporarily busy. Please use manual override."
           : "CORE_FAILURE: Recalibrating sensors.",
         type: 'network'
       });
@@ -94,25 +104,57 @@ const AutoPricing: React.FC = () => {
     }
   };
 
-  const handleOrder = () => {
-    if (!result || !customerName.trim()) {
-      alert("Active Protocol: Customer Name is required to log the order.");
+  const handleOrder = async () => {
+    if (!result || !image) return;
+    if (!customerData.name || !customerData.phone || !customerData.location) {
+      alert("Active Protocol: Please provide Name, Phone, and Location.");
       return;
     }
-    
-    // Construct professional WhatsApp message
-    const msg = `*SIALKOT SHOP - OFFICIAL ORDER LOG*%0A` +
-                `----------------------------%0A` +
-                `👤 *Customer Name:* ${customerName}%0A` +
-                `📦 *Purchased Item:* ${result.title}%0A` +
-                `💰 *Price:* ${result.estimatedPrice}%0A` +
-                `📂 *Category:* ${result.category}%0A` +
-                `----------------------------%0A` +
-                `📝 *Note:* This order was verified via the Sialkot Neural-Scan system.%0A` +
-                `✅ *Status:* Authorized & Synced.`;
 
-    window.open(`https://wa.me/923079490721?text=${msg}`, '_blank');
-    setOrderComplete(true);
+    setSending(true);
+    
+    // Construct order details text
+    const orderDetails = 
+      `*SIALKOT SHOP - NEURAL SCAN ORDER*%0A` +
+      `----------------------------%0A` +
+      `👤 *NAME:* ${customerData.name}%0A` +
+      `📞 *PHONE:* ${customerData.phone}%0A` +
+      `📧 *GMAIL:* ${customerData.email || 'N/A'}%0A` +
+      `📍 *LOCATION:* ${customerData.location}%0A` +
+      `----------------------------%0A` +
+      `📦 *PRODUCT:* ${result.title}%0a` +
+      `💰 *PRICE:* ${result.estimatedPrice}%0A` +
+      `📂 *CATEGORY:* ${result.category}%0A` +
+      `----------------------------%0A` +
+      `✅ *STATUS:* Verified via Sialkot Neural Core.%0A` +
+      `📸 *NOTE:* Attached is the product color/style scan.`;
+
+    // Try to send via official API if configured, otherwise fallback to wa.me link
+    const waConfig = {
+      accessToken: localStorage.getItem('wa_token') || '',
+      phoneNumberId: localStorage.getItem('wa_phone_id') || '',
+      targetPhoneNumber: WHATSAPP_NUMBER
+    };
+
+    if (waConfig.accessToken && waConfig.phoneNumberId) {
+      try {
+        await sendWhatsAppOrder(image, orderDetails.replace(/%0A/g, '\n').replace(/\*/g, ''), waConfig);
+        setOrderComplete(true);
+      } catch (e) {
+        // Fallback to wa.me if API fails
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${orderDetails}`, '_blank');
+        setOrderComplete(true);
+      }
+    } else {
+      // Direct Link Fallback (Standard)
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${orderDetails}`, '_blank');
+      setOrderComplete(true);
+    }
+    setSending(false);
+  };
+
+  const updateCustomerData = (field: string, value: string) => {
+    setCustomerData(prev => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -125,12 +167,12 @@ const AutoPricing: React.FC = () => {
           </div>
           <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-primary italic uppercase">Sialkot <span className="text-accent underline decoration-4 underline-offset-8">Neural-Scan</span></h1>
           <p className="text-gray-500 max-w-xl mt-6 text-lg italic font-medium leading-relaxed">
-            "Identify. Price. Dominate." Use our AI scanner to detect products or search the catalog manually.
+            "Identify. Price. Dominate." Our scanner identifies the product, color, and catalog price instantly.
           </p>
         </div>
         <div className="p-4 bg-black text-accent rounded-2xl border border-accent/20 shadow-xl flex items-center gap-3">
            <Zap size={20} fill="currentColor" />
-           <span className="font-black text-xs uppercase tracking-widest">Neural Priority</span>
+           <span className="font-black text-xs uppercase tracking-widest">Active System</span>
         </div>
       </div>
 
@@ -159,7 +201,7 @@ const AutoPricing: React.FC = () => {
                   <Camera size={48} className="text-gray-400" />
                 </div>
                 <h3 className="font-black text-2xl mb-1 uppercase tracking-tighter">Initiate Scan</h3>
-                <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-bold">Upload Product Image</p>
+                <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-bold">Detect Color & Style</p>
               </div>
             )}
             <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" accept="image/*" />
@@ -169,14 +211,14 @@ const AutoPricing: React.FC = () => {
           <div className="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100">
              <div className="flex items-center gap-2 mb-4">
                 <Search size={18} className="text-accent" />
-                <h4 className="font-black text-xs uppercase tracking-widest text-gray-500">Manual Search Override</h4>
+                <h4 className="font-black text-xs uppercase tracking-widest text-gray-500">Search Master Catalog</h4>
              </div>
              <div className="relative">
                 <input 
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Type to find any of 500 items..."
+                  placeholder="Type product name (e.g. Hoodie, T-Shirt)..."
                   className="w-full bg-gray-50 border-2 border-gray-100 focus:border-accent p-5 rounded-2xl outline-none font-bold text-sm transition-all"
                 />
                 {filteredCatalog.length > 0 && (
@@ -200,14 +242,14 @@ const AutoPricing: React.FC = () => {
           </div>
         </div>
 
-        {/* Right: Results & Identity */}
+        {/* Right: Results & Customer Data */}
         <div className="lg:col-span-7">
-          <div className="bg-white rounded-[3.5rem] p-12 shadow-2xl border border-gray-100 min-h-[500px] flex flex-col relative overflow-hidden">
+          <div className="bg-white rounded-[3.5rem] p-12 shadow-2xl border border-gray-100 min-h-[600px] flex flex-col relative overflow-hidden">
             {!result && !loading && !error && (
               <div className="flex-1 flex flex-col items-center justify-center text-center py-20">
                  <ScanLine size={100} className="mb-8 text-gray-100 animate-pulse" />
-                 <h3 className="text-2xl font-black text-gray-300 tracking-tighter italic uppercase">Scanner: Awaiting Input</h3>
-                 <p className="text-[10px] text-gray-400 font-mono mt-2 uppercase tracking-[0.4em]">Target an image or search catalog</p>
+                 <h3 className="text-2xl font-black text-gray-300 tracking-tighter italic uppercase">Ready for Sync</h3>
+                 <p className="text-[10px] text-gray-400 font-mono mt-2 uppercase tracking-[0.4em]">Awaiting Visual Input</p>
               </div>
             )}
 
@@ -218,24 +260,24 @@ const AutoPricing: React.FC = () => {
                   <Loader2 size={100} className="animate-spin text-accent relative z-10" />
                 </div>
                 <div className="text-center">
-                   <h3 className="font-black text-4xl tracking-tighter uppercase italic">Engaging Core</h3>
-                   <p className="text-gray-400 text-xs font-bold uppercase tracking-[0.3em] mt-2">Iterating Master Catalog...</p>
+                   <h3 className="font-black text-4xl tracking-tighter uppercase italic">Engaging Neural Core</h3>
+                   <p className="text-gray-400 text-xs font-bold uppercase tracking-[0.3em] mt-2">Checking Color & Catalog...</p>
                 </div>
               </div>
             )}
 
             {error && !loading && !result && (
               <div className="flex-1 flex flex-col items-center justify-center text-center p-8 animate-scale-in">
-                 <div className={`w-20 h-20 ${error.type === 'network' ? 'bg-orange-50 text-orange-500' : 'bg-red-50 text-red-500'} rounded-full flex items-center justify-center mb-6 ring-8 ring-offset-2 ${error.type === 'network' ? 'ring-orange-50' : 'ring-red-50'}`}>
+                 <div className="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-6 ring-8 ring-red-50/50">
                     <AlertTriangle size={36} />
                  </div>
-                 <h3 className="text-2xl font-black text-primary mb-3 uppercase tracking-tighter italic">Protocol Fault</h3>
+                 <h3 className="text-2xl font-black text-primary mb-3 uppercase tracking-tighter italic">Sync Error</h3>
                  <p className="text-gray-500 mb-10 max-w-xs font-medium text-sm leading-relaxed">{error.message}</p>
                  <button 
                   onClick={() => fileInputRef.current?.click()}
-                  className="bg-black text-white px-12 py-5 rounded-full font-black text-xs uppercase tracking-[0.2em] hover:bg-accent hover:text-black transition-all shadow-xl flex items-center gap-3"
+                  className="bg-black text-white px-12 py-5 rounded-full font-black text-xs uppercase tracking-[0.2em] hover:bg-accent hover:text-black transition-all shadow-xl"
                  >
-                   <RefreshCw size={16} /> Re-Engage Scanner
+                   Try Again
                  </button>
               </div>
             )}
@@ -244,24 +286,18 @@ const AutoPricing: React.FC = () => {
               <div className="animate-fade-in-up space-y-10">
                 <div className="relative">
                   <div className="flex items-center gap-3 mb-6">
-                     <span className="bg-black text-accent px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">{result.category}</span>
-                     <span className="text-[10px] text-green-600 font-black flex items-center gap-1.5 uppercase tracking-widest"><CheckCircle size={14}/> Core Sync Success</span>
+                     <span className="bg-black text-accent px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">Target: Identified</span>
+                     <span className="text-[10px] text-green-600 font-black flex items-center gap-1.5 uppercase tracking-widest"><CheckCircle size={14}/> Core Synchronized</span>
                   </div>
-                  
-                  {/* Highlighted Product Name */}
-                  <h2 className="text-5xl md:text-6xl font-black text-primary leading-none tracking-tighter mb-6 italic uppercase underline decoration-accent/40 decoration-8 underline-offset-4">
-                    {result.title}
-                  </h2>
-                  
+                  <h2 className="text-5xl md:text-6xl font-black text-primary leading-none tracking-tighter mb-4 italic uppercase underline decoration-accent/40 decoration-8 underline-offset-4">{result.title}</h2>
                   <p className="text-gray-600 text-xl italic font-light leading-relaxed border-l-4 border-accent pl-6">
                     {result.description}
                   </p>
                 </div>
 
-                {/* Price Display */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                   <div className="bg-black text-white p-8 rounded-[2.5rem] shadow-2xl border border-accent/20 flex flex-col justify-center transform hover:scale-105 transition-transform">
-                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-3 block">Product Value</span>
+                   <div className="bg-black text-white p-8 rounded-[2.5rem] shadow-2xl border border-accent/20">
+                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-3 block">Catalog Price</span>
                       <span className="text-6xl font-black tracking-tighter text-accent">{result.estimatedPrice}</span>
                    </div>
                    <div className="bg-gray-50 p-8 rounded-[2.5rem] border border-gray-100 flex flex-col justify-center">
@@ -270,28 +306,70 @@ const AutoPricing: React.FC = () => {
                    </div>
                 </div>
 
-                {/* Name Input for Ordering */}
-                <div className="space-y-4 pt-6">
-                   <div className="flex items-center gap-2 mb-2">
-                      <User size={16} className="text-accent" />
-                      <label className="text-[10px] font-black uppercase text-gray-400 tracking-[0.3em] block">Confirm Customer Identity</label>
+                {/* Customer Identity Form */}
+                <div className="space-y-6 pt-6 border-t border-gray-100">
+                   <h4 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-4">Customer Identity Protocol</h4>
+                   
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="relative">
+                         <User className="absolute left-6 top-1/2 -translate-y-1/2 text-accent" size={20} />
+                         <input 
+                            type="text" 
+                            placeholder="Full Name" 
+                            value={customerData.name}
+                            onChange={(e) => updateCustomerData('name', e.target.value)}
+                            className="w-full bg-gray-50 p-6 pl-14 rounded-2xl border-2 border-transparent focus:border-accent outline-none font-bold text-sm transition-all"
+                         />
+                      </div>
+                      <div className="relative">
+                         <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-accent" size={20} />
+                         <input 
+                            type="tel" 
+                            placeholder="Phone Number" 
+                            value={customerData.phone}
+                            onChange={(e) => updateCustomerData('phone', e.target.value)}
+                            className="w-full bg-gray-50 p-6 pl-14 rounded-2xl border-2 border-transparent focus:border-accent outline-none font-bold text-sm transition-all"
+                         />
+                      </div>
                    </div>
-                   <input 
-                      type="text"
-                      value={customerName}
-                      onChange={(e) => setCustomerName(e.target.value)}
-                      placeholder="Enter Name for WhatsApp Log"
-                      className="w-full bg-gray-50 border-2 border-gray-100 focus:border-accent p-6 rounded-[2rem] outline-none font-black text-xl transition-all shadow-inner placeholder:text-gray-300"
-                   />
+
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="relative">
+                         <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-accent" size={20} />
+                         <input 
+                            type="email" 
+                            placeholder="Gmail (Optional)" 
+                            value={customerData.email}
+                            onChange={(e) => updateCustomerData('email', e.target.value)}
+                            className="w-full bg-gray-50 p-6 pl-14 rounded-2xl border-2 border-transparent focus:border-accent outline-none font-bold text-sm transition-all"
+                         />
+                      </div>
+                      <div className="relative">
+                         <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 text-accent" size={20} />
+                         <input 
+                            type="text" 
+                            placeholder="Location (City/Area)" 
+                            value={customerData.location}
+                            onChange={(e) => updateCustomerData('location', e.target.value)}
+                            className="w-full bg-gray-50 p-6 pl-14 rounded-2xl border-2 border-transparent focus:border-accent outline-none font-bold text-sm transition-all"
+                         />
+                      </div>
+                   </div>
                 </div>
 
-                {/* Main Order Now Button */}
                 <button 
                   onClick={handleOrder}
-                  className="w-full py-10 rounded-[2.5rem] bg-black text-white font-black text-3xl hover:bg-accent hover:text-black transition-all shadow-2xl flex items-center justify-center gap-5 group uppercase italic tracking-tighter transform hover:scale-[1.02] active:scale-[0.98]"
+                  disabled={sending}
+                  className="w-full py-10 rounded-[2.5rem] bg-black text-white font-black text-3xl hover:bg-accent hover:text-black transition-all shadow-2xl flex items-center justify-center gap-6 group uppercase italic tracking-tighter transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
                 >
-                  <span>Order Now</span>
-                  <MessageCircle size={40} className="group-hover:rotate-12 transition-transform" />
+                  {sending ? (
+                    <Loader2 size={40} className="animate-spin" />
+                  ) : (
+                    <>
+                      <span>Order Now</span>
+                      <MessageCircle size={40} className="group-hover:rotate-12 transition-transform" />
+                    </>
+                  )}
                 </button>
               </div>
             )}
@@ -301,20 +379,20 @@ const AutoPricing: React.FC = () => {
                   <div className="w-40 h-40 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-10 shadow-[0_20px_50px_rgba(34,197,94,0.2)] ring-8 ring-green-50/50">
                      <CheckCircle size={80} />
                   </div>
-                  <h2 className="text-5xl font-black text-primary mb-4 tracking-tighter uppercase italic">Order Synced</h2>
-                  <p className="text-gray-400 max-w-xs mx-auto mb-12 text-lg italic font-medium">
-                     Neural log updated for <strong>{customerName}</strong>. Item: {result?.title}.
+                  <h2 className="text-5xl font-black text-primary mb-4 tracking-tighter uppercase italic">Sync Complete</h2>
+                  <p className="text-gray-400 max-w-sm mx-auto mb-12 text-lg italic font-medium">
+                     Order Protocol logged for <strong>{customerData.name}</strong>. Redirecting to WhatsApp for final color verification.
                   </p>
                   <button 
                     onClick={() => {
                        setOrderComplete(false);
                        setResult(null);
                        setImage(null);
-                       setCustomerName('');
+                       setCustomerData({ name: '', phone: '', email: '', location: '' });
                     }}
                     className="bg-black text-white px-16 py-6 rounded-full font-black text-xl hover:bg-accent hover:text-black shadow-xl transition-all uppercase italic tracking-tighter"
                   >
-                    Initiate New Scan
+                    Initiate New Sync
                   </button>
                </div>
             )}
