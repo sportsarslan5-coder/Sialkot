@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
-import { ShoppingBag, Menu, X, Search, MessageCircle, Instagram, Facebook, Twitter, ArrowUp, Sparkles } from 'lucide-react';
+import { ShoppingBag, Menu, X, Search, MessageCircle, Instagram, Facebook, Twitter, ArrowUp, Sparkles, Trophy } from 'lucide-react';
 import { useAppContext } from './AppContext';
 import { WHATSAPP_NUMBER } from '../constants';
 
@@ -9,7 +9,7 @@ const { Link, useLocation } = ReactRouterDOM as any;
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { 
-    t, cart, language, setLanguage, currency, setCurrency, isRTL 
+    t, cart, language, setLanguage, currency, setCurrency 
   } = useAppContext();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -26,9 +26,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navLinks = [
     { name: 'home', path: '/' },
     { name: 'shop', path: '/shop' },
+    { name: 'sportStore', path: '/sport-store', icon: <Trophy size={14} className="inline mr-1 text-accent" /> },
     { name: 'men', path: '/shop?category=Men' },
-    { name: 'women', path: '/shop?category=Women' },
-    { name: 'kids', path: '/shop?category=Kids' },
     { name: 'autoPricing', path: '/auto-pricing', icon: <Sparkles size={14} className="inline mr-1 text-accent" /> },
     { name: 'blog', path: '/blog' },
     { name: 'contact', path: '/contact' },
@@ -48,10 +47,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-4 opacity-90">
             <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 hover:text-accent transition-colors">
-              <MessageCircle size={14} /> <span className="font-medium">WhatsApp: 0307 9490 721</span>
+              <MessageCircle size={14} /> <span className="font-medium">WhatsApp Support: 0307 9490 721</span>
             </a>
-            <span className="hidden sm:inline text-gray-600">|</span>
-            <span className="hidden sm:inline text-gray-300">Global Shipping • 24/7 Support</span>
           </div>
           <div className="flex items-center gap-5">
             <div className="flex items-center gap-2 cursor-pointer text-xs">
@@ -83,12 +80,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               </Link>
             </div>
 
-            <nav className="hidden md:flex space-x-6 lg:space-x-8 items-center">
+            <nav className="hidden md:flex space-x-4 lg:space-x-6 items-center">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`text-xs lg:text-sm font-semibold uppercase tracking-wider transition-all duration-200 relative group flex items-center ${
+                  className={`text-[10px] lg:text-xs font-semibold uppercase tracking-wider transition-all duration-200 relative group flex items-center whitespace-nowrap ${
                     isActive(link.path) ? 'text-black' : 'text-gray-500 hover:text-black'
                   }`}
                 >
@@ -99,12 +96,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               ))}
             </nav>
 
-            <div className="flex items-center gap-3 md:gap-5">
+            <div className="flex items-center gap-2 md:gap-4">
               <button className="p-2 hover:bg-gray-100 rounded-full transition-colors hidden sm:block text-gray-600 hover:text-black">
-                <Search size={20} />
+                <Search size={18} />
               </button>
               <Link to="/cart" className="p-2 hover:bg-gray-100 rounded-full transition-colors relative group text-gray-600 hover:text-black">
-                <ShoppingBag size={20} />
+                <ShoppingBag size={18} />
                 {cart.length > 0 && (
                   <span className="absolute top-0 right-0 bg-accent text-black text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform">
                     {cart.reduce((acc, item) => acc + item.quantity, 0)}
@@ -154,17 +151,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <div className="space-y-6">
                     <h3 className="text-3xl font-black tracking-tighter">SIALKOT<span className="text-accent"> </span>SHOP</h3>
                     <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-                        Experience the fusion of comfort and style. We bring you the finest footwear collection in Sialkot, crafted for champions.
+                        From Sialkot to the World. We provide elite athletic gear and high-performance fashion for the global market.
                     </p>
                     <div className="flex gap-4 pt-2">
-                        <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all duration-300 transform hover:-translate-y-1">
+                        <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all">
                             <Facebook size={18} />
                         </a>
-                        <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all duration-300 transform hover:-translate-y-1">
+                        <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all">
                             <Instagram size={18} />
-                        </a>
-                        <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all duration-300 transform hover:-translate-y-1">
-                            <Twitter size={18} />
                         </a>
                     </div>
                 </div>
@@ -172,33 +166,30 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <div>
                     <h4 className="font-bold mb-6 text-lg text-white tracking-wide">{t('shop')}</h4>
                     <ul className="space-y-4 text-sm text-gray-400">
-                        <li><Link to="/shop?category=Men" className="hover:text-accent transition-colors flex items-center gap-2"><span className="w-1 h-1 bg-accent rounded-full opacity-0 hover:opacity-100 transition-opacity"></span> Men's Collection</Link></li>
-                        <li><Link to="/shop?category=Women" className="hover:text-accent transition-colors flex items-center gap-2"><span className="w-1 h-1 bg-accent rounded-full opacity-0 hover:opacity-100 transition-opacity"></span> Women's Collection</Link></li>
-                        <li><Link to="/shop?category=Kids" className="hover:text-accent transition-colors flex items-center gap-2"><span className="w-1 h-1 bg-accent rounded-full opacity-0 hover:opacity-100 transition-opacity"></span> Kids' World</Link></li>
-                        <li><Link to="/auto-pricing" className="hover:text-accent transition-colors flex items-center gap-2"><span className="w-1 h-1 bg-accent rounded-full opacity-0 hover:opacity-100 transition-opacity"></span> AI Auto Pricing</Link></li>
+                        <li><Link to="/shop?category=Men" className="hover:text-accent transition-colors">Men's Collection</Link></li>
+                        <li><Link to="/sport-store" className="hover:text-accent transition-colors">Sport Store</Link></li>
+                        <li><Link to="/auto-pricing" className="hover:text-accent transition-colors">AI Neural Scan</Link></li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h4 className="font-bold mb-6 text-lg text-white tracking-wide">Customer Care</h4>
+                    <h4 className="font-bold mb-6 text-lg text-white tracking-wide">Customer Protocol</h4>
                     <ul className="space-y-4 text-sm text-gray-400">
                         <li><Link to="/contact" className="hover:text-accent transition-colors">Order Tracking</Link></li>
-                        <li><Link to="/contact" className="hover:text-accent transition-colors">Size Guide</Link></li>
-                        <li><Link to="/contact" className="hover:text-accent transition-colors">Returns & Exchanges</Link></li>
-                        <li><Link to="/contact" className="hover:text-accent transition-colors">Contact Support</Link></li>
+                        <li><Link to="/contact" className="hover:text-accent transition-colors">Global Shipping</Link></li>
+                        <li><Link to="/contact" className="hover:text-accent transition-colors">Returns & Claims</Link></li>
                     </ul>
                 </div>
                 
                 <div>
                     <h4 className="font-bold mb-6 text-lg text-white tracking-wide">{t('subscribe')}</h4>
-                    <p className="text-gray-400 text-sm mb-4">Join our newsletter for exclusive drops.</p>
                     <div className="relative">
                         <input 
                             type="email" 
-                            placeholder="Your email address" 
-                            className="bg-white/10 text-white px-5 py-3 pr-12 outline-none w-full text-sm rounded-lg focus:ring-2 focus:ring-accent transition-all border border-transparent focus:border-accent placeholder-gray-500" 
+                            placeholder="Gmail Address" 
+                            className="bg-white/10 text-white px-5 py-3 pr-12 outline-none w-full text-sm rounded-lg border border-transparent focus:border-accent" 
                         />
-                        <button className="absolute right-1 top-1 bottom-1 bg-accent text-black px-3 rounded-md font-bold hover:bg-white transition-colors flex items-center justify-center">
+                        <button className="absolute right-1 top-1 bottom-1 bg-accent text-black px-3 rounded-md font-bold">
                             <ArrowUp size={18} className="rotate-90" />
                         </button>
                     </div>
@@ -207,10 +198,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             
             <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-sm">
                 <div>{t('footerText')}</div>
-                <div className="flex gap-6">
-                    <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-                </div>
             </div>
         </div>
       </footer>
