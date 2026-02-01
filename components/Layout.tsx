@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
-import { ShoppingBag, Menu, X, Search, MessageCircle, Instagram, Facebook, Twitter, ArrowUp, Sparkles, Trophy } from 'lucide-react';
+import { ShoppingBag, Menu, X, Search, MessageCircle, Instagram, Facebook, ArrowUp, Sparkles, Trophy, Globe, ShieldCheck, MapPin, ChevronDown } from 'lucide-react';
 import { useAppContext } from './AppContext';
 import { WHATSAPP_NUMBER } from '../constants';
 
@@ -29,8 +29,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     { name: 'sportStore', path: '/sport-store', icon: <Trophy size={14} className="inline mr-1 text-accent" /> },
     { name: 'men', path: '/shop?category=Men' },
     { name: 'autoPricing', path: '/auto-pricing', icon: <Sparkles size={14} className="inline mr-1 text-accent" /> },
-    { name: 'blog', path: '/blog' },
-    { name: 'contact', path: '/contact' },
   ];
 
   const isActive = (path: string) => {
@@ -42,163 +40,145 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <div className="min-h-screen flex flex-col font-sans selection:bg-accent selection:text-black">
-      {/* Top Bar */}
-      <div className="bg-black text-white py-2.5 px-4 text-xs tracking-wide z-50 relative">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-4 opacity-90">
-            <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 hover:text-accent transition-colors">
-              <MessageCircle size={14} /> <span className="font-medium">WhatsApp Support: 0307 9490 721</span>
-            </a>
+      {/* Amazon-Inspired Global Top Bar */}
+      <div className="bg-[#131921] text-white py-2 px-4 text-xs z-50">
+        <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-4 md:gap-8">
+          {/* Logo */}
+          <Link to="/" className="text-xl md:text-2xl font-black tracking-tighter flex items-center gap-1 group whitespace-nowrap">
+            SIALKOT<span className="text-[#FF9900]">SHOP</span>
+            <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-400 font-bold ml-1 hidden sm:block">.GLOBAL</span>
+          </Link>
+
+          {/* Location Selector (Amazon Style) */}
+          <div className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 border border-transparent hover:border-white rounded-sm cursor-pointer transition-colors group">
+             <MapPin size={18} className="text-gray-300 mt-1" />
+             <div className="flex flex-col">
+                <span className="text-[10px] text-gray-400 leading-none">Deliver to</span>
+                <span className="text-sm font-bold leading-none">United States</span>
+             </div>
           </div>
-          <div className="flex items-center gap-5">
-            <div className="flex items-center gap-2 cursor-pointer text-xs">
-                <button onClick={() => setLanguage('en')} className={`font-bold transition-colors ${language === 'en' ? 'text-accent' : 'text-gray-500 hover:text-white'}`}>EN</button>
-                <span className="text-gray-700">/</span>
-                <button onClick={() => setLanguage('ur')} className={`font-bold transition-colors ${language === 'ur' ? 'text-accent' : 'text-gray-500 hover:text-white'}`}>UR</button>
-            </div>
-            <div className="flex items-center gap-2 cursor-pointer text-xs">
-                <button onClick={() => setCurrency('USD')} className={`font-bold transition-colors ${currency === 'USD' ? 'text-accent' : 'text-gray-500 hover:text-white'}`}>USD</button>
-                <span className="text-gray-700">/</span>
-                <button onClick={() => setCurrency('PKR')} className={`font-bold transition-colors ${currency === 'PKR' ? 'text-accent' : 'text-gray-500 hover:text-white'}`}>PKR</button>
-            </div>
+
+          {/* Amazon-Style Search Bar */}
+          <div className="flex-grow flex items-center max-w-4xl h-10 group relative">
+             <div className="hidden md:flex items-center gap-1 px-3 bg-gray-100 h-full text-black text-xs border-r border-gray-300 rounded-l-md hover:bg-gray-200 cursor-pointer">
+                All <ChevronDown size={14} />
+             </div>
+             <input 
+                type="text" 
+                placeholder={t('search')} 
+                className="w-full h-full px-4 text-black outline-none focus:ring-2 focus:ring-[#FF9900] transition-all" 
+             />
+             <button className="bg-[#FF9900] hover:bg-[#F08804] text-[#131921] h-full px-5 rounded-r-md transition-colors">
+                <Search size={22} strokeWidth={2.5} />
+             </button>
           </div>
+
+          {/* Accounts & Lists */}
+          <div className="hidden md:flex items-center gap-1 px-3 py-1.5 border border-transparent hover:border-white rounded-sm cursor-pointer transition-colors">
+             <div className="flex flex-col">
+                <span className="text-[10px] text-gray-400 leading-none">Hello, Sign in</span>
+                <span className="text-sm font-bold leading-none flex items-center gap-1">Account & Lists <ChevronDown size={14} /></span>
+             </div>
+          </div>
+
+          {/* Cart (Amazon Style) */}
+          <Link to="/cart" className="flex items-end gap-1 px-3 py-1.5 border border-transparent hover:border-white rounded-sm cursor-pointer transition-colors group relative">
+             <div className="relative">
+                <ShoppingBag size={28} className="text-white" />
+                <span className="absolute top-0 left-1/2 -translate-x-1/2 text-[#FF9900] text-sm font-black pt-1">
+                  {cart.reduce((acc, item) => acc + item.quantity, 0)}
+                </span>
+             </div>
+             <span className="text-sm font-bold pb-1 hidden sm:block">Cart</span>
+          </Link>
+
+          {/* Mobile Menu Toggle */}
+          <button className="md:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+             <Menu size={28} />
+          </button>
         </div>
       </div>
 
-      <header 
-        className={`sticky top-0 z-40 transition-all duration-300 ${
-          scrolled 
-            ? 'bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-200/50 py-2' 
-            : 'bg-white border-b border-transparent py-5'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            <div className="flex-shrink-0 flex items-center">
-              <Link to="/" className="text-2xl md:text-3xl font-black tracking-tighter group">
-                SIALKOT<span className="text-accent group-hover:text-black transition-colors duration-300"> </span>SHOP
-              </Link>
-            </div>
-
-            <nav className="hidden md:flex space-x-4 lg:space-x-6 items-center">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  className={`text-[10px] lg:text-xs font-semibold uppercase tracking-wider transition-all duration-200 relative group flex items-center whitespace-nowrap ${
-                    isActive(link.path) ? 'text-black' : 'text-gray-500 hover:text-black'
-                  }`}
-                >
-                  {link.icon && link.icon}
-                  {t(link.name)}
-                  <span className={`absolute -bottom-1 left-0 w-full h-0.5 bg-accent transform origin-left transition-transform duration-300 ${isActive(link.path) ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></span>
-                </Link>
-              ))}
-            </nav>
-
-            <div className="flex items-center gap-2 md:gap-4">
-              <button className="p-2 hover:bg-gray-100 rounded-full transition-colors hidden sm:block text-gray-600 hover:text-black">
-                <Search size={18} />
-              </button>
-              <Link to="/cart" className="p-2 hover:bg-gray-100 rounded-full transition-colors relative group text-gray-600 hover:text-black">
-                <ShoppingBag size={18} />
-                {cart.length > 0 && (
-                  <span className="absolute top-0 right-0 bg-accent text-black text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform">
-                    {cart.reduce((acc, item) => acc + item.quantity, 0)}
-                  </span>
-                )}
-              </Link>
-              <button 
-                className="md:hidden p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-600"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      {/* Secondary Nav Bar (Amazon Style "All") */}
+      <div className="bg-[#232F3E] text-white py-2 px-4 text-sm z-40 overflow-x-auto whitespace-nowrap scrollbar-hide">
+         <div className="max-w-[1600px] mx-auto flex items-center gap-6">
+            <button className="flex items-center gap-1 font-bold hover:border-white border border-transparent px-2 py-1 rounded-sm">
+               <Menu size={18} /> All
+            </button>
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className="hover:border-white border border-transparent px-2 py-1 rounded-sm text-xs font-bold uppercase tracking-wide"
               >
-                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
+                {t(link.name)}
+              </Link>
+            ))}
+            <div className="ml-auto flex items-center gap-4">
+               <span className="text-xs font-bold text-[#FF9900] animate-pulse">USA Deals Protocol Active</span>
+               <div className="flex items-center gap-2">
+                  <button onClick={() => setCurrency('USD')} className={`text-xs font-bold ${currency === 'USD' ? 'text-white underline underline-offset-4' : 'text-gray-400'}`}>USD</button>
+                  <button onClick={() => setCurrency('PKR')} className={`text-xs font-bold ${currency === 'PKR' ? 'text-white underline underline-offset-4' : 'text-gray-400'}`}>PKR</button>
+               </div>
             </div>
-          </div>
-        </div>
+         </div>
+      </div>
 
-        {isMobileMenuOpen && (
-          <div className="md:hidden bg-white/95 backdrop-blur-xl border-t border-gray-100 absolute w-full left-0 z-30 animate-slide-down shadow-xl h-screen">
-            <div className="px-4 pt-4 pb-8 space-y-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-3 text-lg font-bold rounded-xl transition-colors flex items-center gap-2 ${
-                    isActive(link.path) 
-                      ? 'bg-accent/10 text-black border-l-4 border-accent' 
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-black'
-                  }`}
-                >
-                  {link.icon && React.cloneElement(link.icon as React.ReactElement<any>, { size: 20 })}
-                  {t(link.name)}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-      </header>
-
-      <main className="flex-grow bg-white relative">
+      <main className="flex-grow bg-[#EAEDED] relative">
         {children}
       </main>
 
-      <footer className="bg-[#050505] text-white pt-20 pb-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-                <div className="space-y-6">
-                    <h3 className="text-3xl font-black tracking-tighter">SIALKOT<span className="text-accent"> </span>SHOP</h3>
-                    <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-                        From Sialkot to the World. We provide elite athletic gear and high-performance fashion for the global market.
-                    </p>
-                    <div className="flex gap-4 pt-2">
-                        <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all">
-                            <Facebook size={18} />
-                        </a>
-                        <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all">
-                            <Instagram size={18} />
-                        </a>
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 className="font-bold mb-6 text-lg text-white tracking-wide">{t('shop')}</h4>
-                    <ul className="space-y-4 text-sm text-gray-400">
-                        <li><Link to="/shop?category=Men" className="hover:text-accent transition-colors">Men's Collection</Link></li>
-                        <li><Link to="/sport-store" className="hover:text-accent transition-colors">Sport Store</Link></li>
-                        <li><Link to="/auto-pricing" className="hover:text-accent transition-colors">AI Neural Scan</Link></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 className="font-bold mb-6 text-lg text-white tracking-wide">Customer Protocol</h4>
-                    <ul className="space-y-4 text-sm text-gray-400">
-                        <li><Link to="/contact" className="hover:text-accent transition-colors">Order Tracking</Link></li>
-                        <li><Link to="/contact" className="hover:text-accent transition-colors">Global Shipping</Link></li>
-                        <li><Link to="/contact" className="hover:text-accent transition-colors">Returns & Claims</Link></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 className="font-bold mb-6 text-lg text-white tracking-wide">{t('subscribe')}</h4>
-                    <div className="relative">
-                        <input 
-                            type="email" 
-                            placeholder="Gmail Address" 
-                            className="bg-white/10 text-white px-5 py-3 pr-12 outline-none w-full text-sm rounded-lg border border-transparent focus:border-accent" 
-                        />
-                        <button className="absolute right-1 top-1 bottom-1 bg-accent text-black px-3 rounded-md font-bold">
-                            <ArrowUp size={18} className="rotate-90" />
-                        </button>
-                    </div>
-                </div>
+      {/* Back to top (Amazon style) */}
+      <button 
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="w-full bg-[#37475A] hover:bg-[#485769] text-white py-4 text-xs font-bold text-center transition-colors"
+      >
+        Back to top
+      </button>
+
+      <footer className="bg-[#232F3E] text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 text-sm border-b border-white/10 pb-16">
+            <div className="space-y-4">
+               <h4 className="font-bold text-lg">Get to Know Us</h4>
+               <ul className="space-y-2 text-gray-300">
+                  <li><Link to="/blog" className="hover:underline">Marketplace Blog</Link></li>
+                  <li><Link to="/contact" className="hover:underline">About Sialkot Global</Link></li>
+                  <li className="flex items-center gap-2 text-[#FF9900] font-black"><ShieldCheck size={16} /> Verified Authenticity</li>
+               </ul>
             </div>
-            
-            <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-sm">
-                <div>{t('footerText')}</div>
+            <div className="space-y-4">
+               <h4 className="font-bold text-lg">Marketplace Services</h4>
+               <ul className="space-y-2 text-gray-300">
+                  <li><Link to="/auto-pricing" className="hover:underline">Neural Price Sync</Link></li>
+                  <li><Link to="/sport-store" className="hover:underline">Varsity Solutions</Link></li>
+                  <li className="flex items-center gap-2 text-blue-400 font-bold"><Globe size={16} /> Global Shipping Sync</li>
+               </ul>
             </div>
+            <div className="space-y-4">
+               <h4 className="font-bold text-lg">Amazon Marketplace Partner</h4>
+               <ul className="space-y-2 text-gray-300">
+                  <li className="bg-white/5 p-4 rounded-lg border border-white/10">
+                     <p className="text-[10px] leading-relaxed">Sialkot Shop operates on global marketplace standards, ensuring cross-platform price transparency and high-performance fulfillment.</p>
+                  </li>
+               </ul>
+            </div>
+            <div className="space-y-4">
+               <h4 className="font-bold text-lg">Contact Marketplace</h4>
+               <div className="flex flex-col gap-2 text-gray-300">
+                  <span className="font-bold text-white">WhatsApp Global:</span>
+                  <a href={`https://wa.me/${WHATSAPP_NUMBER}`} className="text-[#FF9900] hover:underline font-black text-lg">0307 9490 721</a>
+                  <span className="text-[10px] uppercase tracking-widest text-gray-500">Available 24/7 (PKT)</span>
+               </div>
+            </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 pt-10 text-center flex flex-col items-center gap-4">
+            <Link to="/" className="text-3xl font-black text-white italic tracking-tighter">SIALKOT<span className="text-[#FF9900]">SHOP</span></Link>
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-[10px] text-gray-400 uppercase tracking-widest font-bold">
+               <span className="hover:underline cursor-pointer">Conditions of Use</span>
+               <span className="hover:underline cursor-pointer">Privacy Notice</span>
+               <span className="hover:underline cursor-pointer">Interest-Based Ads</span>
+            </div>
+            <p className="text-[10px] text-gray-500 font-bold mt-4">{t('footerText')}</p>
         </div>
       </footer>
     </div>

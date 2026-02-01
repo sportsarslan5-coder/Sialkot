@@ -1,7 +1,7 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Truck, TrendingUp, Award, Sparkles, Gift } from 'lucide-react';
+import { ArrowRight, Trophy, Sparkles, TrendingUp, Zap, ChevronRight } from 'lucide-react';
 import { useAppContext } from '../components/AppContext';
 import { PRODUCTS } from '../constants';
 import ProductCard from '../components/ProductCard';
@@ -11,163 +11,133 @@ const { Link } = ReactRouterDOM as any;
 const Home: React.FC = () => {
   const { t } = useAppContext();
   
-  const mrBeastShoe = PRODUCTS.find(p => p.id === 36);
-  const otherFeatured = PRODUCTS.filter(p => p.id !== 36).slice(0, 3);
-  const featuredProducts = mrBeastShoe ? [mrBeastShoe, ...otherFeatured] : PRODUCTS.slice(0, 4);
+  // Categorize for Amazon Rows
+  const bestSellers = useMemo(() => PRODUCTS.filter(p => p.reviews > 500).slice(0, 6), []);
+  const uniforms = useMemo(() => PRODUCTS.filter(p => p.id >= 801 && p.id <= 821).slice(0, 6), []);
+  const topRated = useMemo(() => PRODUCTS.filter(p => p.rating >= 4.9).slice(0, 6), []);
 
   return (
-    <div className="overflow-x-hidden">
-      <div className="relative h-[90vh] w-full bg-black overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent z-10"></div>
+    <div className="bg-[#EAEDED] pb-20">
+      {/* Amazon Hero Carousel (Simulated) */}
+      <div className="relative h-[400px] md:h-[600px] overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#EAEDED] z-10"></div>
         <img 
-          src={mrBeastShoe ? mrBeastShoe.image : "https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=2070&auto=format&fit=crop"} 
-          alt="Hero Sneaker" 
-          className="w-full h-full object-cover object-center animate-scale-slow opacity-80"
-          style={{ animation: 'float 20s ease-in-out infinite alternate' }}
+          src="https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959046/usa-basketball-uniforms_lmxidn.jpg" 
+          alt="Featured Global Deal" 
+          className="w-full h-full object-cover animate-scale-slow"
         />
-        
-        <div className="absolute inset-0 z-20 flex items-center px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto w-full">
-            <div className="max-w-4xl space-y-8">
-              <div className="flex flex-wrap items-center gap-3 animate-fade-in-up">
-                  <div className="inline-flex items-center gap-2 bg-red-600 text-white px-5 py-2 rounded-full text-sm font-bold tracking-widest uppercase shadow-lg shadow-red-900/50 animate-pulse border border-red-500">
-                    <Gift size={18} /> Buy 5 Shoes Get 1 Free
-                  </div>
-                  <div className="inline-flex items-center gap-2 bg-blue-900/80 backdrop-blur-md border border-blue-400/50 text-white px-5 py-2 rounded-full text-sm font-bold tracking-widest uppercase shadow-lg">
-                    <span>🇺🇸</span> Best Shoes Sale for USA
-                  </div>
-                  <div className="inline-flex items-center gap-2 bg-accent/20 backdrop-blur-md border border-accent/40 text-accent px-5 py-2 rounded-full text-sm font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(255,215,0,0.3)]">
-                    <Sparkles size={16} /> Exclusive Drop
-                  </div>
-              </div>
-
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tight leading-[1.1] animate-fade-in-up delay-100 drop-shadow-2xl">
-                {mrBeastShoe ? "BEAST MODE" : "WALK ON"} <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-yellow-100">{mrBeastShoe ? "ACTIVATED" : "AIR & STYLE"}</span>
+        <div className="absolute inset-x-0 bottom-40 z-20 max-w-7xl mx-auto px-4">
+           <div className="bg-white/90 backdrop-blur-md p-8 md:p-12 rounded shadow-2xl max-w-xl border-l-8 border-[#FF9900]">
+              <h1 className="text-4xl md:text-5xl font-black text-[#131921] uppercase tracking-tighter italic leading-none mb-4">
+                 Global <br /> <span className="text-[#FF9900]">Uniform</span> Hub
               </h1>
-              <p className="text-lg md:text-2xl text-gray-300 font-light max-w-2xl animate-fade-in-up delay-200 border-l-4 border-accent pl-6 bg-black/30 backdrop-blur-sm p-4 rounded-r-xl">
-                {mrBeastShoe ? mrBeastShoe.description : t('heroSubtitle')}
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-fade-in-up delay-300">
-                <Link 
-                  to={mrBeastShoe ? `/product/${mrBeastShoe.id}` : "/shop"}
-                  className="inline-flex items-center justify-center bg-accent text-black px-10 py-4 rounded-full font-bold text-lg hover:bg-white transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(255,215,0,0.5)] border-2 border-accent"
-                >
-                  {mrBeastShoe ? "Shop Limited Edition" : t('buyNow')} <ArrowRight className="ml-2" size={20} />
-                </Link>
-                <Link 
-                  to="/shop?category=Men" 
-                  className="inline-flex items-center justify-center bg-white/5 backdrop-blur-md border border-white/30 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-black transition-all"
-                >
-                  View Collection
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 text-white/50 animate-bounce">
-           <div className="w-[1px] h-12 bg-gradient-to-b from-accent to-transparent mx-auto"></div>
-        </div>
-      </div>
-
-      <div className="bg-accent py-4 overflow-hidden whitespace-nowrap relative shadow-lg z-20">
-        <div className="inline-block animate-marquee text-black font-bold text-lg tracking-widest uppercase">
-           • ANYONE WHO BUYS FIVE SHOES WILL GET ONE SHOE FREE • THIS IS THE BEST SHOES SALE FOR USA • SIALKOT SHOP EXCLUSIVE • GLOBAL SHIPPING • ANYONE WHO BUYS FIVE SHOES WILL GET ONE SHOE FREE • THIS IS THE BEST SHOES SALE FOR USA
-        </div>
-      </div>
-
-      <div className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16 space-y-4 animate-fade-in-up">
-            <span className="text-accent font-bold tracking-widest uppercase text-sm">Find Your Style</span>
-            <h2 className="text-4xl md:text-5xl font-black text-primary">SHOP BY CATEGORY</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 h-[600px] md:h-[500px]">
-            {['Men', 'Women', 'Kids'].map((cat, index) => (
-              <Link 
-                to={`/shop?category=${cat}`} 
-                key={cat} 
-                className={`group relative overflow-hidden rounded-[2.5rem] cursor-pointer shadow-2xl h-full border border-gray-100 ${index === 1 ? 'md:-mt-8 md:mb-8' : ''}`}
-              >
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors z-10"></div>
-                <img 
-                  src={
-                    cat === 'Men' ? "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&q=80" :
-                    cat === 'Women' ? "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80" :
-                    "https://images.unsplash.com/photo-1514989940723-78e071f5b771?w=800&q=80"
-                  }
-                  alt={cat}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute bottom-0 left-0 w-full p-8 z-20 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  <h2 className="text-4xl font-black text-white uppercase italic drop-shadow-lg">{t(cat.toLowerCase())}</h2>
-                  <div className="h-1.5 w-12 bg-accent mt-4 transition-all duration-500 group-hover:w-full rounded-full"></div>
-                  <p className="text-white/90 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 text-sm font-medium">
-                    Explore the latest {cat} collection
-                  </p>
-                </div>
+              <p className="text-gray-600 font-bold mb-8 italic">Direct from Sialkot Factory to USA Courts. Fast Sync active.</p>
+              <Link to="/sport-store" className="bg-[#FF9900] text-[#131921] px-10 py-4 rounded font-black text-sm uppercase tracking-widest hover:bg-[#F08804] transition-colors shadow-lg">
+                 Explore Varsity Deals
               </Link>
-            ))}
-          </div>
+           </div>
         </div>
       </div>
 
-      <div className="bg-secondary py-24 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+      <div className="max-w-[1600px] mx-auto px-4 -mt-32 relative z-30">
+        {/* Amazon-Style Row 1: Top Row Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+           {/* Card 1 */}
+           <div className="bg-white p-6 shadow-sm flex flex-col h-full">
+              <h3 className="text-xl font-black mb-4 uppercase tracking-tighter italic">Varsity Uniforms</h3>
+              <div className="grid grid-cols-2 gap-2 flex-grow mb-4">
+                 {uniforms.slice(0, 4).map(p => (
+                   <Link key={p.id} to={`/product/${p.id}`} className="group relative aspect-square overflow-hidden bg-gray-50">
+                      <img src={p.image} alt={p.name} className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                   </Link>
+                 ))}
+              </div>
+              <Link to="/sport-store" className="text-xs font-bold text-blue-600 hover:text-[#C7511F] hover:underline">See more basketball gear</Link>
+           </div>
+           
+           {/* Card 2 */}
+           <div className="bg-white p-6 shadow-sm flex flex-col h-full">
+              <h3 className="text-xl font-black mb-4 uppercase tracking-tighter italic">USA Best Sellers</h3>
+              <Link to={`/product/${PRODUCTS[0].id}`} className="block relative aspect-video overflow-hidden mb-4 bg-gray-50">
+                 <img src={PRODUCTS[0].image} alt="Best Seller" className="w-full h-full object-cover" />
+                 <div className="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded">20% OFF</div>
+              </Link>
+              <p className="text-xs text-gray-500 mb-4 line-clamp-2">The most recognized street silhouette in our global marketplace.</p>
+              <Link to="/shop" className="text-xs font-bold text-blue-600 hover:text-[#C7511F] hover:underline mt-auto">Shop now</Link>
+           </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-            <div>
-                <div className="flex items-center gap-2 text-accent mb-2">
-                    <TrendingUp size={20} />
-                    <span className="font-bold uppercase tracking-wider text-sm">Hot Right Now</span>
+           {/* Card 3 - Neural Core Promo */}
+           <div className="bg-white p-6 shadow-sm flex flex-col h-full border-t-4 border-[#FF9900]">
+              <h3 className="text-xl font-black mb-4 uppercase tracking-tighter italic">AI Neural Price</h3>
+              <div className="flex-grow flex flex-col items-center justify-center text-center p-4 bg-gray-50 rounded-lg mb-4">
+                 <Sparkles size={48} className="text-[#FF9900] mb-4 animate-pulse" />
+                 <p className="text-sm font-bold text-primary italic leading-relaxed">Scan any product photo to find the best Sialkot factory price instantly.</p>
+              </div>
+              <Link to="/auto-pricing" className="text-xs font-bold text-blue-600 hover:text-[#C7511F] hover:underline mt-auto">Open Scanner Core</Link>
+           </div>
+
+           {/* Card 4 - Shop by Category */}
+           <div className="bg-white p-6 shadow-sm flex flex-col h-full">
+              <h3 className="text-xl font-black mb-4 uppercase tracking-tighter italic">Global Categories</h3>
+              <div className="grid grid-cols-2 gap-4 flex-grow mb-4">
+                 {['Men', 'Women', 'Kids', 'Sport'].map(cat => (
+                   <Link key={cat} to="/shop" className="flex flex-col items-center gap-2 group">
+                      <div className="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+                         <Zap size={24} className="text-gray-400 group-hover:text-[#FF9900]" />
+                      </div>
+                      <span className="text-[10px] font-black uppercase text-gray-500 tracking-widest">{cat}</span>
+                   </Link>
+                 ))}
+              </div>
+              <Link to="/shop" className="text-xs font-bold text-blue-600 hover:text-[#C7511F] hover:underline">View all collections</Link>
+           </div>
+        </div>
+
+        {/* Amazon-Style Horizontal Scroll Row 1 */}
+        <div className="bg-white p-6 shadow-sm mb-10">
+           <div className="flex items-center gap-3 mb-6">
+              <h2 className="text-2xl font-black tracking-tighter uppercase italic">Best Sellers <span className="text-[#FF9900]">in Sportswear</span></h2>
+              <div className="h-0.5 flex-grow bg-gray-100"></div>
+           </div>
+           <div className="flex gap-4 overflow-x-auto pb-6 scrollbar-hide">
+              {bestSellers.map(product => (
+                <div key={product.id} className="min-w-[240px] max-w-[240px]">
+                   <ProductCard product={product} />
                 </div>
-                <h2 className="text-4xl md:text-5xl font-black text-primary">{t('dealOfTheDay')}</h2>
-            </div>
-            <Link to="/shop" className="group flex items-center gap-2 font-bold text-primary hover:text-accent transition-colors border-b-2 border-transparent hover:border-accent pb-1">
-              View All Products <ArrowRight size={20} className="transform group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {featuredProducts.map((product, idx) => (
-              <div key={product.id} className="animate-fade-in-up" style={{ animationDelay: `${idx * 100}ms` }}>
-                 <ProductCard product={product} />
+              ))}
+              <div className="min-w-[200px] flex items-center justify-center group cursor-pointer border-2 border-dashed border-gray-100 rounded-sm hover:border-[#FF9900] transition-colors">
+                 <Link to="/shop" className="flex flex-col items-center text-gray-400 group-hover:text-[#FF9900]">
+                    <ChevronRight size={48} />
+                    <span className="text-xs font-black uppercase tracking-widest">See All</span>
+                 </Link>
               </div>
-            ))}
-          </div>
+           </div>
         </div>
-      </div>
 
-      <div className="py-24 bg-white border-t border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-            <div className="group p-8 rounded-3xl hover:bg-gray-50 transition-colors duration-500 border border-transparent hover:border-gray-100 hover:shadow-xl">
-              <div className="w-20 h-20 bg-gray-100 group-hover:bg-accent/20 text-gray-800 group-hover:text-accent rounded-[2rem] flex items-center justify-center mb-6 mx-auto transition-colors duration-500">
-                <Truck size={36} strokeWidth={1.5} />
-              </div>
-              <h3 className="font-bold text-xl mb-3">Global Express Delivery</h3>
-              <p className="text-gray-500 leading-relaxed">From Sialkot to the world. We ensure your kicks arrive fresh and fast, tracked every step of the way.</p>
-            </div>
-            <div className="group p-8 rounded-3xl hover:bg-gray-50 transition-colors duration-500 border border-transparent hover:border-gray-100 hover:shadow-xl">
-              <div className="w-20 h-20 bg-gray-100 group-hover:bg-accent/20 text-gray-800 group-hover:text-accent rounded-[2rem] flex items-center justify-center mb-6 mx-auto transition-colors duration-500">
-                <Award size={36} strokeWidth={1.5} />
-              </div>
-              <h3 className="font-bold text-xl mb-3">Authentic Premium Quality</h3>
-              <p className="text-gray-500 leading-relaxed">Hand-picked materials and superior craftsmanship. We guarantee authenticity on every pair.</p>
-            </div>
-            <div className="group p-8 rounded-3xl hover:bg-gray-50 transition-colors duration-500 border border-transparent hover:border-gray-100 hover:shadow-xl">
-              <div className="w-20 h-20 bg-gray-100 group-hover:bg-accent/20 text-gray-800 group-hover:text-accent rounded-[2rem] flex items-center justify-center mb-6 mx-auto transition-colors duration-500">
-                <ShieldCheck size={36} strokeWidth={1.5} />
-              </div>
-              <h3 className="font-bold text-xl mb-3">Secure Checkout</h3>
-              <p className="text-gray-500 leading-relaxed">Shop with confidence. Your data is protected, and we offer hassle-free returns if you aren't 100% satisfied.</p>
-            </div>
-          </div>
+        {/* Amazon-Style Horizontal Scroll Row 2 */}
+        <div className="bg-white p-6 shadow-sm mb-10">
+           <div className="flex items-center gap-3 mb-6">
+              <h2 className="text-2xl font-black tracking-tighter uppercase italic text-blue-600">Top Rated <span className="text-gray-300">Inspired by Trends</span></h2>
+              <div className="h-0.5 flex-grow bg-gray-100"></div>
+           </div>
+           <div className="flex gap-4 overflow-x-auto pb-6 scrollbar-hide">
+              {topRated.map(product => (
+                <div key={product.id} className="min-w-[240px] max-w-[240px]">
+                   <ProductCard product={product} />
+                </div>
+              ))}
+           </div>
+        </div>
+
+        {/* Sign In Banner (Amazon Style) */}
+        <div className="bg-white py-10 border-y border-gray-200 shadow-inner flex flex-col items-center justify-center text-center">
+           <div className="h-1 w-20 bg-gray-100 rounded-full mb-8"></div>
+           <p className="text-xs font-bold text-primary mb-3">See personalized recommendations</p>
+           <button className="bg-[#FFD814] hover:bg-[#F7CA00] text-[#131921] px-20 py-2 rounded-md font-black text-sm border border-[#FCD200] shadow-sm active:scale-95 mb-3">
+              Sign in
+           </button>
+           <p className="text-[10px] text-gray-500 font-bold">New customer? <span className="text-blue-600 hover:text-[#C7511F] cursor-pointer">Start here.</span></p>
+           <div className="h-1 w-20 bg-gray-100 rounded-full mt-8"></div>
         </div>
       </div>
     </div>

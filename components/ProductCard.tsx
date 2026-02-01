@@ -1,7 +1,7 @@
 
 import React from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
-import { Star, ShoppingCart, Eye, Sparkles } from 'lucide-react';
+import { Star, ShoppingCart, Eye, Sparkles, Truck, CheckCircle } from 'lucide-react';
 import { Product } from '../types';
 import { useAppContext } from './AppContext';
 
@@ -13,71 +13,91 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { convertPrice, addToCart, t } = useAppContext();
-  const isSpecial = product.id === 36; // Mr Beast Shoe ID
+  const isUniform = product.id >= 801 && product.id <= 821;
+  const isBestSeller = product.reviews > 500;
 
   return (
-    <div className="group relative flex flex-col h-full">
-      <div className={`relative aspect-square overflow-hidden rounded-[1.5rem] bg-gray-100 mb-4 shadow-sm transition-all duration-500 group-hover:shadow-2xl ${isSpecial ? 'ring-2 ring-accent ring-offset-2' : ''}`}>
+    <div className="bg-white border border-gray-200 rounded-sm p-3 hover:shadow-lg transition-shadow flex flex-col h-full group relative overflow-hidden">
+      {/* Marketplace Badges */}
+      {isBestSeller && (
+        <div className="absolute top-0 left-0 bg-[#E47911] text-white text-[9px] font-bold px-3 py-1 z-20 shadow-md">
+           #1 Best Seller
+        </div>
+      )}
+      {!isBestSeller && product.rating >= 4.9 && (
+        <div className="absolute top-0 left-0 bg-[#232F3E] text-white text-[9px] font-bold px-3 py-1 z-20 shadow-md">
+           Sialkot's Choice
+        </div>
+      )}
+
+      {/* Product Image */}
+      <Link to={`/product/${product.id}`} className="block relative aspect-square overflow-hidden mb-3">
         <img 
           src={product.image} 
           alt={product.name} 
-          loading="lazy"
-          className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
         />
-        
-        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-[2px]">
-          <Link 
-            to={`/product/${product.id}`}
-            className="bg-white text-black w-12 h-12 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all transform translate-y-4 group-hover:translate-y-0 duration-300 hover:scale-110 shadow-lg hover:rotate-12"
-            title="View Details"
-          >
-            <Eye size={22} strokeWidth={2} />
-          </Link>
-          <button
-            onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                addToCart(product, product.sizes[0]);
-            }}
-            className="bg-black text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all transform translate-y-4 group-hover:translate-y-0 duration-300 delay-75 hover:scale-110 shadow-lg hover:-rotate-12"
-            title={t('addToCart')}
-          >
-            <ShoppingCart size={22} strokeWidth={2} />
-          </button>
-        </div>
-
-        {product.rating >= 4.9 && !isSpecial && (
-            <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-black text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wide shadow-sm flex items-center gap-1">
-                <Star size={10} className="fill-accent text-accent" /> Best Seller
-            </div>
-        )}
-        {isSpecial && (
-            <div className="absolute top-3 left-3 bg-accent text-black text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wide shadow-lg flex items-center gap-1 animate-pulse-slow">
-                <Sparkles size={10} /> Limited Edition
-            </div>
-        )}
-      </div>
-
-      <div className="flex flex-col flex-grow px-2">
-        <div className="flex justify-between items-start mb-1.5">
-          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 px-2 py-0.5 rounded-full">{product.category}</span>
-          <div className="flex items-center gap-1 text-yellow-500 bg-yellow-50 px-1.5 py-0.5 rounded-md">
-            <Star size={12} fill="currentColor" />
-            <span className="text-xs font-bold text-black">{product.rating}</span>
+        {isUniform && (
+          <div className="absolute bottom-2 left-2 bg-blue-600/90 text-white text-[8px] font-black px-2 py-0.5 rounded shadow-lg backdrop-blur-sm">
+             GLOBAL SYNC
           </div>
-        </div>
-        
-        <Link to={`/product/${product.id}`} className="block group-hover:text-accent transition-colors duration-200">
-          <h3 className="text-lg font-bold text-primary leading-tight mb-1.5 line-clamp-1">{product.name}</h3>
+        )}
+      </Link>
+
+      {/* Info */}
+      <div className="flex flex-col flex-grow">
+        <Link to={`/product/${product.id}`} className="hover:text-[#C7511F] transition-colors">
+           <h3 className="text-sm font-medium leading-tight line-clamp-2 h-10 mb-1">{product.name}</h3>
         </Link>
         
-        <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-50">
-          <span className={`text-lg font-black ${isSpecial ? 'text-accent' : 'text-primary'}`}>{convertPrice(product.priceUSD)}</span>
-          <div className="text-xs text-gray-400 font-medium group-hover:text-black transition-colors">{product.reviews} Reviews</div>
+        {/* Rating Row (Amazon Style) */}
+        <div className="flex items-center gap-1.5 mb-2">
+           <div className="flex text-[#FFA41C]">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={14} fill={i < Math.floor(product.rating) ? "currentColor" : "none"} strokeWidth={1.5} />
+              ))}
+           </div>
+           <ChevronDown size={10} className="text-gray-500" />
+           <span className="text-xs text-blue-600 font-medium hover:text-[#C7511F] cursor-pointer">{product.reviews.toLocaleString()}</span>
+        </div>
+
+        {/* Price Row */}
+        <div className="mt-auto">
+           <div className="flex items-baseline gap-1 mb-1">
+              <span className="text-xs font-bold">$</span>
+              <span className="text-2xl font-bold leading-none">{product.priceUSD.toFixed(0)}</span>
+              <span className="text-xs font-bold">00</span>
+           </div>
+           
+           <div className="flex items-center gap-2 mb-3">
+              <span className="text-[10px] font-black text-gray-500 uppercase tracking-tighter">Fulfilled by Sialkot</span>
+              <div className="flex items-center gap-0.5">
+                 <Truck size={12} className="text-blue-600" />
+                 <span className="text-[10px] font-black text-blue-600 uppercase">Express</span>
+              </div>
+           </div>
+
+           {/* Amazon Amber Button */}
+           <button
+              onClick={(e) => {
+                e.preventDefault();
+                addToCart(product, product.sizes[0]);
+              }}
+              className="w-full bg-[#FFD814] hover:bg-[#F7CA00] text-black py-2 rounded-full text-xs font-bold shadow-sm transition-colors border border-[#FCD200] active:scale-95 transform"
+           >
+              Add to Cart
+           </button>
         </div>
       </div>
     </div>
   );
 };
+
+// Helper for rating chevron
+const ChevronDown = ({ size, className }: { size: number, className: string }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="m6 9 6 6 6-6"/>
+  </svg>
+);
 
 export default ProductCard;
