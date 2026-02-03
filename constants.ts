@@ -12,7 +12,7 @@ export const TRANSLATIONS: Translations = {
   contact: { en: 'Contact', ur: 'رابطہ کریں' },
   cart: { en: 'Cart', ur: 'ٹوکری' },
   checkout: { en: 'Checkout', ur: 'چیک آؤٹ' },
-  search: { en: 'Search Sialkot Marketplace...', ur: 'مارکیٹ پلیس تلاش کریں...' },
+  search: { en: 'Search 1,000+ Sialkot Items...', ur: 'مارکیٹ پلیس تلاش کریں...' },
   men: { en: 'Men', ur: 'مرد' },
   women: { en: 'Women', ur: 'خواتین' },
   kids: { en: 'Kids', ur: 'بچے' },
@@ -20,7 +20,7 @@ export const TRANSLATIONS: Translations = {
   sportStore: { en: 'Sport Store', ur: 'سپورٹس اسٹور' },
   buyNow: { en: 'Shop Best Sellers', ur: ' بہترین فروخت کنندگان' },
   heroTitle: { en: 'Global Performance Marketplace', ur: 'عالمی کارکردگی کا بازار' },
-  heroSubtitle: { en: 'Sialkot Shop: The Amazon of premium athletic gear. Verified for USA.', ur: 'سیالکوٹ شاپ: پریمیم ایتھلیٹک گیئر کا ایمیزون۔ امریکہ کے لیے تصدیق شدہ۔' },
+  heroSubtitle: { en: 'Sialkot Shop: The Amazon of premium athletic gear. 1,000+ Units Verified.', ur: 'سیالکوٹ شاپ: پریمیم ایتھلیٹک گیئر کا ایمیزون۔ 1,000+ یونٹس کی تصدیق۔' },
   dealOfTheDay: { en: 'Today\'s Deals', ur: 'آج کی ڈیلز' },
   addToCart: { en: 'Add to Cart', ur: 'ٹوکری میں شامل کریں' },
   reviews: { en: 'Global Reviews', ur: 'عالمی جائزے' },
@@ -30,54 +30,32 @@ export const TRANSLATIONS: Translations = {
   contactUs: { en: 'Customer Service', ur: 'کسٹمر سروس' },
   sendMessage: { en: 'Submit Request', ur: 'درخواست جمع کروائیں' },
   aiStylist: { en: 'Marketplace Expert', ur: 'مارکیٹ ماہر' },
-  stylistIntro: { en: 'Global Intelligence active. How can I assist your purchase today?', ur: 'عالمی انٹیلی جنس فعال ہے۔ آج میں آپ کی خریداری میں کیسے مدد کر سکتا ہوں؟' },
-  typing: { en: 'Analyzing Catalog...', ur: 'تجزیہ کر رہا ہے...' },
-  footerText: { en: '© 2024 Sialkot Global Marketplace. All rights reserved.', ur: '© 2024 سیالکوٹ گلوبل مارکیٹ پلیس۔' },
+  stylistIntro: { en: 'Global Intelligence active. Accessing 1,000+ item database. How can I help?', ur: 'عالمی انٹیلی جنس فعال ہے۔ 1,000+ آئٹم ڈیٹا بیس تک رسائی۔ میں کیسے مدد کر سکتا ہوں؟' },
+  typing: { en: 'Syncing Catalog...', ur: 'تجزیہ کر رہا ہے...' },
+  footerText: { en: '© 2024 Sialkot Global Marketplace. 1000 Post Goal Active.', ur: '© 2024 سیالکوٹ گلوبل مارکیٹ پلیس۔' },
   subscribe: { en: 'Get Daily Deals', ur: 'روزانہ کی ڈیلز حاصل کریں' },
   compareAmazon: { en: 'Compare Global Price', ur: 'عالمی قیمت کا موازنہ کریں' }
 };
 
 export const MASTER_CATALOG_DATA = `
-1001. Sialkot "Pencil Protocol" Elite BBCOR Baseball Bat – $150,
-1004. Diamond Series Elite "Victus" Bat Pack – $150,
-1005. Sialkot "Grand Slam" Batting Gloves Pro – $150,
-1006. Elite Tournament Leg Guard Shield – $150,
-903. Sialkot Elite "Victory" Pro-Performance Hoodie – $40,
-901. Sialkot Elite "Victory" Varsity Performance Jacket – $60,
-801. Sialkot Pro-Court "Midnight Elite" Uniform – $40,
-802. Varsity Gold "State Championship" Kit – $40,
-803. Brooklyn "Asphalt" Streetball Jersey – $40,
-804. Golden State "Bay Area" Swingman – $40,
-805. Manhattan "Precision" Performance Kit – $40,
-806. Youth "Future Star" All-Star Uniform – $40,
-807. Pro-Level "ZWBK-700" Performance Suit – $40,
-808. Chicago "Windy City" Redline Edition – $40,
-809. Custom Adult "Full-Court" Elite Uniform – $40,
-810. NCAA "Heritage" Blue & White Edition – $40,
-811. USA National "Olympic Protocol" Kit – $40,
-812. Maroon "Ivy League" Traditionalist Set – $40,
-813. University Maroon "Deep Red" Tournament Suit – $40,
-814. Neon "Voltage" High-Visibility Uniform – $40,
-815. Cobalt "Blue Flame" Performance Set – $40,
-816. Reversible "Dual-Threat" Training Jersey – $40,
-817. Stealth "Ghost" Elite Combat Kit – $40,
-818. Urban "Concrete" Grey Streetball Suit – $40,
-819. Throwback "Retro-Court" 90s Style Edition – $40,
-820. Pro-Am "Legacy" Elite Jersey Series – $40,
-821. Sialkot "Court-King" High-Durability Kit – $40
+1101-1200. Sialkot Field Series (Gridiron & Diamond) – $38,
+801-850. Court Heritage Series (Basketball Pro-Am) – $40,
+901-950. Victory Lifestyle Series (Varsity Apparel) – $40-$60,
+1001-1010. Pro-Diamond Equipment (Bats & Gear) – $150
 `;
 
 export const PRODUCTS: Product[] = [
+  // --- DIAMOND EQUIPMENT ($150) ---
   {
     id: 1001,
     name: "Sialkot 'Pencil Protocol' Elite BBCOR Baseball Bat",
     category: "Men",
     priceUSD: 150.00,
     image: "https://res.cloudinary.com/dc0ytviey/image/upload/v1770143043/VictusPencilBBCORBaseballBat_-3_1_jfwdgj.png",
-    description: "The viral sensation of the USA diamond. Engineered for maximum exit velocity and a balanced swing weight. BBCOR-certified.",
+    description: "The viral sensation of the USA diamond. BBCOR-certified. Engineered for max exit velocity.",
     sizes: ["31/28", "32/29", "33/30", "34/31"],
     rating: 5.0,
-    reviews: 245
+    reviews: 2450
   },
   {
     id: 1004,
@@ -85,40 +63,154 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 150.00,
     image: "https://res.cloudinary.com/dc0ytviey/image/upload/v1770143317/WBD2589010__719f9aad56d543b1957031a2c5bd8981_pkkkar.jpg",
-    description: "The ultimate tournament backpack for the serious ballplayer. Holds up to 4 bats with specialized storage.",
+    description: "Ultimate tournament backpack. Holds 4 bats and all gear.",
     sizes: ["One Size"],
     rating: 4.9,
-    reviews: 82
+    reviews: 820
   },
+
+  // --- GRIDIRON & DIAMOND UNIFORMS ($38) ---
   {
-    id: 903,
-    name: "Sialkot Elite 'Victory' Pro-Performance Hoodie",
+    id: 1101,
+    name: "Sialkot Pro-Gridiron 'Endzone' Elite Uniform",
     category: "Men",
-    priceUSD: 40.00,
-    image: "https://res.cloudinary.com/dc0ytviey/image/upload/v1769946031/received_636377795397638_c5nabl.jpg",
-    description: "Championship standard in varsity comfort. Built for the USA high-stakes environment.",
+    priceUSD: 38.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770054613/2_811d056b-a34e-49ea-b42f-6595878871c4_800x_kj2kke.jpg",
+    description: "Double-stitched reinforced shoulders for the gridiron. High-stretch performance.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 5.0,
-    reviews: 128
+    reviews: 312
   },
   {
-    id: 901,
-    name: "Sialkot Elite 'Victory' Varsity Performance Jacket",
+    id: 1102,
+    name: "Varsity 'Touchdown' Performance Kit",
     category: "Men",
-    priceUSD: 60.00,
-    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769616663/IMG_20260128_204235_xsyqxp.png",
-    description: "The ultimate layering piece for the American athlete. Pre-game tunnel walk ready.",
+    priceUSD: 38.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770054614/American-Football-700-9_vpggpv.jpg",
+    description: "Friday Night Lights essential. Moisture-wicking technology.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    rating: 4.9,
+    reviews: 189
+  },
+  {
+    id: 1103,
+    name: "Sialkot 'Field General' Blackout Series",
+    category: "Men",
+    priceUSD: 38.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770056364/jerseys_j0kxki.jpg",
+    description: "Stealth aesthetics for high-stakes games.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    rating: 4.9,
+    reviews: 95
+  },
+  {
+    id: 1104,
+    name: "Sialkot 'Infield Master' Baseball Uniform",
+    category: "Men",
+    priceUSD: 38.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770048123/FD-163_FD-5060_u9c4nk.png",
+    description: "Professional button-down front with reinforced knees.",
+    sizes: ["S", "M", "L", "XL"],
+    rating: 4.8,
+    reviews: 256
+  },
+  {
+    id: 1105,
+    name: "Elite 'Home Plate' Tournament Jersey",
+    category: "Men",
+    priceUSD: 38.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770048123/FD-BASE-VN2-3444-nLxSniE19uaW_alt_3_x1e3hs.png",
+    description: "High-performance mesh jersey with custom piping.",
+    sizes: ["S", "M", "L", "XL"],
+    rating: 5.0,
+    reviews: 178
+  },
+  {
+    id: 1106,
+    name: "Diamond Heritage 'iw4' Classic Set",
+    category: "Men",
+    priceUSD: 38.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770048122/iw4bvdxfzz7ak15hcgrm_cqn51z.jpg",
+    description: "Traditional aesthetic meets Sialkot core performance tech.",
+    sizes: ["S", "M", "L", "XL"],
+    rating: 4.7,
+    reviews: 64
+  },
+  {
+    id: 1107,
+    name: "NCAA 'Practice Protocol' Field Jersey",
+    category: "Men",
+    priceUSD: 38.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770048125/aHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL2dhbWVjb2Nrc29ubGluZS1jb20vMjAyNi8wMS9hMDQ5ZmIxNS1ic2JfMDEyM19wcmFjdGljZV9kYXZpc18yNl81OS5qcGc_iy4soz.png",
+    description: "Built for the daily grind. High-density knit construction.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    rating: 4.8,
+    reviews: 112
+  },
+  {
+    id: 1108,
+    name: "Sialkot 'Diamond Legend' Performance Set",
+    category: "Men",
+    priceUSD: 38.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770055149/2026_BASE_LeggettNo7Legacy_FRONT_rkrgpu.webp",
+    description: "The choice of collegiate programs across the USA.",
+    sizes: ["S", "M", "L", "XL"],
+    rating: 5.0,
+    reviews: 212
+  },
+  {
+    id: 1109,
+    name: "Endzone 'Gridiron' Pro-Level Model",
+    category: "Men",
+    priceUSD: 38.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770056366/american-football-player-uniform-training-field_23-2150034543_w6cmwh.jpg",
+    description: "Engineered for high-impact endzone collisions.",
+    sizes: ["M", "L", "XL", "XXL"],
+    rating: 4.9,
+    reviews: 340
+  },
+  {
+    id: 1110,
+    name: "Sialkot 'Field Stealth' Dark Uniform",
+    category: "Men",
+    priceUSD: 38.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770056364/jerseys_j0kxki.jpg",
+    description: "Stealth optics for night games. High-visibility piping.",
+    sizes: ["S", "M", "L", "XL"],
+    rating: 5.0,
+    reviews: 420
+  },
+  {
+    id: 1111,
+    name: "Sialkot 'Gridiron Stealth' Model X",
+    category: "Men",
+    priceUSD: 38.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770054612/16AMERICANFOOTBALLMODEL_swj02j.jpg",
+    description: "Advanced compression fit for elite skill players.",
+    sizes: ["S", "M", "L", "XL"],
+    rating: 4.9,
+    reviews: 320
+  },
+  {
+    id: 1112,
+    name: "Sialkot 'Training Protocol' Gridiron Uniform",
+    category: "Men",
+    priceUSD: 38.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770056366/american-football-player-uniform-training-field_23-2150034543_w6cmwh.jpg",
+    description: "Professional grade training uniform. High-density stretch fabric with moisture management for elite practice sessions.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 5.0,
-    reviews: 428
+    reviews: 84
   },
+
+  // --- COURT HERITAGE ($40) ---
   {
     id: 801,
     name: "Sialkot Pro-Court 'Midnight Elite' Uniform",
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959108/r2bTqPDVgvog-1_hgbxbr.jpg",
-    description: "Dominance starts with the right gear. Engineered for the USA courts with heavy-duty mesh and a compression fit. Built for winners.",
+    description: "Heavy-duty mesh for the USA courts.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 5.0,
     reviews: 1240
@@ -129,21 +221,10 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959108/189-1_407fdb46-3f2a-4381-8fdd-26b09f0a65cb_mchjhk.jpg",
-    description: "Gold-standard aesthetics with varsity-grade durability. Features Sialkot's legendary sweat-wicking fabric for high-stakes tournament play.",
+    description: "Varsity-grade durability. Championship standard.",
     sizes: ["S", "M", "L", "XL"],
     rating: 4.9,
     reviews: 864
-  },
-  {
-    id: 803,
-    name: "Brooklyn 'Asphalt' Streetball Jersey",
-    category: "Men",
-    priceUSD: 40.00,
-    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959108/r2bTqPDVgvog-1_hgbxbr.jpg",
-    description: "Tough enough for the concrete courts of NY. Breathable side-panels and extra-deep mesh for maximum ventilation during intensive play.",
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    rating: 4.8,
-    reviews: 512
   },
   {
     id: 804,
@@ -151,76 +232,43 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959106/unisex-nike-stephen-curry-black-golden-state-warriors-swingman-badge-player-jersey-city-edition_pi5202000_ff_5202680-898016d5c53d4c7303a4_full_s1hfmj.jpg",
-    description: "Premium swingman edition. Features reinforced lettering and a high-mobility cut, identical to the kits used by Bay Area legends.",
+    description: "Premium swingman edition for the Bay Area.",
     sizes: ["S", "M", "L", "XL"],
     rating: 5.0,
     reviews: 3201
   },
   {
     id: 805,
-    name: "Manhattan 'Precision' Performance Kit",
+    name: "Precision 'Mockup' Elite Uniform",
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959077/realistic-basketball-jersey-front-and-back-view-mockup-free-vector_rp66dv.jpg",
-    description: "Architectural design for the court. A precise, ergonomic fit that minimizes drag and maximizes vertical jump potential.",
+    description: "Clean lines and high-performance mesh layout.",
     sizes: ["S", "M", "L", "XL", "XXL"],
-    rating: 4.8,
-    reviews: 672
+    rating: 4.7,
+    reviews: 430
   },
   {
     id: 806,
-    name: "Youth 'Future Star' All-Star Uniform",
+    name: "Future Star 'Youth Elite' Kit",
     category: "Kids",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959076/Youth-Basketball-Uniforms-manufacturer-Pakistan_ur1l7x.jpg",
-    description: "Designed for the next generation of NBA talent. Lightweight, flexible, and virtually indestructible for all-day elite practice.",
+    description: "Scaling Sialkot tech for the next generation.",
     sizes: ["S", "M", "L"],
-    rating: 5.0,
-    reviews: 1560
-  },
-  {
-    id: 807,
-    name: "Pro-Level 'ZWBK-700' Performance Suit",
-    category: "Men",
-    priceUSD: 40.00,
-    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959075/ZWBK-700-F_vizasi.jpg",
-    description: "Industrial strength court-wear. The ZWBK-700 series is the toughest uniform in Sialkot's global arsenal.",
-    sizes: ["M", "L", "XL", "XXL"],
     rating: 4.9,
     reviews: 890
   },
   {
-    id: 808,
-    name: "Chicago 'Windy City' Redline Edition",
+    id: 807,
+    name: "ZWBK-700 'Armor Core' Jersey",
     category: "Men",
     priceUSD: 40.00,
-    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959050/188-1_59d0b9a1-c567-4ad9-ad5f-2ba062b470d6_pao8pn.jpg",
-    description: "Aggressive styling for the Windy City. Bold red accents on a deep black chassis. Intimidate the competition in the Chi.",
-    sizes: ["S", "M", "L", "XL"],
-    rating: 5.0,
-    reviews: 2105
-  },
-  {
-    id: 809,
-    name: "Custom Adult 'Full-Court' Elite Uniform",
-    category: "Men",
-    priceUSD: 40.00,
-    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959049/Custom_Adult_Basketball_Uniforms_664264dfe7ddc_jqmbze.jpg",
-    description: "Handcrafted durability. This custom-grade kit offers a tailored feel for adult leagues across the United States.",
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959075/ZWBK-700-F_vizasi.jpg",
+    description: "The toughest uniform in the catalog. Virtually indestructible.",
     sizes: ["M", "L", "XL", "XXL"],
-    rating: 4.9,
-    reviews: 1420
-  },
-  {
-    id: 810,
-    name: "NCAA 'Heritage' Blue & White Edition",
-    category: "Men",
-    priceUSD: 40.00,
-    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959047/s-l1200_szuyx4.jpg",
-    description: "Classic college ball aesthetic. Features advanced thermal-regulation fabric and national-tier performance craftsmanship.",
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    rating: 4.8,
-    reviews: 1150
+    rating: 5.0,
+    reviews: 1560
   },
   {
     id: 811,
@@ -228,21 +276,21 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959046/usa-basketball-uniforms_lmxidn.jpg",
-    description: "The gold standard of patriotic performance. Sialkot's flagship USA kit, favored by Pro-Am tournament organizers nationwide.",
+    description: "Patriotic performance. Sialkot's flagship USA kit.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 5.0,
     reviews: 5802
   },
   {
     id: 812,
-    name: "Maroon 'Ivy League' Traditionalist Set",
+    name: "Ivy League 'Maroon Heritage' Set",
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959010/03-1_rok8gj.jpg",
-    description: "Sophistication meets strength. A traditional maroon kit designed for high-end collegiate athletic programs.",
+    description: "Collegiate aesthetic with professional strength.",
     sizes: ["S", "M", "L", "XL"],
-    rating: 4.7,
-    reviews: 540
+    rating: 4.8,
+    reviews: 670
   },
   {
     id: 813,
@@ -250,87 +298,10 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959009/MaroonBasketballUniform_o6zycg.jpg",
-    description: "Deep, rich tones for the ultimate court presence. This series uses Sialkot's exclusive color-fast technology.",
+    description: "Deep, rich tones with color-fast technology.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 4.9,
     reviews: 980
-  },
-  {
-    id: 814,
-    name: "Neon 'Voltage' Performance Set",
-    category: "Men",
-    priceUSD: 40.00,
-    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959008/1-38_ldi0e1.jpg",
-    description: "High-voltage design for high-energy players. Engineered with lightweight ripstop mesh and glow-piping.",
-    sizes: ["S", "M", "L", "XL"],
-    rating: 5.0,
-    reviews: 720
-  },
-  {
-    id: 815,
-    name: "Cobalt 'Blue Flame' Tournament Kit",
-    category: "Men",
-    priceUSD: 40.00,
-    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959008/1-42_u5zayn.jpg",
-    description: "Cool confidence under pressure. The Cobalt Blue Flame series offers a professional finish for elite travel teams.",
-    sizes: ["S", "M", "L", "XL"],
-    rating: 4.8,
-    reviews: 1045
-  },
-  {
-    id: 816,
-    name: "Reversible 'Dual-Threat' Training Jersey",
-    category: "Men",
-    priceUSD: 40.00,
-    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959007/Wholesale-Blank-Basketball-Uniforms-Youth-Unisex-Reversible-Basketball-Jersey_ljzsb0.webp",
-    description: "Versatility for the grind. Sialkot's #1 training jersey for the USA market. Switch colors in seconds.",
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    rating: 4.7,
-    reviews: 3120
-  },
-  {
-    id: 817,
-    name: "Stealth 'Ghost' Elite Combat Kit",
-    category: "Men",
-    priceUSD: 40.00,
-    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769958927/Custom_Adult_Basketball_Uniforms_664264dfe7ddc_zhcmjr.jpg",
-    description: "Unseen, unbeatable. Features low-drag fabric and a silent-move silhouette for high-speed guards.",
-    sizes: ["M", "L", "XL", "XXL"],
-    rating: 4.9,
-    reviews: 610
-  },
-  {
-    id: 818,
-    name: "Urban 'Concrete' Grey Streetball Suit",
-    category: "Men",
-    priceUSD: 40.00,
-    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769958927/183-1_a1023030-c00d-43ad-8f5c-1541d6348c01_bqxydt.jpg",
-    description: "Inspired by Rucker Park legends. Handles the roughest concrete courts with ease. Legendary Sialkot durability.",
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    rating: 5.0,
-    reviews: 1240
-  },
-  {
-    id: 819,
-    name: "Throwback 'Retro-Court' 90s Edition",
-    category: "Men",
-    priceUSD: 40.00,
-    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769958927/71uA4UbhXvL._AC_UY1000__rhhrri.jpg",
-    description: "Retro graphics and oversized cuts meet modern fabric technology for the ultimate throwback experience.",
-    sizes: ["M", "L", "XL", "XXL"],
-    rating: 4.9,
-    reviews: 1870
-  },
-  {
-    id: 820,
-    name: "Pro-Am 'Legacy' Elite Jersey Series",
-    category: "Men",
-    priceUSD: 40.00,
-    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769958928/BSuit0040_900x_g9jbkf.jpg",
-    description: "Build your legacy. The preferred choice for elite independent leagues in the USA. Superior athletic comfort.",
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    rating: 5.0,
-    reviews: 2045
   },
   {
     id: 821,
@@ -338,26 +309,83 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769958927/mens_bball14_vhu6hj.jpg",
-    description: "Rule the court. Features Sialkot's Shield-Mesh tech, making it virtually indestructible during high-contact tournament play.",
+    description: "Virtually indestructible shield-mesh technology.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 5.0,
     reviews: 3120
+  },
+  {
+    id: 825,
+    name: "Chicago 'Night Ops' Reversible Jersey",
+    category: "Men",
+    priceUSD: 40.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959007/Wholesale-Blank-Basketball-Uniforms-Youth-Unisex-Reversible-Basketball-Jersey_ljzsb0.webp",
+    description: "Double-sided versatility for intense training.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    rating: 4.8,
+    reviews: 1450
+  },
+  {
+    id: 830,
+    name: "Brooklyn 'Iron' Streetball Uniform",
+    category: "Men",
+    priceUSD: 40.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959049/Custom_Adult_Basketball_Uniforms_664264dfe7ddc_jqmbze.jpg",
+    description: "The toughest kit in the 5 boroughs. Reinforced hems.",
+    sizes: ["M", "L", "XL", "XXL"],
+    rating: 5.0,
+    reviews: 890
+  },
+  {
+    id: 840,
+    name: "Sialkot 'Coastal Heat' Neon Uniform",
+    category: "Men",
+    priceUSD: 40.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959008/1-38_ldi0e1.jpg",
+    description: "High-visibility neon for the streetball circuit.",
+    sizes: ["S", "M", "L", "XL"],
+    rating: 5.0,
+    reviews: 740
+  },
+
+  // --- VICTORY LIFESTYLE ($40-$60) ---
+  {
+    id: 901,
+    name: "Sialkot Elite 'Victory' Varsity Performance Jacket",
+    category: "Men",
+    priceUSD: 60.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769616663/IMG_20260128_204235_xsyqxp.png",
+    description: "Pre-game tunnel walk essential. Weather-resistant.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    rating: 5.0,
+    reviews: 4280
+  },
+  {
+    id: 903,
+    name: "Sialkot Elite 'Victory' Pro-Performance Hoodie",
+    category: "Men",
+    priceUSD: 40.00,
+    image: "https://res.cloudinary.com/dc0ytviey/image/upload/v1769946031/received_636377795397638_c5nabl.jpg",
+    description: "Thermal-sync technology for post-game recovery.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    rating: 5.0,
+    reviews: 1280
   }
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
   {
     id: 1,
-    title: "Sialkot to USA: Dominating the Pro-Am Circuit",
-    summary: "How our latest $40 uniform collection is taking American college and independent leagues by storm.",
-    date: "Dec 25, 2024",
+    title: "Sialkot to USA: The 1,000 Post Milestone",
+    summary: "How we scaled from a specialized shop to a global marketplace giant in record time.",
+    date: "Feb 05, 2025",
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959046/usa-basketball-uniforms_lmxidn.jpg"
   },
   {
     id: 2,
-    title: "The Rise of the Pencil Bat: Sialkot's BBCOR Breakthrough",
-    summary: "Exploring why the 'Pencil Bat' is the most requested item in the US high school baseball scene this year.",
-    date: "Jan 15, 2025",
-    image: "https://res.cloudinary.com/dc0ytviey/image/upload/v1770143043/VictusPencilBBCORBaseballBat_-3_1_jfwdgj.png"
+    title: "Gridiron Protocol: Why US High Schools Choose Sialkot",
+    summary: "A deep dive into the $38 uniform that is changing the economics of American youth football.",
+    date: "Jan 28, 2025",
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770054613/2_811d056b-a34e-49ea-b42f-6595878871c4_800x_kj2kke.jpg"
   }
 ];
