@@ -27,7 +27,7 @@ export const TRANSLATIONS: Translations = {
   emptyCart: { en: 'Your Sialkot Cart is empty', ur: 'آپ کی ٹوکری خالی ہے' },
   total: { en: 'Total Amount', ur: 'کل رقم' },
   placeOrder: { en: 'Proceed to Checkout', ur: 'چیک آؤٹ پر جائیں' },
-  contactUs: { en: 'Customer Service', ur: 'کسٹمر سروس' },
+  contactUs: { en: 'Customer Service', ur: 'کسٹمر service' },
   sendMessage: { en: 'Submit Request', ur: 'درخواست جمع کروائیں' },
   aiStylist: { en: 'Marketplace Expert', ur: 'مارکیٹ ماہر' },
   stylistIntro: { en: 'Global Intelligence active. Accessing 1,000+ item database. How can I help?', ur: 'عالمی انٹیلی جنس فعال ہے۔ 1,000+ آئٹم ڈیٹا بیس تک رسائی۔ میں کیسے مدد کر سکتا ہوں؟' },
@@ -38,7 +38,7 @@ export const TRANSLATIONS: Translations = {
 };
 
 export const MASTER_CATALOG_DATA = `
-1101-1200. Sialkot Field Series (Gridiron & Diamond) – $38,
+1101-1200. Sialkot Field Series (Gridiron & American Uniforms) – $38-$40,
 801-850. Court Heritage Series (Basketball Pro-Am) – $40,
 901-950. Victory Lifestyle Series (Varsity Apparel) – $40-$60,
 1001-1010. Pro-Diamond Equipment (Bats & Gear) – $150
@@ -69,7 +69,7 @@ export const PRODUCTS: Product[] = [
     reviews: 820
   },
 
-  // --- GRIDIRON & DIAMOND UNIFORMS ($38) ---
+  // --- GRIDIRON & AMERICAN UNIFORMS ($38 - $40) ---
   {
     id: 1101,
     name: "Sialkot Pro-Gridiron 'Endzone' Elite Uniform",
@@ -201,6 +201,50 @@ export const PRODUCTS: Product[] = [
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 5.0,
     reviews: 84
+  },
+  {
+    id: 1113,
+    name: "Sialkot 'American Patriot' Elite Uniform",
+    category: "Men",
+    priceUSD: 40.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770128553/FB_IMG_1753631444486_vgv7it.jpg",
+    description: "Signature 'American Uniform' series. High-definition sublimation with patriotic accents and advanced thermal regulation.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    rating: 5.0,
+    reviews: 42
+  },
+  {
+    id: 1114,
+    name: "Sialkot 'Stars & Stripes' Pro Uniform",
+    category: "Men",
+    priceUSD: 40.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770128553/IMG_20240825_235546_falfi5.jpg",
+    description: "Elite 'American Uniform' variant. Engineered for USA Pro-Am performance with ultra-breathable mesh siding.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    rating: 4.9,
+    reviews: 28
+  },
+  {
+    id: 1115,
+    name: "Sialkot 'Liberty' Performance Uniform",
+    category: "Men",
+    priceUSD: 40.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770128671/FB_IMG_1747016784574_kzunjj.jpg",
+    description: "The 'American Uniform' standard. Liberty edition features reinforced dual-stitch seams for heavy competition use.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    rating: 5.0,
+    reviews: 19
+  },
+  {
+    id: 1116,
+    name: "Sialkot 'Independence' Elite Uniform",
+    category: "Men",
+    priceUSD: 40.00,
+    image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1770128671/FB_IMG_1745329080230_it2zeb.jpg",
+    description: "Championship-grade 'American Uniform'. Designed for the Independence Day tournaments with high-visibility graphics.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    rating: 5.0,
+    reviews: 35
   },
 
   // --- COURT HERITAGE ($40) ---
