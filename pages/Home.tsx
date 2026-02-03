@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
-import { ArrowRight, Trophy, Sparkles, TrendingUp, Zap, ChevronRight } from 'lucide-react';
+import { ArrowRight, Trophy, Sparkles, TrendingUp, Zap, ChevronRight, Clock, Star, ShieldCheck, Flame } from 'lucide-react';
 import { useAppContext } from '../components/AppContext';
 import { PRODUCTS } from '../constants';
 import ProductCard from '../components/ProductCard';
@@ -12,132 +12,207 @@ const Home: React.FC = () => {
   const { t } = useAppContext();
   
   // Categorize for Amazon Rows
-  const bestSellers = useMemo(() => PRODUCTS.filter(p => p.reviews > 500).slice(0, 6), []);
-  const uniforms = useMemo(() => PRODUCTS.filter(p => p.id >= 801 && p.id <= 821).slice(0, 6), []);
-  const topRated = useMemo(() => PRODUCTS.filter(p => p.rating >= 4.9).slice(0, 6), []);
+  const bestSellers = useMemo(() => PRODUCTS.filter(p => p.reviews > 1000).slice(0, 8), []);
+  const uniforms = useMemo(() => PRODUCTS.filter(p => p.id >= 801 && p.id <= 821).slice(0, 8), []);
+  const victoryJacket = useMemo(() => PRODUCTS.find(p => p.id === 901), []);
+  const lightningDeal = PRODUCTS.find(p => p.id === 811) || PRODUCTS[0];
 
   return (
     <div className="bg-[#EAEDED] pb-20">
-      {/* Amazon Hero Carousel (Simulated) */}
-      <div className="relative h-[400px] md:h-[600px] overflow-hidden">
+      {/* Amazon Hero Carousel - Optimized for USA Performance */}
+      <div className="relative h-[450px] md:h-[650px] overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#EAEDED] z-10"></div>
         <img 
           src="https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959046/usa-basketball-uniforms_lmxidn.jpg" 
           alt="Featured Global Deal" 
-          className="w-full h-full object-cover animate-scale-slow"
+          className="w-full h-full object-cover animate-scale-slow opacity-90"
         />
-        <div className="absolute inset-x-0 bottom-40 z-20 max-w-7xl mx-auto px-4">
-           <div className="bg-white/90 backdrop-blur-md p-8 md:p-12 rounded shadow-2xl max-w-xl border-l-8 border-[#FF9900]">
-              <h1 className="text-4xl md:text-5xl font-black text-[#131921] uppercase tracking-tighter italic leading-none mb-4">
-                 Global <br /> <span className="text-[#FF9900]">Uniform</span> Hub
-              </h1>
-              <p className="text-gray-600 font-bold mb-8 italic">Direct from Sialkot Factory to USA Courts. Fast Sync active.</p>
-              <Link to="/sport-store" className="bg-[#FF9900] text-[#131921] px-10 py-4 rounded font-black text-sm uppercase tracking-widest hover:bg-[#F08804] transition-colors shadow-lg">
-                 Explore Varsity Deals
-              </Link>
+        <div className="absolute inset-0 z-20 flex flex-col justify-center max-w-[1600px] mx-auto px-6">
+           <div className="max-w-xl animate-fade-in-up">
+              <div className="bg-white/95 backdrop-blur-md p-10 rounded shadow-2xl border-l-8 border-[#FF9900] holographic-glow">
+                <div className="flex items-center gap-2 mb-4">
+                   <ShieldCheck className="text-[#FF9900]" size={20} />
+                   <span className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400">USA Varsity Standard</span>
+                </div>
+                <h1 className="text-5xl md:text-7xl font-black text-[#131921] uppercase tracking-tighter italic leading-[0.85] mb-6">
+                   Elite <br /> <span className="text-[#FF9900]">Court</span> Heritage
+                </h1>
+                <p className="text-gray-600 font-bold mb-8 italic text-sm leading-relaxed">Direct Sialkot Pricing ($40) verified for NCAA and Pro-Am leagues. Join the elite elite circle.</p>
+                <div className="flex gap-4">
+                  <Link to="/sport-store" className="inline-block bg-[#FF9900] text-[#131921] px-10 py-4 rounded font-black text-xs uppercase tracking-widest hover:bg-[#F08804] transition-all shadow-lg hover:shadow-[#FF9900]/20 transform hover:-translate-y-1">
+                     Shop Uniforms
+                  </Link>
+                  <Link to="/auto-pricing" className="hidden sm:inline-block bg-[#131921] text-white px-10 py-4 rounded font-black text-xs uppercase tracking-widest hover:bg-black transition-all shadow-lg transform hover:-translate-y-1">
+                     Neural Scan
+                  </Link>
+                </div>
+              </div>
            </div>
         </div>
       </div>
 
-      <div className="max-w-[1600px] mx-auto px-4 -mt-32 relative z-30">
-        {/* Amazon-Style Row 1: Top Row Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-           {/* Card 1 */}
-           <div className="bg-white p-6 shadow-sm flex flex-col h-full">
-              <h3 className="text-xl font-black mb-4 uppercase tracking-tighter italic">Varsity Uniforms</h3>
-              <div className="grid grid-cols-2 gap-2 flex-grow mb-4">
-                 {uniforms.slice(0, 4).map(p => (
-                   <Link key={p.id} to={`/product/${p.id}`} className="group relative aspect-square overflow-hidden bg-gray-50">
-                      <img src={p.image} alt={p.name} className="w-full h-full object-cover transition-transform group-hover:scale-110" />
-                   </Link>
-                 ))}
+      <div className="max-w-[1600px] mx-auto px-6 -mt-40 relative z-30 space-y-8">
+        {/* Amazon-Style Row 1: The "Quad Card" Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+           {/* Card 1: NEW JACKET SPOTLIGHT - Tunnel Walk Protocol */}
+           <div className="bg-white p-6 shadow-sm flex flex-col h-full hover:shadow-xl transition-shadow border-t-4 border-red-600">
+              <div className="flex items-center justify-between mb-4">
+                 <h3 className="text-xl font-bold uppercase italic tracking-tighter">Tunnel Walk Essentials</h3>
+                 <Flame size={20} className="text-red-600 animate-pulse" />
               </div>
-              <Link to="/sport-store" className="text-xs font-bold text-blue-600 hover:text-[#C7511F] hover:underline">See more basketball gear</Link>
+              <div className="flex-grow flex flex-col items-center">
+                 <Link to="/product/901" className="block relative aspect-square bg-gray-50 mb-4 overflow-hidden rounded group border border-gray-100">
+                    <img src={victoryJacket?.image} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute bottom-0 left-0 right-0 bg-red-600 text-white text-[10px] font-black text-center py-1 uppercase tracking-widest">Limited Drop</div>
+                 </Link>
+                 <div className="text-center">
+                    <p className="text-sm font-black text-[#131921] mb-1">Victory Performance Jacket</p>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase mb-3">Sync Protocol $60.00</p>
+                 </div>
+              </div>
+              <Link to="/product/901" className="text-xs font-bold text-blue-600 hover:text-[#C7511F] hover:underline mt-auto">Secure the Piece</Link>
            </div>
            
-           {/* Card 2 */}
-           <div className="bg-white p-6 shadow-sm flex flex-col h-full">
-              <h3 className="text-xl font-black mb-4 uppercase tracking-tighter italic">USA Best Sellers</h3>
-              <Link to={`/product/${PRODUCTS[0].id}`} className="block relative aspect-video overflow-hidden mb-4 bg-gray-50">
-                 <img src={PRODUCTS[0].image} alt="Best Seller" className="w-full h-full object-cover" />
-                 <div className="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded">20% OFF</div>
-              </Link>
-              <p className="text-xs text-gray-500 mb-4 line-clamp-2">The most recognized street silhouette in our global marketplace.</p>
-              <Link to="/shop" className="text-xs font-bold text-blue-600 hover:text-[#C7511F] hover:underline mt-auto">Shop now</Link>
-           </div>
-
-           {/* Card 3 - Neural Core Promo */}
-           <div className="bg-white p-6 shadow-sm flex flex-col h-full border-t-4 border-[#FF9900]">
-              <h3 className="text-xl font-black mb-4 uppercase tracking-tighter italic">AI Neural Price</h3>
-              <div className="flex-grow flex flex-col items-center justify-center text-center p-4 bg-gray-50 rounded-lg mb-4">
-                 <Sparkles size={48} className="text-[#FF9900] mb-4 animate-pulse" />
-                 <p className="text-sm font-bold text-primary italic leading-relaxed">Scan any product photo to find the best Sialkot factory price instantly.</p>
+           {/* Card 2: Lightning Deal Mockup */}
+           <div className="bg-white p-6 shadow-sm flex flex-col relative overflow-hidden h-full hover:shadow-xl transition-shadow">
+              <div className="absolute top-0 right-0 bg-[#CC0C39] text-white px-3 py-1 text-[10px] font-bold uppercase italic">
+                 Lightning Deal
               </div>
-              <Link to="/auto-pricing" className="text-xs font-bold text-blue-600 hover:text-[#C7511F] hover:underline mt-auto">Open Scanner Core</Link>
+              <h3 className="text-xl font-bold mb-4 uppercase italic tracking-tighter">Today's Deals</h3>
+              <div className="flex-grow flex flex-col justify-center">
+                 <Link to={`/product/${lightningDeal.id}`} className="block relative aspect-square bg-gray-50 mb-4 overflow-hidden rounded group">
+                    <img src={lightningDeal.image} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500" />
+                 </Link>
+                 <div className="flex items-center gap-2 mb-2">
+                    <span className="bg-[#CC0C39] text-white px-2 py-0.5 rounded text-[11px] font-bold">Factory Price</span>
+                    <span className="text-[#CC0C39] text-xs font-bold uppercase tracking-widest">Sialkot Direct</span>
+                 </div>
+                 <p className="text-sm font-bold text-[#131921] line-clamp-1">{lightningDeal.name}</p>
+              </div>
+              <Link to="/shop" className="text-xs font-bold text-blue-600 hover:text-[#C7511F] hover:underline mt-6">See all deals</Link>
            </div>
 
-           {/* Card 4 - Shop by Category */}
-           <div className="bg-white p-6 shadow-sm flex flex-col h-full">
-              <h3 className="text-xl font-black mb-4 uppercase tracking-tighter italic">Global Categories</h3>
-              <div className="grid grid-cols-2 gap-4 flex-grow mb-4">
-                 {['Men', 'Women', 'Kids', 'Sport'].map(cat => (
-                   <Link key={cat} to="/shop" className="flex flex-col items-center gap-2 group">
-                      <div className="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-200 transition-colors">
-                         <Zap size={24} className="text-gray-400 group-hover:text-[#FF9900]" />
-                      </div>
-                      <span className="text-[10px] font-black uppercase text-gray-500 tracking-widest">{cat}</span>
+           {/* Card 3: Neural Core Promotion */}
+           <div className="bg-[#131921] text-white p-6 shadow-sm flex flex-col border-t-4 border-[#FF9900] h-full hover:shadow-xl transition-shadow">
+              <div className="flex items-center gap-2 mb-4">
+                 <Sparkles className="text-[#FF9900]" size={16} />
+                 <h3 className="text-xl font-bold uppercase italic tracking-tighter">Neural Sync</h3>
+              </div>
+              <div className="flex-grow flex flex-col items-center justify-center text-center space-y-4 py-4">
+                 <div className="w-28 h-28 bg-white/5 rounded-full flex items-center justify-center relative">
+                    <Zap size={44} className="text-[#FF9900] animate-pulse" />
+                    <div className="absolute inset-0 border-2 border-[#FF9900] rounded-full border-dashed animate-spin-slow"></div>
+                 </div>
+                 <p className="text-[11px] font-medium text-gray-400 px-4 leading-relaxed uppercase tracking-widest">
+                    Identify any pro uniform and unlock factory pricing protocol instantly.
+                 </p>
+              </div>
+              <Link to="/auto-pricing" className="text-xs font-bold text-[#FF9900] hover:text-white hover:underline mt-6">Open Scanner Protocol</Link>
+           </div>
+
+           {/* Card 4: Varsity Spotlight Grid */}
+           <div className="bg-white p-6 shadow-sm flex flex-col h-full hover:shadow-xl transition-shadow">
+              <h3 className="text-xl font-bold mb-4 uppercase italic tracking-tighter">Elite Varsity Series</h3>
+              <div className="grid grid-cols-2 gap-2 flex-grow mb-6">
+                 {uniforms.slice(0, 4).map(p => (
+                   <Link key={p.id} to={`/product/${p.id}`} className="aspect-square bg-gray-50 overflow-hidden group rounded-sm border border-gray-100">
+                      <img src={p.image} className="w-full h-full object-cover group-hover:opacity-80 transition-opacity" />
                    </Link>
                  ))}
               </div>
-              <Link to="/shop" className="text-xs font-bold text-blue-600 hover:text-[#C7511F] hover:underline">View all collections</Link>
+              <Link to="/sport-store" className="text-xs font-bold text-blue-600 hover:text-[#C7511F] hover:underline mt-auto">View all collections</Link>
            </div>
         </div>
 
-        {/* Amazon-Style Horizontal Scroll Row 1 */}
-        <div className="bg-white p-6 shadow-sm mb-10">
-           <div className="flex items-center gap-3 mb-6">
-              <h2 className="text-2xl font-black tracking-tighter uppercase italic">Best Sellers <span className="text-[#FF9900]">in Sportswear</span></h2>
-              <div className="h-0.5 flex-grow bg-gray-100"></div>
+        {/* Amazon-Style Row: The Scrolling $40 Hub */}
+        <div className="bg-white p-8 shadow-sm rounded-sm">
+           <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-4">
+                <h2 className="text-2xl font-black italic tracking-tighter uppercase">USA <span className="text-[#FF9900]">Pro-Am</span> Master Collection</h2>
+                <span className="hidden sm:inline bg-green-100 text-green-700 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Global Sync: Active</span>
+              </div>
+              <Link to="/sport-store" className="text-xs font-bold text-blue-600 hover:text-[#C7511F] flex items-center gap-1 group">
+                 Shop the hub <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
            </div>
-           <div className="flex gap-4 overflow-x-auto pb-6 scrollbar-hide">
-              {bestSellers.map(product => (
-                <div key={product.id} className="min-w-[240px] max-w-[240px]">
+           <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide">
+              {uniforms.map(product => (
+                <div key={product.id} className="min-w-[220px] max-w-[220px] flex-shrink-0">
                    <ProductCard product={product} />
                 </div>
               ))}
-              <div className="min-w-[200px] flex items-center justify-center group cursor-pointer border-2 border-dashed border-gray-100 rounded-sm hover:border-[#FF9900] transition-colors">
-                 <Link to="/shop" className="flex flex-col items-center text-gray-400 group-hover:text-[#FF9900]">
-                    <ChevronRight size={48} />
-                    <span className="text-xs font-black uppercase tracking-widest">See All</span>
+              <div className="min-w-[220px] flex items-center justify-center border-2 border-dashed border-gray-200 rounded group hover:border-[#FF9900] transition-colors cursor-pointer bg-gray-50/50">
+                  <Link to="/sport-store" className="flex flex-col items-center gap-3 text-gray-300 group-hover:text-[#FF9900]">
+                    <div className="w-16 h-16 rounded-full border-2 border-current flex items-center justify-center">
+                       <ChevronRight size={32} />
+                    </div>
+                    <span className="text-[11px] font-black uppercase tracking-[0.3em]">View 21 Items</span>
+                  </Link>
+              </div>
+           </div>
+        </div>
+
+        {/* Secondary Scroller: Inspired by your browsing */}
+        <div className="bg-white p-8 shadow-sm rounded-sm">
+           <div className="flex items-center gap-4 mb-8">
+              <h2 className="text-xl font-bold uppercase italic tracking-tighter">Inspired by <span className="text-blue-600">Global Trends</span></h2>
+              <div className="h-0.5 flex-grow bg-gray-100"></div>
+           </div>
+           <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide">
+              {bestSellers.map(product => (
+                <div key={product.id} className="min-w-[200px] max-w-[200px] flex-shrink-0">
+                   <div className="group cursor-pointer">
+                      <Link to={`/product/${product.id}`} className="block aspect-square overflow-hidden mb-3 rounded bg-white border border-gray-100 p-3 group-hover:shadow-md transition-shadow">
+                         <img src={product.image} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform" />
+                      </Link>
+                      <div className="flex items-center gap-1 mb-1.5">
+                         <div className="flex text-[#FFA41C]">
+                            {[...Array(5)].map((_, i) => <Star key={i} size={12} fill={i < 4 ? "currentColor" : "none"} strokeWidth={2} />)}
+                         </div>
+                         <span className="text-[10px] text-blue-600 font-bold hover:underline">({product.reviews})</span>
+                      </div>
+                      <div className="flex items-baseline gap-1 text-[#131921] font-black">
+                         <span className="text-[10px]">$</span>
+                         <span className="text-xl leading-none">{product.priceUSD.toFixed(0)}</span>
+                         <span className="text-[10px]">00</span>
+                      </div>
+                   </div>
+                </div>
+              ))}
+           </div>
+        </div>
+
+        {/* High-Impact Brand Banner Strip */}
+        <div className="bg-black text-white p-16 rounded shadow-2xl relative overflow-hidden group border-2 border-[#FF9900]/20">
+           <div className="absolute inset-0 bg-gradient-to-r from-[#FF9900]/20 to-transparent"></div>
+           <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#FF9900]/10 rounded-full blur-[100px] group-hover:scale-150 transition-transform duration-1000"></div>
+           
+           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+              <div className="text-center md:text-left max-w-2xl">
+                 <div className="inline-block bg-[#FF9900] text-black px-4 py-1 rounded-sm text-[10px] font-black uppercase tracking-[0.4em] mb-4">Marketplace Exclusive</div>
+                 <h2 className="text-5xl md:text-6xl font-black italic tracking-tighter uppercase mb-4 leading-[0.85]">The <span className="text-[#FF9900]">Buzzer Beater</span> <br /> Global Sync Special</h2>
+                 <p className="text-gray-400 font-bold uppercase tracking-widest text-[11px] flex items-center gap-2 justify-center md:justify-start">
+                    <Clock size={14} className="animate-pulse" /> Active Protocol: 12 Hours Remaining
+                 </p>
+              </div>
+              <div className="flex items-center gap-8">
+                 <div className="hidden lg:flex flex-col items-center">
+                    <span className="text-4xl font-black text-white">4.9</span>
+                    <div className="flex text-[#FF9900] mb-1">
+                      {[1,2,3,4,5].map(i => <Star key={i} size={12} fill="currentColor" />)}
+                    </div>
+                    <span className="text-[8px] uppercase tracking-widest text-gray-500 font-bold">Avg Rating</span>
+                 </div>
+                 <div className="hidden lg:block w-[1px] h-16 bg-white/10"></div>
+                 <div className="flex flex-col items-center">
+                    <span className="text-4xl font-black text-[#FF9900]">21k+</span>
+                    <span className="text-[8px] uppercase tracking-widest text-gray-500 font-bold">Units Synced</span>
+                 </div>
+                 <Link to="/shop" className="bg-white text-black px-12 py-5 rounded font-black text-sm uppercase tracking-widest hover:bg-[#FF9900] transition-all transform hover:scale-105 active:scale-95 shadow-xl">
+                    Claim Your Kit
                  </Link>
               </div>
            </div>
-        </div>
-
-        {/* Amazon-Style Horizontal Scroll Row 2 */}
-        <div className="bg-white p-6 shadow-sm mb-10">
-           <div className="flex items-center gap-3 mb-6">
-              <h2 className="text-2xl font-black tracking-tighter uppercase italic text-blue-600">Top Rated <span className="text-gray-300">Inspired by Trends</span></h2>
-              <div className="h-0.5 flex-grow bg-gray-100"></div>
-           </div>
-           <div className="flex gap-4 overflow-x-auto pb-6 scrollbar-hide">
-              {topRated.map(product => (
-                <div key={product.id} className="min-w-[240px] max-w-[240px]">
-                   <ProductCard product={product} />
-                </div>
-              ))}
-           </div>
-        </div>
-
-        {/* Sign In Banner (Amazon Style) */}
-        <div className="bg-white py-10 border-y border-gray-200 shadow-inner flex flex-col items-center justify-center text-center">
-           <div className="h-1 w-20 bg-gray-100 rounded-full mb-8"></div>
-           <p className="text-xs font-bold text-primary mb-3">See personalized recommendations</p>
-           <button className="bg-[#FFD814] hover:bg-[#F7CA00] text-[#131921] px-20 py-2 rounded-md font-black text-sm border border-[#FCD200] shadow-sm active:scale-95 mb-3">
-              Sign in
-           </button>
-           <p className="text-[10px] text-gray-500 font-bold">New customer? <span className="text-blue-600 hover:text-[#C7511F] cursor-pointer">Start here.</span></p>
-           <div className="h-1 w-20 bg-gray-100 rounded-full mt-8"></div>
         </div>
       </div>
     </div>

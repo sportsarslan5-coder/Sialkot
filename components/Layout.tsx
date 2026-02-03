@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
-import { ShoppingBag, Menu, X, Search, MessageCircle, Instagram, Facebook, ArrowUp, Sparkles, Trophy, Globe, ShieldCheck, MapPin, ChevronDown } from 'lucide-react';
+import { ShoppingBag, Menu, X, Search, MessageCircle, Instagram, Facebook, ArrowUp, Sparkles, Trophy, Globe, ShieldCheck, MapPin, ChevronDown, Home, User, Bell } from 'lucide-react';
 import { useAppContext } from './AppContext';
 import { WHATSAPP_NUMBER } from '../constants';
 
@@ -24,11 +24,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }, []);
 
   const navLinks = [
-    { name: 'home', path: '/' },
-    { name: 'shop', path: '/shop' },
-    { name: 'sportStore', path: '/sport-store', icon: <Trophy size={14} className="inline mr-1 text-accent" /> },
-    { name: 'men', path: '/shop?category=Men' },
-    { name: 'autoPricing', path: '/auto-pricing', icon: <Sparkles size={14} className="inline mr-1 text-accent" /> },
+    { name: 'home', path: '/', icon: <Home size={18} /> },
+    { name: 'shop', path: '/shop', icon: <ShoppingBag size={18} /> },
+    { name: 'sportStore', path: '/sport-store', icon: <Trophy size={18} /> },
+    { name: 'autoPricing', path: '/auto-pricing', icon: <Sparkles size={18} /> },
   ];
 
   const isActive = (path: string) => {
@@ -109,13 +108,13 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <Link
                 key={link.name}
                 to={link.path}
-                className="hover:border-white border border-transparent px-2 py-1 rounded-sm text-xs font-bold uppercase tracking-wide"
+                className={`hover:border-white border border-transparent px-2 py-1 rounded-sm text-xs font-bold uppercase tracking-wide flex items-center gap-2 ${isActive(link.path) ? 'bg-white/10' : ''}`}
               >
                 {t(link.name)}
               </Link>
             ))}
             <div className="ml-auto flex items-center gap-4">
-               <span className="text-xs font-bold text-[#FF9900] animate-pulse">USA Deals Protocol Active</span>
+               <span className="text-xs font-bold text-[#FF9900] animate-pulse hidden sm:inline">USA Deals Protocol Active</span>
                <div className="flex items-center gap-2">
                   <button onClick={() => setCurrency('USD')} className={`text-xs font-bold ${currency === 'USD' ? 'text-white underline underline-offset-4' : 'text-gray-400'}`}>USD</button>
                   <button onClick={() => setCurrency('PKR')} className={`text-xs font-bold ${currency === 'PKR' ? 'text-white underline underline-offset-4' : 'text-gray-400'}`}>PKR</button>
@@ -124,9 +123,35 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
          </div>
       </div>
 
-      <main className="flex-grow bg-[#EAEDED] relative">
+      <main className="flex-grow bg-[#EAEDED] relative pb-20 md:pb-0">
         {children}
       </main>
+
+      {/* Mobile App Bottom Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 md:hidden flex justify-around items-center py-2.5 px-6 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
+         {navLinks.map((link) => (
+            <Link 
+              key={link.name} 
+              to={link.path} 
+              className={`flex flex-col items-center gap-1 transition-colors ${isActive(link.path) ? 'text-[#FF9900]' : 'text-gray-400'}`}
+            >
+               {link.icon}
+               <span className="text-[10px] font-bold uppercase tracking-widest">{t(link.name)}</span>
+            </Link>
+         ))}
+         <Link 
+            to="/cart" 
+            className={`flex flex-col items-center gap-1 transition-colors relative ${isActive('/cart') ? 'text-[#FF9900]' : 'text-gray-400'}`}
+          >
+             <ShoppingBag size={18} />
+             <span className="text-[10px] font-bold uppercase tracking-widest">{t('cart')}</span>
+             {cart.length > 0 && (
+               <span className="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">
+                  {cart.length}
+               </span>
+             )}
+         </Link>
+      </div>
 
       {/* Back to top (Amazon style) */}
       <button 
@@ -136,7 +161,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         Back to top
       </button>
 
-      <footer className="bg-[#232F3E] text-white py-16">
+      <footer className="bg-[#232F3E] text-white py-16 hidden md:block">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 text-sm border-b border-white/10 pb-16">
             <div className="space-y-4">
                <h4 className="font-bold text-lg">Get to Know Us</h4>
