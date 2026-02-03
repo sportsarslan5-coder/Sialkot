@@ -38,6 +38,7 @@ export const TRANSLATIONS: Translations = {
 };
 
 export const MASTER_CATALOG_DATA = `
+902. Sialkot Pro-Flex "Essential" Performance Hoodie – $30,
 901. Sialkot Elite "Victory" Varsity Performance Jacket – $60,
 801. Sialkot Pro-Court "Midnight Elite" Uniform – $40,
 802. Varsity Gold "State Championship" Kit – $40,
@@ -63,6 +64,17 @@ export const MASTER_CATALOG_DATA = `
 `;
 
 export const PRODUCTS: Product[] = [
+  {
+    id: 902,
+    name: "Sialkot Pro-Flex 'Essential' Performance Hoodie",
+    category: "Men",
+    priceUSD: 30.00,
+    image: "https://res.cloudinary.com/dc0ytviey/image/upload/v1769946034/received_844928150918253_juleng.jpg",
+    description: "Disrupting the market with uncompromised quality. The Pro-Flex Essential Hoodie features a heavy-weight cotton blend with a tailored athletic fit. Engineered for the USA athlete who demands performance at a fair price. The new campus standard.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    rating: 5.0,
+    reviews: 822
+  },
   {
     id: 901,
     name: "Sialkot Elite 'Victory' Varsity Performance Jacket",

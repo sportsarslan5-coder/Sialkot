@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
-import { ArrowRight, Trophy, Sparkles, TrendingUp, Zap, ChevronRight, Clock, Star, ShieldCheck, Flame } from 'lucide-react';
+import { ArrowRight, Trophy, Sparkles, TrendingUp, Zap, ChevronRight, Clock, Star, ShieldCheck, Flame, Tag } from 'lucide-react';
 import { useAppContext } from '../components/AppContext';
 import { PRODUCTS } from '../constants';
 import ProductCard from '../components/ProductCard';
@@ -15,6 +15,7 @@ const Home: React.FC = () => {
   const bestSellers = useMemo(() => PRODUCTS.filter(p => p.reviews > 1000).slice(0, 8), []);
   const uniforms = useMemo(() => PRODUCTS.filter(p => p.id >= 801 && p.id <= 821).slice(0, 8), []);
   const victoryJacket = useMemo(() => PRODUCTS.find(p => p.id === 901), []);
+  const essentialHoodie = useMemo(() => PRODUCTS.find(p => p.id === 902), []);
   const lightningDeal = PRODUCTS.find(p => p.id === 811) || PRODUCTS[0];
 
   return (
@@ -54,23 +55,33 @@ const Home: React.FC = () => {
       <div className="max-w-[1600px] mx-auto px-6 -mt-40 relative z-30 space-y-8">
         {/* Amazon-Style Row 1: The "Quad Card" Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-           {/* Card 1: NEW JACKET SPOTLIGHT - Tunnel Walk Protocol */}
-           <div className="bg-white p-6 shadow-sm flex flex-col h-full hover:shadow-xl transition-shadow border-t-4 border-red-600">
+           {/* Card 1: NEW ARRIVALS SPOTLIGHT - Value vs Premium */}
+           <div className="bg-white p-6 shadow-sm flex flex-col h-full hover:shadow-xl transition-shadow border-t-4 border-[#FF9900]">
               <div className="flex items-center justify-between mb-4">
-                 <h3 className="text-xl font-bold uppercase italic tracking-tighter">Tunnel Walk Essentials</h3>
-                 <Flame size={20} className="text-red-600 animate-pulse" />
+                 <h3 className="text-xl font-bold uppercase italic tracking-tighter">Marketplace Hub</h3>
+                 <Sparkles size={20} className="text-[#FF9900] animate-pulse" />
               </div>
-              <div className="flex-grow flex flex-col items-center">
-                 <Link to="/product/901" className="block relative aspect-square bg-gray-50 mb-4 overflow-hidden rounded group border border-gray-100">
-                    <img src={victoryJacket?.image} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700" />
-                    <div className="absolute bottom-0 left-0 right-0 bg-red-600 text-white text-[10px] font-black text-center py-1 uppercase tracking-widest">Limited Drop</div>
+              <div className="grid grid-cols-2 gap-4 flex-grow mb-6">
+                 {/* Hoodie Value Spotlight */}
+                 <Link to="/product/902" className="group flex flex-col gap-1">
+                    <div className="aspect-square bg-gray-50 rounded overflow-hidden border border-gray-100 relative">
+                       <img src={essentialHoodie?.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                       <div className="absolute top-1 right-1 bg-green-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow">VALUE</div>
+                    </div>
+                    <span className="text-[10px] font-black uppercase text-[#131921] truncate">Essential Hoodie</span>
+                    <span className="text-[10px] text-gray-400 font-bold">$30.00</span>
                  </Link>
-                 <div className="text-center">
-                    <p className="text-sm font-black text-[#131921] mb-1">Victory Performance Jacket</p>
-                    <p className="text-[10px] text-gray-400 font-bold uppercase mb-3">Sync Protocol $60.00</p>
-                 </div>
+                 {/* Jacket Premium Spotlight */}
+                 <Link to="/product/901" className="group flex flex-col gap-1">
+                    <div className="aspect-square bg-gray-50 rounded overflow-hidden border border-gray-100 relative">
+                       <img src={victoryJacket?.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                       <div className="absolute top-1 right-1 bg-red-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow">ELITE</div>
+                    </div>
+                    <span className="text-[10px] font-black uppercase text-[#131921] truncate">Victory Jacket</span>
+                    <span className="text-[10px] text-gray-400 font-bold">$60.00</span>
+                 </Link>
               </div>
-              <Link to="/product/901" className="text-xs font-bold text-blue-600 hover:text-[#C7511F] hover:underline mt-auto">Secure the Piece</Link>
+              <Link to="/shop" className="text-xs font-bold text-blue-600 hover:text-[#C7511F] hover:underline">See full performance range</Link>
            </div>
            
            {/* Card 2: Lightning Deal Mockup */}
@@ -152,41 +163,9 @@ const Home: React.FC = () => {
            </div>
         </div>
 
-        {/* Secondary Scroller: Inspired by your browsing */}
-        <div className="bg-white p-8 shadow-sm rounded-sm">
-           <div className="flex items-center gap-4 mb-8">
-              <h2 className="text-xl font-bold uppercase italic tracking-tighter">Inspired by <span className="text-blue-600">Global Trends</span></h2>
-              <div className="h-0.5 flex-grow bg-gray-100"></div>
-           </div>
-           <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide">
-              {bestSellers.map(product => (
-                <div key={product.id} className="min-w-[200px] max-w-[200px] flex-shrink-0">
-                   <div className="group cursor-pointer">
-                      <Link to={`/product/${product.id}`} className="block aspect-square overflow-hidden mb-3 rounded bg-white border border-gray-100 p-3 group-hover:shadow-md transition-shadow">
-                         <img src={product.image} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform" />
-                      </Link>
-                      <div className="flex items-center gap-1 mb-1.5">
-                         <div className="flex text-[#FFA41C]">
-                            {[...Array(5)].map((_, i) => <Star key={i} size={12} fill={i < 4 ? "currentColor" : "none"} strokeWidth={2} />)}
-                         </div>
-                         <span className="text-[10px] text-blue-600 font-bold hover:underline">({product.reviews})</span>
-                      </div>
-                      <div className="flex items-baseline gap-1 text-[#131921] font-black">
-                         <span className="text-[10px]">$</span>
-                         <span className="text-xl leading-none">{product.priceUSD.toFixed(0)}</span>
-                         <span className="text-[10px]">00</span>
-                      </div>
-                   </div>
-                </div>
-              ))}
-           </div>
-        </div>
-
-        {/* High-Impact Brand Banner Strip */}
+        {/* Brand Banner Strip */}
         <div className="bg-black text-white p-16 rounded shadow-2xl relative overflow-hidden group border-2 border-[#FF9900]/20">
            <div className="absolute inset-0 bg-gradient-to-r from-[#FF9900]/20 to-transparent"></div>
-           <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#FF9900]/10 rounded-full blur-[100px] group-hover:scale-150 transition-transform duration-1000"></div>
-           
            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
               <div className="text-center md:text-left max-w-2xl">
                  <div className="inline-block bg-[#FF9900] text-black px-4 py-1 rounded-sm text-[10px] font-black uppercase tracking-[0.4em] mb-4">Marketplace Exclusive</div>
@@ -196,14 +175,6 @@ const Home: React.FC = () => {
                  </p>
               </div>
               <div className="flex items-center gap-8">
-                 <div className="hidden lg:flex flex-col items-center">
-                    <span className="text-4xl font-black text-white">4.9</span>
-                    <div className="flex text-[#FF9900] mb-1">
-                      {[1,2,3,4,5].map(i => <Star key={i} size={12} fill="currentColor" />)}
-                    </div>
-                    <span className="text-[8px] uppercase tracking-widest text-gray-500 font-bold">Avg Rating</span>
-                 </div>
-                 <div className="hidden lg:block w-[1px] h-16 bg-white/10"></div>
                  <div className="flex flex-col items-center">
                     <span className="text-4xl font-black text-[#FF9900]">21k+</span>
                     <span className="text-[8px] uppercase tracking-widest text-gray-500 font-bold">Units Synced</span>
