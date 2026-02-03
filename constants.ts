@@ -38,7 +38,11 @@ export const TRANSLATIONS: Translations = {
 };
 
 export const MASTER_CATALOG_DATA = `
-902. Sialkot Pro-Flex "Essential" Performance Hoodie – $30,
+1001. Sialkot "Pencil Protocol" Elite BBCOR Baseball Bat – $150,
+1004. Diamond Series Elite "Victus" Bat Pack – $150,
+1005. Sialkot "Grand Slam" Batting Gloves Pro – $150,
+1006. Elite Tournament Leg Guard Shield – $150,
+903. Sialkot Elite "Victory" Pro-Performance Hoodie – $40,
 901. Sialkot Elite "Victory" Varsity Performance Jacket – $60,
 801. Sialkot Pro-Court "Midnight Elite" Uniform – $40,
 802. Varsity Gold "State Championship" Kit – $40,
@@ -65,15 +69,37 @@ export const MASTER_CATALOG_DATA = `
 
 export const PRODUCTS: Product[] = [
   {
-    id: 902,
-    name: "Sialkot Pro-Flex 'Essential' Performance Hoodie",
+    id: 1001,
+    name: "Sialkot 'Pencil Protocol' Elite BBCOR Baseball Bat",
     category: "Men",
-    priceUSD: 30.00,
-    image: "https://res.cloudinary.com/dc0ytviey/image/upload/v1769946034/received_844928150918253_juleng.jpg",
-    description: "Disrupting the market with uncompromised quality. The Pro-Flex Essential Hoodie features a heavy-weight cotton blend with a tailored athletic fit. Engineered for the USA athlete who demands performance at a fair price. The new campus standard.",
+    priceUSD: 150.00,
+    image: "https://res.cloudinary.com/dc0ytviey/image/upload/v1770143043/VictusPencilBBCORBaseballBat_-3_1_jfwdgj.png",
+    description: "The viral sensation of the USA diamond. Engineered for maximum exit velocity and a balanced swing weight. BBCOR-certified.",
+    sizes: ["31/28", "32/29", "33/30", "34/31"],
+    rating: 5.0,
+    reviews: 245
+  },
+  {
+    id: 1004,
+    name: "Diamond Series Elite 'Victus' Bat Pack",
+    category: "Men",
+    priceUSD: 150.00,
+    image: "https://res.cloudinary.com/dc0ytviey/image/upload/v1770143317/WBD2589010__719f9aad56d543b1957031a2c5bd8981_pkkkar.jpg",
+    description: "The ultimate tournament backpack for the serious ballplayer. Holds up to 4 bats with specialized storage.",
+    sizes: ["One Size"],
+    rating: 4.9,
+    reviews: 82
+  },
+  {
+    id: 903,
+    name: "Sialkot Elite 'Victory' Pro-Performance Hoodie",
+    category: "Men",
+    priceUSD: 40.00,
+    image: "https://res.cloudinary.com/dc0ytviey/image/upload/v1769946031/received_636377795397638_c5nabl.jpg",
+    description: "Championship standard in varsity comfort. Built for the USA high-stakes environment.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 5.0,
-    reviews: 822
+    reviews: 128
   },
   {
     id: 901,
@@ -81,21 +107,10 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 60.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769616663/IMG_20260128_204235_xsyqxp.png",
-    description: "The ultimate layering piece for the American athlete. Pre-game tunnel walk ready. Engineered with a weather-resistant outer shell and premium insulated interior for championship-level warmth. A USA varsity staple redefined.",
+    description: "The ultimate layering piece for the American athlete. Pre-game tunnel walk ready.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 5.0,
     reviews: 428
-  },
-  {
-    id: 1,
-    name: "Urban Force One - Triple White Edition",
-    category: "Men",
-    priceUSD: 110.00,
-    image: "https://images.unsplash.com/photo-15950653106-6c9ebd614d3a?w=800&q=80",
-    description: "The top-rated street sneaker in our global catalog. Features genuine leather and advanced cushioning technology. A USA streetball staple.",
-    sizes: ["US 8", "US 9", "US 10", "US 11", "US 12"],
-    rating: 4.9,
-    reviews: 15402
   },
   {
     id: 801,
@@ -103,7 +118,7 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959108/r2bTqPDVgvog-1_hgbxbr.jpg",
-    description: "Dominance starts with the right gear. Engineered for the USA courts with heavy-duty mesh and a compression fit that moves with you. Built for winners.",
+    description: "Dominance starts with the right gear. Engineered for the USA courts with heavy-duty mesh and a compression fit. Built for winners.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 5.0,
     reviews: 1240
@@ -114,7 +129,7 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959108/189-1_407fdb46-3f2a-4381-8fdd-26b09f0a65cb_mchjhk.jpg",
-    description: "Gold-standard aesthetics with varsity-grade durability. Features Sialkot's legendary sweat-wicking fabric for high-stakes games.",
+    description: "Gold-standard aesthetics with varsity-grade durability. Features Sialkot's legendary sweat-wicking fabric for high-stakes tournament play.",
     sizes: ["S", "M", "L", "XL"],
     rating: 4.9,
     reviews: 864
@@ -125,7 +140,7 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959108/r2bTqPDVgvog-1_hgbxbr.jpg",
-    description: "Tough enough for the concrete courts of NY. Breathable side-panels and extra-deep mesh for maximum ventilation.",
+    description: "Tough enough for the concrete courts of NY. Breathable side-panels and extra-deep mesh for maximum ventilation during intensive play.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 4.8,
     reviews: 512
@@ -136,7 +151,7 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959106/unisex-nike-stephen-curry-black-golden-state-warriors-swingman-badge-player-jersey-city-edition_pi5202000_ff_5202680-898016d5c53d4c7303a4_full_s1hfmj.jpg",
-    description: "Premium swingman edition. Features reinforced lettering and a high-mobility cut, identical to the kits used by legends.",
+    description: "Premium swingman edition. Features reinforced lettering and a high-mobility cut, identical to the kits used by Bay Area legends.",
     sizes: ["S", "M", "L", "XL"],
     rating: 5.0,
     reviews: 3201
@@ -158,7 +173,7 @@ export const PRODUCTS: Product[] = [
     category: "Kids",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959076/Youth-Basketball-Uniforms-manufacturer-Pakistan_ur1l7x.jpg",
-    description: "Designed for the next generation of NBA talent. Lightweight, flexible, and virtually indestructible for all-day practice.",
+    description: "Designed for the next generation of NBA talent. Lightweight, flexible, and virtually indestructible for all-day elite practice.",
     sizes: ["S", "M", "L"],
     rating: 5.0,
     reviews: 1560
@@ -169,7 +184,7 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959075/ZWBK-700-F_vizasi.jpg",
-    description: "Industrial strength court-wear. The ZWBK-700 series is the toughest uniform in Sialkot's arsenal.",
+    description: "Industrial strength court-wear. The ZWBK-700 series is the toughest uniform in Sialkot's global arsenal.",
     sizes: ["M", "L", "XL", "XXL"],
     rating: 4.9,
     reviews: 890
@@ -180,7 +195,7 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959050/188-1_59d0b9a1-c567-4ad9-ad5f-2ba062b470d6_pao8pn.jpg",
-    description: "Aggressive styling for the Windy City. Bold red accents on a deep black chassis. Intimidate the competition.",
+    description: "Aggressive styling for the Windy City. Bold red accents on a deep black chassis. Intimidate the competition in the Chi.",
     sizes: ["S", "M", "L", "XL"],
     rating: 5.0,
     reviews: 2105
@@ -202,7 +217,7 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959047/s-l1200_szuyx4.jpg",
-    description: "Classic college ball aesthetic. Features advanced thermal-regulation fabric and national-tier craftsmanship.",
+    description: "Classic college ball aesthetic. Features advanced thermal-regulation fabric and national-tier performance craftsmanship.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 4.8,
     reviews: 1150
@@ -213,7 +228,7 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959046/usa-basketball-uniforms_lmxidn.jpg",
-    description: "The gold standard of patriotic performance. Sialkot's flagship USA kit, favored by Pro-Am tournament organizers.",
+    description: "The gold standard of patriotic performance. Sialkot's flagship USA kit, favored by Pro-Am tournament organizers nationwide.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 5.0,
     reviews: 5802
@@ -257,7 +272,7 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959008/1-42_u5zayn.jpg",
-    description: "Cool confidence under pressure. The Cobalt Blue Flame series offers a professional finish for elite teams.",
+    description: "Cool confidence under pressure. The Cobalt Blue Flame series offers a professional finish for elite travel teams.",
     sizes: ["S", "M", "L", "XL"],
     rating: 4.8,
     reviews: 1045
@@ -279,7 +294,7 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769958927/Custom_Adult_Basketball_Uniforms_664264dfe7ddc_zhcmjr.jpg",
-    description: "Unseen, unbeatable. Features low-drag fabric and a silent-move silhouette for speed players.",
+    description: "Unseen, unbeatable. Features low-drag fabric and a silent-move silhouette for high-speed guards.",
     sizes: ["M", "L", "XL", "XXL"],
     rating: 4.9,
     reviews: 610
@@ -312,7 +327,7 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769958928/BSuit0040_900x_g9jbkf.jpg",
-    description: "Build your legacy. The preferred choice for elite independent leagues in the USA. Superior comfort.",
+    description: "Build your legacy. The preferred choice for elite independent leagues in the USA. Superior athletic comfort.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 5.0,
     reviews: 2045
@@ -323,7 +338,7 @@ export const PRODUCTS: Product[] = [
     category: "Men",
     priceUSD: 40.00,
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769958927/mens_bball14_vhu6hj.jpg",
-    description: "Rule the court. Features Sialkot's Shield-Mesh tech, making it virtually indestructible during high-contact play.",
+    description: "Rule the court. Features Sialkot's Shield-Mesh tech, making it virtually indestructible during high-contact tournament play.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 5.0,
     reviews: 3120
@@ -337,5 +352,12 @@ export const BLOG_POSTS: BlogPost[] = [
     summary: "How our latest $40 uniform collection is taking American college and independent leagues by storm.",
     date: "Dec 25, 2024",
     image: "https://res.cloudinary.com/dzt2nrkjr/image/upload/v1769959046/usa-basketball-uniforms_lmxidn.jpg"
+  },
+  {
+    id: 2,
+    title: "The Rise of the Pencil Bat: Sialkot's BBCOR Breakthrough",
+    summary: "Exploring why the 'Pencil Bat' is the most requested item in the US high school baseball scene this year.",
+    date: "Jan 15, 2025",
+    image: "https://res.cloudinary.com/dc0ytviey/image/upload/v1770143043/VictusPencilBBCORBaseballBat_-3_1_jfwdgj.png"
   }
 ];
