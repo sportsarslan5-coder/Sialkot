@@ -40,7 +40,7 @@ export const TRANSLATIONS: Translations = {
 export const MASTER_CATALOG_DATA = `
 1101-1200. Sialkot Field Series (Gridiron & American Uniforms) – $38-$40,
 801-850. Court Heritage Series (Basketball Pro-Am) – $40,
-901-950. Victory Lifestyle Series (Varsity Apparel) – $40-$60,
+901-950. Victory Lifestyle Series (Varsity & Fashion Apparel) – $35-$60,
 1001-1010. Pro-Diamond Equipment (Bats & Gear) – $150
 `;
 
@@ -392,7 +392,7 @@ export const PRODUCTS: Product[] = [
     reviews: 740
   },
 
-  // --- VICTORY LIFESTYLE ($40-$60) ---
+  // --- VICTORY LIFESTYLE ($35-$60) ---
   {
     id: 901,
     name: "Sialkot Elite 'Victory' Varsity Performance Jacket",
@@ -414,6 +414,17 @@ export const PRODUCTS: Product[] = [
     sizes: ["S", "M", "L", "XL", "XXL"],
     rating: 5.0,
     reviews: 1280
+  },
+  {
+    id: 904,
+    name: "Sialkot Elite 'Victory' Fashion Performance Hoodie",
+    category: "Men",
+    priceUSD: 35.00,
+    image: "https://res.cloudinary.com/dc0ytviey/image/upload/v1770371483/71_MJgkzMGL._AC_SL1500__os6tuf.jpg",
+    description: "Modern athletic fashion hoodie. Features a premium drawstring design, breathable fabric blend, and contemporary fit for daily street performance.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    rating: 5.0,
+    reviews: 156
   }
 ];
 
